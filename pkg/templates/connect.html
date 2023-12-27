@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Connect ||
+    {{super()}}
+{% endblock title %}
+
+{% block maincss %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/connect.css')}}">
+{% endblock maincss %}
+
+{% block content %}   
+    
+    <div class="container">
+
+        <div class="row bb-connections-wrapper">
+
+            <div class="col-sm-3 connects">
+
+                <div class="connects-head">
+                    <img src="" alt="Profile-image" class="img-fluid">
+                </div>
+
+                <div class="bb-connect-btns">
+                    <div class="name">
+                        <h5 class="mt-2">
+                            Omobolaji Durojaiye
+                        </h5>
+
+                        <button class="btn bb-btn-plum col-12 mt-2">
+                            Connect
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3 connects">
+
+                <div class="connects-head">
+                    <img src="" alt="Profile-image">
+                </div>
+
+                <div class="bb-connect-btns">
+                    <div class="name">
+                        <h5 class="mt-2">
+                            Moat Academy
+                        </h5>
+
+                        <button class="btn bb-btn-plum col-12 mt-2">
+                            Connect
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3 connects">
+
+                <div class="connects-head">
+                    <img src="" alt="Profile-image">
+                </div>
+
+                <div class="bb-connect-btns">
+                    <div class="name">
+                        <h5 class="mt-2">
+                            Jonstance Dev Journal
+                        </h5>
+
+                        <button class="btn bb-btn-plum col-12 mt-2">
+                            Connect
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3 connects">
+
+                <div class="connects-head">
+                    <img src="" alt="Profile-image">
+                </div>
+
+                <div class="bb-connect-btns">
+                    <div class="name">
+                        <h5 class="mt-2">
+                            ConservationsNG
+                        </h5>
+
+                        <button class="btn bb-btn-plum col-12 mt-2">
+                            Connect
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="col-sm-3 connects">
+
+                <div class="connects-head">
+                    <img src="" alt="Profile-image">
+                </div>
+
+                <div class="bb-connect-btns">
+                    <div class="name">
+                        <h5 class="mt-2">
+                            DN TV
+                        </h5>
+
+                        <button class="btn bb-btn-plum col-12 mt-2">
+                            Connect
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3 connects">
+
+                <div class="connects-head">
+                    <img src="" alt="Profile-image">
+                </div>
+
+                <div class="bb-connect-btns">
+                    <div class="name">
+                        <h5 class="mt-2">
+                            Food And Recipe
+                        </h5>
+
+                        <button class="btn bb-btn-plum col-12 mt-2">
+                            Connect
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-3 connects">
+
+                <div class="connects-head">
+                    <img src="" alt="Profile-image">
+                </div>
+
+                <div class="bb-connect-btns">
+                    <div class="name">
+                        <h5 class="mt-2">
+                            Mother Nature
+                        </h5>
+
+                        <button class="btn bb-btn-plum col-12 mt-2">
+                            Connect
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-3 connects">
+
+                <div class="connects-head">
+                    <img src="" alt="Profile-image">
+                </div>
+
+                <div class="bb-connect-btns">
+                    <div class="name">
+                        <h5 class="mt-2">
+                            Web Dev For Rookies
+                        </h5>
+
+                        <button class="btn bb-btn-plum col-12 mt-2">
+                            Connect
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-3 connects">
+
+                <div class="connects-head">
+                    <img src="" alt="Profile-image">
+                </div>
+
+                <div class="bb-connect-btns">
+                    <div class="name">
+                        <h5 class="mt-2">
+                            Photography
+                        </h5>
+
+                        <button class="btn bb-btn-plum col-12 mt-2">
+                            Connect
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+    
+
+{% endblock content %}
+    <script src="script/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    {% block script %}
+    <script>
+
+        $(document).ready(function() {
+
+            $(".bb-hamburger").click(function(){
+                $(".bb-sidebar").toggleClass("open");
+            });
+
+            //Bootstrap tooltip starts
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            //Bootstrap tooltip ends
+
+        });
+
+    </script>
+    {% endblock script %}
+
+</body>
+</html>

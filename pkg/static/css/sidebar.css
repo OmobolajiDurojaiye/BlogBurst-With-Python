@@ -1,0 +1,194 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    /* background-color: #141414 !important; */
+    text-decoration: none !important;
+    color: whitesmoke !important;
+}
+
+.theme {
+    position: fixed;
+    top: 0;
+    /* border: 1px solid green; */
+    width: 10%;
+    height: 10vh;
+    right: 5px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    border-radius: 0 0 10px 10px;
+    z-index: 2;
+    background-color: #141414;
+}
+
+/* body {
+    /* background-color: #141414 !important; 
+}*/
+
+.bb-btn-plum {
+    background-color: plum !important;
+    color: white !important;
+}
+
+.bb-sidebar {
+    height: 100vh;
+    width: 5%;
+    border-right: 2px solid plum;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    margin-right: 0;
+    top: 0;
+    padding: 10px 5px;
+    background-color: plum !important;
+    /* color: #141414 !important; */
+}
+
+.bb-hamburger {
+    display: none; /* Hide the hamburger menu by default */
+    cursor: pointer;
+}
+
+.bar {
+    display: block;
+    width: 30px;
+    height: 3px;
+    background-color: #fff !important;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+/* Media query for small screens */
+@media (max-width: 768px) {
+    .bb-hamburger {
+        display: block; /* Show the hamburger menu on small screens */
+    }
+
+    .bb-name {
+        display: none !important;
+    }
+
+    .bb-side-top,
+    .bb-sideicons,
+    .bb-side-bottom {
+        display: none; /* Hide other content by default */
+    }
+
+    .bb-sidebar.open .bb-side-top,
+    .bb-sidebar.open .bb-sideicons,
+    .bb-sidebar.open .bb-side-bottom {
+        display: block; /* Show the content when the sidebar is open */
+    }
+    
+    .bb-sidebar {
+        flex-direction: column;
+        height: auto;
+        width: 20%;
+        background-color: plum !important;
+        z-index: 2;
+    }
+
+    .bb-hamburger:hover .bar {
+        background-color: rgba(255, 255, 255, 0.7);
+        /* background-color: plum; */
+    }
+
+    .bb-sidebar.open .bar:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .bb-sidebar.open .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .bb-sidebar.open .bar:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+}
+
+/* @media only screen and (max-width: 768px) {
+    .bb-sidebar {
+        flex-direction: row;
+        height: 10vh;
+        width: 100%;
+        position: fixed;
+        top: 90vh;
+        z-index: 2;
+    }
+
+    .bb-sidebar .bb-side-top {
+        flex-direction: row !important;
+        align-items: center;
+    }
+
+    .bb-sidebar .bb-side-top .bb-bblogo {
+        display: none !important; /* Show the bb-bblogo on medium and small screens 
+    }
+
+    .bb-media-logo {
+        display: none;
+    }
+
+    .bb-side-bottom {
+        display: none; /* Hide the bottom part on medium and small screens 
+    }
+} */
+
+.bb-active {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    border: 1px solid plum;
+}
+
+.bb-sidebar .bb-side-top {
+    height: max-content;
+    width: 100%;
+    /* border: 1px solid green; */
+}
+
+.bb-sidebar .bb-side-top .bb-bblogo {
+    height: max-content;
+    padding: 10px 0;
+    width: 100%;
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bb-sideicons {
+    height: max-content;
+    padding: 10px 0;
+    border-top: 1px solid plum;
+    width: 100%;
+    /* border: 1px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.bb-sideicons:hover {
+    background: rgba(255, 255, 255, 0.3);
+    /* border: 1px solid black; */
+}
+
+.bb-sideicons a,p {
+    font-size: 0.8em;
+    /* color: rgb(197, 102, 197); */
+    text-align: center !important;
+    font-weight: 600px !important;
+}
+
+
+.bb-sidebar .bb-side-bottom {
+    height: max-content;
+    width: 100%;
+    /* border: 1px solid red; */
+}

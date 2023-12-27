@@ -1,0 +1,68 @@
+* {
+    font-family: poppins, sans-serif;
+    font-weight: bold;
+}
+
+body {
+    background-color: #1d1b1b !important;
+}
+
+.bb-explore-genres-container {
+    width: 100%;
+    height: max-content !important;
+    padding: 20px 0 !important;
+    /* border: 1px solid plum; */
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .bb-explore-genres-container {
+        flex-direction: column;
+    }
+
+    .bb-explore-genres-container .bb-explore-genres {
+        height: max-content !important;
+        overflow: scroll;
+        width: 80% !important;
+    }
+}
+
+.bb-explore-genres-container .bb-explore-genres {
+    /* height: 50vh !important; */
+    width: 25%;
+    border: 2px solid black;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    margin: 10px 5px !important;
+}
+
+.bb-explore-genres-container .bb-explore-genres-head {
+    height: max-content;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid plum;
+} 
+
+.bb-explore-genres-container .bb-explore-genres-head img {
+    width: 50px;
+    height: 50px;
+}
+
+.bb-explore-genres-description {
+    padding: 10px 20px;
+    border-bottom: 1px solid plum;
+}
+
+.bb-explore-genres-icon {
+    height: 10vh;
+    /* padding: 10px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

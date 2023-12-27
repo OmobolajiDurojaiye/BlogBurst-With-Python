@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Categories ||
+    {{super()}}
+{% endblock title %}
+
+{% block maincss %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/explore.css')}}">
+{% endblock maincss %}
+
+{% block content %}    
+    <div class="container">
+
+        <div class="bb-explore-genres-container">
+
+            <div class="bb-explore-genres">
+
+                <div class="bb-explore-genres-head">
+                    <img src="icons/edu-write.png" style="margin-bottom: 10px;">
+                    <h4>
+                        Academic
+                    </h4>
+                </div>
+
+                <div class="bb-explore-genres-description">
+                    <p>
+                        Dive into diverse academic insights! Explore expert articles, connect with scholars. 
+                        Uncover the depths of knowledge with our community. 
+                        Start exploring now!
+                    </p>
+                </div>
+
+                <div class="bb-explore-genres-icon">
+                    <button class="btn btn-bb-addcate bb-btn-plum btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Check category">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="bb-explore-genres">
+
+                <div class="bb-explore-genres-head">
+                    <img src="icons/tech-write.png" style="margin-bottom: 10px;">
+                    <h4>
+                        Technical
+                    </h4>
+                </div>
+
+                <div class="bb-explore-genres-description">
+                    <p>
+                        Unlock technical know-how with our concise articles. Explore expert insights, 
+                        stay updated on industry trends. 
+                        Dive into a world of precision and clarity. Start exploring now!
+                    </p>
+                </div>
+
+                <div class="bb-explore-genres-icon">
+                    <button class="btn btn-bb-addcate bb-btn-plum btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="bb-explore-genres">
+
+                <div class="bb-explore-genres-head">
+                    <img src="icons/creative-write.png" style="margin-bottom: 10px;">
+                    <h4>
+                        Creative
+                    </h4>
+                </div>
+
+                <div class="bb-explore-genres-description">
+                    <p>
+                        Immerse yourself in creativity! Explore captivating stories, poetry, and unique perspectives. 
+                        embark on a journey of literary discovery. 
+                        Start your creative exploration now!
+                    </p>
+                </div>
+
+                <div class="bb-explore-genres-icon">
+                    <button class="btn btn-bb-addcate bb-btn-plum btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+
+            </div>
+
+            <div class="bb-explore-genres"> 
+
+                <div class="bb-explore-genres-head">
+                    <img src="icons/poetry-write.png" style="margin-bottom: 10px;">
+                    <h4>
+                        Poetry
+                    </h4>
+                </div>
+
+                <div class="bb-explore-genres-description">
+                    <p>
+                        Dive into the world of verse and emotion! Explore evocative poetry. 
+                        Let the power of language and emotion captivate you. Start your poetic journey now!
+                    </p>
+                </div>
+
+                <div class="bb-explore-genres-icon">
+                    <button class="btn btn-bb-addcate bb-btn-plum btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="bb-explore-genres">
+
+                <div class="bb-explore-genres-head">
+                    <img src="icons/journalistic-write.png" style="margin-bottom: 10px;">
+                    <h4>
+                        Journalistic
+                    </h4>
+                </div>
+
+                <div class="bb-explore-genres-description">
+                    <p>
+                        Stay informed with impactful journalism! Explore breaking news, in-depth analyses, and compelling stories. <br>
+                        Start your news journey now!
+                    </p>
+                </div>
+
+                <div class="bb-explore-genres-icon">
+                    <button class="btn btn-bb-addcate bb-btn-plum btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+
+            </div>
+
+            <div class="bb-explore-genres">
+
+                <div class="bb-explore-genres-head">
+                    <img src="icons/business-write.png" style="margin-bottom: 10px;">
+                    <h4>
+                        Business
+                    </h4>
+                </div>
+
+                <div class="bb-explore-genres-description">
+                    <p>
+                        Refine business communication, explore impactful strategies. 
+                        From reports to correspondence, master the corporate language. Start your journey!
+                    </p>
+                </div>
+
+                <div class="bb-explore-genres-icon">
+                    <button class="btn btn-bb-addcate bb-btn-plum btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+
+            </div>
+
+
+            <div class="bb-explore-genres">
+
+                <div class="bb-explore-genres-head">
+                    <img src="icons/food-and-recipe-write.png" style="margin-bottom: 10px;">
+                    <h4>
+                        Food and Recipe
+                    </h4>
+                </div>
+
+                <div class="bb-explore-genres-description">
+                    <p>
+                        Unleash your creativity and refine your writing craft. Dive into expert tips, prompts, and inspiration. 
+                        Write passionately, evolve consistently, and express yourself with impact.
+                    </p>
+                </div>
+
+                <div class="bb-explore-genres-icon">
+                    <button class="btn btn-bb-addcate bb-btn-plum btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+
+            </div>
+
+
+            <div class="bb-explore-genres">
+
+                <div class="bb-explore-genres-head">
+                    <img src="icons/nature-write.png" style="margin-bottom: 10px;">
+                    <h4>
+                        Nature
+                    </h4>
+                </div>
+
+                <div class="bb-explore-genres-description">
+                    <p>
+                        Dive into the enchanting wonders of the natural world through captivating nature writing. 
+                        Connect with wildlife, ecosystems, and serenity.
+                    </p>
+                </div>
+
+                <div class="bb-explore-genres-icon">
+                    <button class="btn btn-bb-addcate bb-btn-plum btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+
+            </div>
+
+
+            <div class="bb-explore-genres">
+
+                <div class="bb-explore-genres-head">
+                    <img src="icons/humor-write.png" style="margin-bottom: 10px;">
+                    <h4>
+                        Humor
+                    </h4>
+                </div>
+
+                <div class="bb-explore-genres-description">
+                    <p>
+                        Embark on a laughter-filled journey with our humor writing. 
+                        Discover comedic tales, witty observations, and hilarious anecdotes. Unwind with laughter today!
+                    </p>
+                </div>
+
+                <div class="bb-explore-genres-icon">
+                    <button class="btn btn-bb-addcate bb-btn-plum btn-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>
+                    </button>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+    
+
+{% endblock content %}
+    <script src="script/jquery.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    {% block script %}
+    <script>
+
+        $(document).ready(function() {
+
+            $(".bb-hamburger").click(function(){
+                $(".bb-sidebar").toggleClass("open");
+            });
+
+            //Bootstrap tooltip starts
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            //Bootstrap tooltip ends
+
+            $('.btn-bb-addcate').add()
+
+        });
+
+    </script>
+    {% endblock script %}
+</body>
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>BlogBurst</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/animate.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Lato:wght@100&family=Montserrat:ital,wght@1,100&family=Open+Sans:wght@300&family=Poppins:ital,wght@0,100;1,100&family=Roboto:wght@100&family=Sometype+Mono&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    
+    <header>
+        <div class="bb-logo">
+            <a class="navbar-brand" href="#">
+                <span style="font-weight: bold; position: relative; left: 10%;">
+                    Blog<img src="{{url_for('static', filename='Images/BB-logo.png')}}" id="gif" width="40" height="40" class="img-fluid"><i style="color: plum;">Burst</i>
+                </span>
+            </a>
+        </div>
+
+        <nav class="bb-nav-links">
+            <ul>
+                <li>
+                    <a href="/Who we are">
+                        Who We Are
+                    </a>
+                </li>
+                <li>
+                    <a href="/sign in">
+                        Sign In
+                    </a>
+                </li>
+                <li>
+                    <a class="bb-btn-modal-plum mx-2" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">
+                        Register
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="bb-intro">
+        <div class="overlay">
+            <div class="intro-text">
+                <div class="bb-content-left">
+                    <h1 class="animate__animated animate__backInLeft">
+                        Share your ideas, 
+                    </h1> <br>
+                    <p style="font-weight: bold;" class="animate__animated animate__backInUp">
+                        We burst your ideas into the online space!
+                    </p>
+                    <a type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">Start Blogging</a>
+                </div>
+            </div>
+            <img src="{{url_for('static', filename='Images/blog-index.gif')}}" alt="">
+        </div>
+    </section>
+
+
+    <section class="type-blogs">
+
+        <div class="type-head">
+            <h2>
+                What Do you Like?
+            </h2>
+            <p>
+                We've got them all!
+            </p>
+        </div>
+
+        <div class="blogs-types">
+            <div class="type">
+                <img src="{{url_for('static', filename='icons/tech-write.png')}}" alt="">
+                <p>
+                    Technical Writing
+                </p>
+            </div>
+            <div class="type">
+                <img src="{{url_for('static', filename='icons/poetry-write.png')}}" alt="">
+                <p>
+                    Poetry
+                </p>
+            </div>
+            <div class="type">
+                <img src="{{url_for('static', filename='icons/nature-write.png')}}" alt="">
+                <p>
+                    Nature Writing
+                </p>
+            </div>
+            <div class="type">
+                <img src="{{url_for('static', filename='icons/journalistic-write.png')}}" alt="">
+                <p>
+                    Journalistic Writing
+                </p>
+            </div>
+            <div class="type">
+                <img src="{{url_for('static', filename='icons/humor-write.png')}}" alt="">
+                <p>
+                    Humor
+                </p>
+            </div>
+            <div class="type">
+                <img src="{{url_for('static', filename='icons/food-and-recipe-write.png')}}" alt="">
+                <p>
+                    Food and Recipe
+                </p>
+            </div>
+            <div class="type">
+                <img src="{{url_for('static', filename='icons/edu-write.png')}}" alt="">
+                <p>
+                    Educational Writing
+                </p>
+            </div>
+            <div class="type">
+                <img src="{{url_for('static', filename='icons/creative-write.png')}}" alt="">
+                <p>
+                    Creatve Writing
+                </p>
+            </div>
+            <div class="type">
+                <img src="{{url_for('static', filename='icons/business-write.png')}}" alt="">
+                <p>
+                    Business Writing
+                </p>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="featured-contents">
+        <div class="featured-head">
+            <h2>
+                Discover Top Articles  on Blogburst
+            </h2>
+        </div>
+
+        <div class="featured">
+            <div class="top-stories">
+                <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
+                <div class="title">
+                    <p>
+                        Food & Recipe
+                    </p>
+                    <a href="">
+                        25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
+                    </a>
+                </div>
+            </div>
+            <div class="top-stories">
+                <img src="{{url_for('static', filename='Images/flower.png')}}" alt="">
+                <div class="title">
+                    <p>
+                        Food & Recipe
+                    </p>
+                    <a href="">
+                        25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
+                    </a>
+                </div>
+            </div>
+            <div class="top-stories">
+                <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
+                <div class="title">
+                    <p>
+                        Food & Recipe
+                    </p>
+                    <a href="">
+                        25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
+                    </a>
+                </div>
+            </div>
+            <div class="top-stories">
+                <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
+                <div class="title">
+                    <p>
+                        Food & Recipe
+                    </p>
+                    <a href="">
+                        25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
+                    </a>
+                </div>
+            </div>
+            <div class="top-stories">
+                <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
+                <div class="title">
+                    <p>
+                        Food & Recipe
+                    </p>
+                    <a href="">
+                        25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
+                    </a>
+                </div>
+            </div>
+            <div class="top-stories">
+                <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
+                <div class="title">
+                    <p>
+                        Food & Recipe
+                    </p>
+                    <a href="">
+                        25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
+                    </a>
+                </div>
+            </div>
+            <div class="top-stories">
+                <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
+                <div class="title">
+                    <p>
+                        Food & Recipe
+                    </p>
+                    <a href="">
+                        25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
+                    </a>
+                </div>
+            </div>
+            <div class="top-stories">
+                <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
+                <div class="title">
+                    <p>
+                        Food & Recipe
+                    </p>
+                    <a href="">
+                        25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- <footer>
+        <p>
+            &copy; 2023. Made with &#128156; by B
+        </p>
+    </footer> -->
+
+
+
+    <!-- Registration modal starts here -->
+    <div class="modal fade animate__animated animate__rollIn" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" style="color: plum !important; font-weight: bold !important;" id="staticBackdropLabel">Register</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            
+                <form id="regform" action="/">
+                    <div class="warn">
+                        <p id="warning">
+
+                        </p>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="firstname" class="form-label">First Name</label>
+                      <input type="text" class="form-control" id="firstname" name="userfirstname">
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="lastname" class="form-label">Last Name</label>
+                      <input type="text" class="form-control" name="userlastname" id="lastname">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="regemail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="regemail" name="userregemail" aria-describedby="emailHelp">
+                    </div>
+  
+                    <div class="mb-3">
+                        <label for="regpwd" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="userregpwd" id="regpwd">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="dateofbirth" class="form-label">Date Of Birth</label>
+                        <input type="date" class="form-control" id="dateofbirth" name="userdateofbirth">
+                    </div>
+
+                    <!--gender-->
+                    <div class="form-check form-check-block">
+                        <input class="form-check-input" type="radio" name="usergender" id="male" value="option1">
+                        <label class="form-check-label" for="male" value="male">Male</label>
+                    </div>
+
+                    <div class="form-check form-check-block mb-3">
+                        <input class="form-check-input" type="radio" name="usergender" id="female" value="option2">
+                        <label class="form-check-label" for="female" value="female">Female</label>
+                    </div>
+                    <!--gender-->
+
+                    <!--agreement-->
+                    <div class="mb-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="agree">
+                      <label class="form-check-label" for="exampleCheck1">
+                        By clicking this, you agree to our terms and conditions
+                      </label>
+                    </div>
+                    <!--agreement-->
+
+                    <button type="submit" id="remove-dis" class="btn bb-btn-modal-plum" disabled>Sign Up</button>
+
+                    <!--Has account already?-->
+                    <p style="color: plum; margin-top: 10px;">
+                        Already have an account? <a style="color: black;" href="login.html">Sign in</a>
+                    </p>
+                    <!--Has account already?-->
+                </form>
+
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="bb-hinge-outro" data-bs-dismiss="modal">Close</button>
+            <!-- <button type="button" class="btn bb-btn-modal-plum">Understood</button> -->
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- Registration modal ends here -->
+
+
+
+    <script src="{{url_for('static', filename='script/jquery.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.js')}}"></script>
+    <script>
+        $(document).ready(function(){
+            //Checkbox button disabled
+            $(':checkbox').click(function() {
+                var stateForMale = $("#agree").prop('checked');
+
+                if(stateForMale == true) {
+                    $('#remove-dis').removeAttr('disabled');
+                } else {
+                    $('#remove-dis').attr('disabled', 'disabled')
+                }
+
+
+            })
+        })
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %}Blogburst{% endblock title %}</title>
+    {% block maincss %}
+    {% endblock maincss %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/sidebar.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/animate.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.css')}}" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Lato:wght@100&family=Montserrat:ital,wght@1,100&family=Open+Sans:wght@300&family=Poppins:ital,wght@0,100;1,100&family=Roboto:wght@100&family=Sometype+Mono&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body id="bbThemeMode">
+
+    <!--Dark and Light mode
+    <div class="theme">
+        <button id="bbLight" class="btn btn-sm btn-warning">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-high-fill" viewBox="0 0 16 16">
+                <path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+            </svg>
+        </button>
+        
+        <button id="bbDark" class="btn btn-sm btn-dark">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-moon-fill" viewBox="0 0 16 16">
+                <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278"/>
+            </svg>
+        </button>
+    </div>
+    Dark and Light mode ends here-->
+    
+
+    <!--sidebar starts here-->
+    <div class="bb-sidebar open">
+        <div class="bb-hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+
+        <!--top icons to navigate feed-->
+        <div class="bb-side-top">
+            <!--logo icons to navigate feed-->
+            <div class="bb-bblogo">
+                <a href="">
+                    <img src="{{url_for('static', filename='Images/BB-logo.png')}}" width="40" height="40" alt="BB-logo">
+                </a>
+            </div>
+
+            <!--feed icons to navigate feed-->
+            <div class="bb-sideicons">
+                <a href="/feed" data-bs-toggle="tooltip" data-bs-placement="right" title="Blogs">
+                    <img src="{{url_for('static', filename='icons/bb-blogs.png')}}" width="30" height="30" alt="feed">
+                    <p style="padding: 0; margin: 0;">
+                        Blogs
+                    </p>
+                </a>
+            </div>
+            <!--feed icons to navigate feed ends-->
+
+            <!--explore icons to navigate feed-->
+            <div class="bb-sideicons">
+                <a href="/categories" data-bs-toggle="tooltip" data-bs-placement="right" title="Categories">
+                    <img src="{{url_for('static', filename='icons/bb-explore.png')}}" width="30" height="30" alt="explore">
+                    <p style="padding: 0; margin: 0;">
+                        Categories
+                    </p>
+                </a>
+            </div>
+            <!--explore icons to navigate feed ends-->
+
+            <!--topics icons to navigate feed-->
+            <div class="bb-sideicons">
+                <a href="/connect" data-bs-toggle="tooltip" data-bs-placement="right" title="Connect">
+                    <img src="{{url_for('static', filename='icons/bb-connections.png')}}" width="30" height="30" alt="explore">
+                    <p style="padding: 0; margin: 0;">
+                        Connect
+                    </p>
+                </a>
+            </div>
+            <!-- icons to navigate feed ends-->
+
+        </div>
+        <!--top icons to navigate feed ends-->
+
+        <div class="bb-side-bottom">
+            <!--profile icons to navigate feed-->
+            <div class="bb-sideicons">
+                <a href="/profile" data-bs-toggle="tooltip" data-bs-placement="right" title="Profile">
+                    <img src="{{url_for('static', filename='icons/bb-profile.png')}}" width="30" height="30" alt="explore">
+                    <p style="padding: 0; margin: 0;">
+                        profile
+                    </p>
+                </a>
+            </div>
+            <!--profile icons to navigate feed ends-->
+
+            <!--logout icons to navigate feed-->
+            <div class="bb-sideicons">
+                <a href="/logout" data-bs-toggle="tooltip" data-bs-placement="right" title="Logout">
+                    <img src="{{url_for('static', filename='icons/bb-logout.png')}}" width="30" height="30" alt="explore">
+                    <p style="padding: 0; margin: 0;">
+                        Logout
+                    </p>
+                </a>
+            </div>
+            <!--logout icons to navigate feed ends-->
+        </div>
+    </div>
+    <!--sidebar ends here-->
+
+    <!--main items here-->
+    {% block content %}
+    {% endblock content %}
+    <!--main items here-->
+    
+
+    <script src="{{url_for('static', filename='vendor/script/jquery.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/js/theme.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    {% block script %}
+    
+    {% endblock script %}
+
+</body>
+</html>

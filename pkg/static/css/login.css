@@ -1,0 +1,227 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: poppins, sans-serif;
+    font-weight: bold;
+    text-decoration: none !important;
+}
+
+/* body {
+    -webkit-animation: ;
+    overflow: hidden;
+} */
+
+/*Navbar section*/
+.bb-fixed-nav {
+    /* height: 10vh; */
+    width: 100% !important;
+    background-color: white;
+    /* position: fixed !important; */
+    top: 0 !important;
+    z-index: 2 !important;
+}
+
+#gif {
+    /* border: 1px solid plum; */
+    border-radius: 10px;
+}
+
+.bb-btn-modal-plum {
+    background-color: plum !important;
+    color: #fff !important;
+    padding: 6px 10px !important;
+    border: 1px solid plum !important;
+    border-radius: 5px;
+}
+
+.bb-nav-links a {
+    color: gray;
+}
+
+.bb-nav-links a:hover {
+    color: white !important;
+    background-color: plum !important;
+    border-radius: 5px !important;
+}
+
+.bb-active {
+    /* font-weight: bold !important; */
+    color: white !important;
+    background-color: plum !important;
+    border-radius: 5px !important;
+    margin-right: 5% !important;
+}
+
+.bb-left-align {
+    width: 100% !important;
+    position: relative;
+    left: 70% !important;
+}
+
+.bb-bg-boxshadow-light {
+    /* margin: 0 !important; */
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+    border-bottom: 2px solid rgb(212, 77, 212);
+}
+/**/
+
+/*Login form section*/
+.bb-form-bg-plum {
+    /* width: 100%; */
+    z-index: 0 !important;
+    position: relative;
+    top: 10vh !important;
+    height: max-content !important;
+    padding-bottom: 10vh;
+    background-color: plum !important;
+}
+
+.bb-content-left {
+    /* border: 1px solid red !important; */
+    height: 70vh;
+    position: relative;
+    top: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* margin-left: 5%; */
+    left: 4%;
+}
+
+.bb-content-left h2 {
+    color: #fff;
+    font-size: 4em;
+}
+
+.bb-content-left p {
+    color: #fff;
+    font-size: 1.5em;
+    color: rgb(179, 50, 179);
+}
+
+.bb-content-right {
+    /* border: 1px solid red !important; */
+    height: 80vh;
+    position: relative;
+    top: 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.bb-form {
+    width: 80% !important;
+    position: relative;
+    left: 10%;
+    height: max-content;
+    padding: 5vh 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.form-height-width {
+    height: max-content !important;
+    width: 80% !important;
+    /* border: 1px solid red !important; */
+}
+
+.bb-form label,input {
+    font-weight: bold !important;
+    color: plum !important;
+}
+
+.bb-form input {
+    border: 1px solid plum;
+}
+
+.bb-btn-plum {
+    background-color: plum !important;
+    color: #fff !important;
+}
+
+.bb-infosection {
+    border-bottom: 1px solid plum !important;
+    position: relative;
+    top: 20vh;
+    height: max-content !important;
+    padding: 10vh 0 !important;
+}
+
+.bb-infosection .box {
+    /* border: 1px solid plum; */
+    height: max-content;
+    padding: 15px;
+    margin: 2px 20px !important;
+    border-radius: 20px !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.bb-infosection .box h2 {
+    color: plum;
+    font-weight: bolder;
+}
+
+.bb-infosection .box p {
+    font-size: 0.8em;
+}
+
+.bb-position-center {
+    position: relative;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    left: 40%;
+}
+
+/* @media (max-width: 776px) {
+    .bb-infosection {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    
+    .bb-infosection .box {
+        /* border: 1px solid plum; 
+        margin: 0 20px !important;
+        border-radius: 20px !important;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    }
+} */
+
+@media (max-width: 768px) {
+    form {
+        width: 100%;
+    }
+    .bb-content-left,
+    .bb-content-right {
+        width: 100%;
+        margin-bottom: 10%;
+    }
+}
+
+@media (max-width: 576px) {
+    .bb-form-bg-plum {
+        padding: 20px;
+    }
+
+    .bb-nav-links li {
+        margin-bottom: 10px;
+    }
+}
+
+
+/*footer starts here*/
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-top: 40px;
+    margin-top: 20vh !important;
+    /* height: 2vh !important; */
+}
+/*footer ends here*/

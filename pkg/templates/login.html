@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="BlogBurst: Your Creative Space to Share Ideas and Stories. Join a vibrant community of bloggers, effortlessly express your thoughts, and engage with diverse content. Simplifying blogging for everyone, BlogBurst is where ideas burst into the digital space.">
+    <meta name="keywords" content="Blog, Article, BlogBurst">
+    <meta name="author" content="Omobolaji Durojaiye">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Login || BlogBurst</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/animate.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.css')}}" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Lato:wght@100&family=Montserrat:ital,wght@1,100&family=Open+Sans:wght@300&family=Poppins:ital,wght@0,100;1,100&family=Roboto:wght@100&family=Sometype+Mono&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+    
+    <div class="container-fluid">
+
+        <!--Navbar starts here-->
+        <div class="row">
+            <div class="col-12">
+
+                <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary bb-fixed-nav bb-bg-boxshadow-light">
+                    <div class="container-fluid">
+                      <a class="navbar-brand" href="{{url_for('static', filename='index.html')}}">
+                        <span style="font-weight: bold;">
+                            Blog<img src="{{url_for('static', filename='Images/BB-logo.png')}}" id="gif" width="40" height="40" class="img-fluid"><i style="color: plum;">Burst</i>
+                        </span>
+                      </a>
+                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                      </button>
+                      <div class="collapse navbar-collapse bb-left-align" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 bb-nav-links">
+                          <li class="nav-item">
+                            <a class="nav-link bb-active active" aria-current="page" href="/index">Home</a>
+                          </li> 
+                          <!-- <li class="nav-item">
+                            <button>Register</button>
+                          </li> -->
+                        </ul>
+                      </div>
+                    </div>
+                  </nav>
+
+            </div>
+        </div>
+        <!--Navbar ends here-->
+
+        <!--Login form starts here-->
+        <div class="row bb-form-bg-plum">
+            <div class="col-md-6 bb-content-left">
+                <h2 class="animate__animated animate__backInLeft">
+                    Share your ideas, 
+                </h2> <br>
+                <p style="font-weight: bold;" class="animate__animated animate__backInUp">
+                    We burst your ideas into the online space!
+                </p>
+            </div>
+            
+            <div class="col bb-content-right">
+
+                <div class="bb-form animate__animated animate__bounce ">
+
+                    <form action="/login" id="formSubmit" method="post" class="form-height-width">
+
+                        <div style="text-align:center;" class="mb-5">
+                            <h2>
+                                Log Into Your Account
+                            </h2>
+
+                            <p>
+                                Let's Keep On Bursting!
+                            </p>
+                        </div>
+                    
+                        <div class="mb-3">
+                          <label for="email" class="form-label">Email address</label>
+                          <input type="email" class="form-control" id="email" name="userEmail" aria-describedby="emailHelp">
+                          <p id="email-warn"></p>
+                        </div>
+    
+                        <div class="mb-3">
+                          <label for="password" class="form-label">Password</label>
+                          <input type="password" class="form-control" name="userPassword" id="password"> 
+                          <span>
+                            <button type="button" id="show" style="border: none; position: relative; bottom: 5vh; left: 85%; background: none; color: plum;">Show</button>
+                          </span>
+                          <p id="pwd-warn"></p>
+                        </div>
+                        
+                        <button type="submit" class="btn bb-btn-plum">Log in</button>
+
+                        <div class="mt-1">
+                            <p style="font-size: 0.7em; color: plum;">
+                                Don't have an account? Click <a style="color: plum; text-decoration: underline !important;" href="/index">here</a> to create one!
+                            </p>
+                        </div>
+                    </form>
+                    
+                </div>
+
+            </div>
+        </div>
+        <!--Login form ends here-->
+
+        <!-- brief info starts here-->
+            <!--<div class="row bb-infosection">
+
+                <div class="col box">
+                    <h2 class="mt-3" style="text-align: center;">
+                        Read & Write
+                    </h2>
+                    <p class="p-2">
+                        Create an account as either a reader or a writer for unique benefits tailored to your preferences. 
+                        Explore our site's informative section highlighting its essence and advantages for both roles.
+                    </p>
+                    <img src="Images/reader-write.png" width="40" height="40" class="img-fluid bb-position-center" alt="">
+                </div>
+
+                <div class="col box">
+                    <h2 class="mt-3" style="text-align: center;">
+                        As a reader
+                    </h2>
+                    <p class="p-2">
+                        Sign up to unlock exclusive benefits tailored for your experience. 
+                        Since you choose to register as a reader, there's a wealth of advantages awaiting you.
+                    </p>
+                    <img src="Images/reader.png" width="40" height="40" class="img-fluid bb-position-center" alt="">
+                </div>
+
+                <div class="col box">
+                    <h2 class="mt-3" style="text-align: center;">
+                        As a writer
+                    </h2>
+                    <p class="p-2">
+                        Unlock a world of opportunities to showcase your creativity and expertise. 
+                        By opening an account as a writer, you gain the benefit of : publishing Your Work, connecting with Readers,
+                        receiving feedback and many more
+                    </p>
+                    <img src="Images/writer.png" width="40" height="40" class="img-fluid bb-position-center" alt="">
+                </div>
+
+                <div class="col box">
+                    <h2 class="mt-3" style="text-align: center;">
+                        At BlogBurst
+                    </h2>
+                    <p class="p-2">
+                        We offer a secure space for writers to share their articles and launch their ideas online. 
+                        For readers, it's a hub of diverse and captivating content. Welcome to a platform where creativity thrives!
+                    </p>
+                    <img src="Images/BB-logo.png" width="40" height="40" class="img-fluid bb-position-center" alt="">
+                </div>
+
+            </div>-->
+        <!--brief info ends here -->
+
+        <!--Footer starts here-->
+        <div class="row footer">
+            <div class="col">
+                <p class="pb-3" style="color: plum; text-align: center;">
+                    &copy; 2023. Made with &#128156; by B
+                </p>
+            </div>
+        </div>
+        <!--Footer starts here-->
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+    
+
+
+    <script src="{{url_for('static', filename='vendor/js/login.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/script/jquery.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.js')}}"></script>
+
+    <script>
+
+        $(document).ready(function() {
+
+            //adds the animation to class box onload
+            $(".box").addClass('animate__animated animate__bounce')
+
+            //Trying to add animation to the close button of the modal
+            // $("#bb-hinge-outro").click(function() {
+            //     $("#staticBackdrop").addClass("animate__animated animate__hinge");
+            // });
+
+            
+
+            //Login Validation
+            $("#formSubmit").submit(function() {
+
+                var email = $("#email").val();
+                var password = $("#password").val();
+
+                if (email.trim() == '' || email.trim() == null) {
+                    $("#email-warn").text("*Invalid input or no input");
+                    $("#email-warn").css({"color":"red", "font-size":"0.7em"});
+                    $("#email").css({"border":"1px solid red"});
+                    return false;
+                } else {
+                    true;
+                }
+
+                if (password.trim() == '' || password.trim() == null) {
+                    $("#pwd-warn").text("*Invalid input or no input");
+                    $("#pwd-warn").css({"color":"red", "font-size":"0.7em"});
+                    $("#password").css({"border":"1px solid red"});
+                    return false;
+                } else {
+                    true;
+                }
+
+            });
+            //Login Validation ends
+
+            //Show password
+            $("#show").on({
+
+                click: function(){
+                    $("#password").attr("type","text")
+                },
+                mouseleave: function() {
+                    $("#password").attr("type","password")
+                }
+
+            });
+            //Show password ends
+
+            //Registeration Validation
+            $("#regform").submit(function() {
+
+                var fname = $("#firstname").val();
+                var lname = $("#lastname").val();
+                var regemail = $("#regemail").val();
+                var regpassword = $("#regpwd").val();
+                var dob = $("dateofbirth").val();
+
+                if (fname.trim() == '' || lname.trim() == '' || regemail.trim() == '' || regpassword.trim() == '' || dob.trim() == '') {
+                    $("#warning").text("*No field should be left empty");
+                    $("#warning").css({"color":"red", "font-size":"0.7em"});
+                    return false;
+                }
+
+            });
+            //Registeration Validation ends
+
+
+        });
+
+    </script>
+</body>
+</html>
