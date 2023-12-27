@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request, session
 from pkg import app
+from pkg.forms import LoginForm
 
 #custom errors
 @app.errorhandler(404)
@@ -18,10 +19,10 @@ def index():
 def about():
     return render_template("about.html")
 
-#sign in
-@app.route('/sign in')
-def sign_in():
-    return render_template('login.html')
+# #sign in
+# @app.route('/sign in')
+# def sign_in():
+#     return render_template('login.html')
 
 #blog
 @app.route('/feed')
@@ -44,18 +45,16 @@ def profile():
     else:
         return render_template("profile.html")
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return render_template("login.html")
-    else:
-        useremail = request.form.get('userEmail')
-        password = request.form.get('userPassword')
-        if useremail !="" and password != "":
-            session['useremail']=useremail
-            return redirect('/profile')
-        else:
-            return redirect('/login')
+    form = LoginForm()
+    if form.validate_on_submit():
+        useremail = form.userEmail.data
+        password = form.userPassword.data
+        session['useremail'] = useremail
+        return redirect('/profile')
+
+    return render_template('login.html', form=form)
 
         
 @app.route('/logout')

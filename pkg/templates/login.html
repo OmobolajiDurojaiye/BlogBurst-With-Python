@@ -41,7 +41,7 @@
 
                 <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary bb-fixed-nav bb-bg-boxshadow-light">
                     <div class="container-fluid">
-                      <a class="navbar-brand" href="{{url_for('static', filename='index.html')}}">
+                      <a class="navbar-brand" href="{{url_for('index')}}">
                         <span style="font-weight: bold;">
                             Blog<img src="{{url_for('static', filename='Images/BB-logo.png')}}" id="gif" width="40" height="40" class="img-fluid"><i style="color: plum;">Burst</i>
                         </span>
@@ -81,41 +81,42 @@
 
                 <div class="bb-form animate__animated animate__bounce ">
 
-                    <form action="/login" id="formSubmit" method="post" class="form-height-width">
-
+                    <form action="/login" method="post" class="form-height-width">
+                        {{ form.csrf_token }}
+                        
                         <div style="text-align:center;" class="mb-5">
                             <h2>
                                 Log Into Your Account
                             </h2>
-
+                    
                             <p>
                                 Let's Keep On Bursting!
                             </p>
                         </div>
                     
                         <div class="mb-3">
-                          <label for="email" class="form-label">Email address</label>
-                          <input type="email" class="form-control" id="email" name="userEmail" aria-describedby="emailHelp">
-                          <p id="email-warn"></p>
+                            {{ form.userEmail.label(class="form-label") }}
+                            {{ form.userEmail(class="form-control", id="email", aria_describedby="emailHelp") }}
+                            <p id="email-warn" style="color: red; font-size: 0.7em;">{{ form.userEmail.errors[0]}}</p>
                         </div>
-    
+                    
                         <div class="mb-3">
-                          <label for="password" class="form-label">Password</label>
-                          <input type="password" class="form-control" name="userPassword" id="password"> 
-                          <span>
-                            <button type="button" id="show" style="border: none; position: relative; bottom: 5vh; left: 85%; background: none; color: plum;">Show</button>
-                          </span>
-                          <p id="pwd-warn"></p>
+                            {{ form.userPassword.label(class="form-label") }}
+                            {{ form.userPassword(class="form-control", id="password") }}
+                            <span>
+                                <button type="button" id="show" style="border: none; position: relative; bottom: 5vh; left: 85%; background: none; color: plum;">Show</button>
+                            </span>
+                            <p id="pwd-warn" style="color: red; font-size: 0.7em;">{{ form.userPassword.errors[0]}}</p>
                         </div>
-                        
-                        <button type="submit" class="btn bb-btn-plum">Log in</button>
-
+                    
+                        {{ form.submit(class="btn bb-btn-plum") }}
+                    
                         <div class="mt-1">
                             <p style="font-size: 0.7em; color: plum;">
-                                Don't have an account? Click <a style="color: plum; text-decoration: underline !important;" href="/index">here</a> to create one!
+                                Don't have an account? Click <a style="color: plum; text-decoration: underline !important;" href="{{ url_for('index') }}">here</a> to create one!
                             </p>
                         </div>
-                    </form>
+                    </form>                    
                     
                 </div>
 
