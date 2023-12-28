@@ -29,17 +29,30 @@
 </head>
 <body>
     
+    <div class="head">
+        <h2>
+            BlogBurst Admin
+        </h2>
+    </div> <br>
 
-    <div id="admin.html">
+    <div id="login-container">
         <h2>Admin Login</h2>
-        <form action="/admin" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-    
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-    
-            <button type="submit">Login</button>
+        <form method="POST">
+            {{ form.csrf_token }}
+            
+            <div class="form-group">
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class="form-control col", placeholder="Enter your username") }}
+            </div>
+        
+            <div class="form-group">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control col", placeholder="Enter your password") }}
+            </div>
+        
+            <div class="form-group">
+                {{ form.submit(class="btn bb-btn-plum mt-4") }}
+            </div>
         </form>
     </div>
 

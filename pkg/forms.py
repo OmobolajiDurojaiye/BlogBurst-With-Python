@@ -25,3 +25,8 @@ class BlogPostForm(FlaskForm):
     post_image = FileField('Add Image')
     post_content = TextAreaField('Post Content', validators=[DataRequired()])
     submit = SubmitField('Post')
+
+class AdminLoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Login')

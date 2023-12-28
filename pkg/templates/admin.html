@@ -52,7 +52,7 @@
                 <img src="{{url_for('static', filename='icons/announcement.png')}}" alt=""> &nbsp;
                 Anouncement
             </a>
-            <a href="/admin_login">
+            <a href="/adminlogout">
                 <img src="{{url_for('static', filename='icons/bb-logout.png')}}" alt=""> &nbsp;
                 Logout
             </a>
@@ -60,8 +60,8 @@
     
         <div id="content">
             <div class="content-head">
-                <h2>
-                    ADMIN
+                <h2 style="font-weight: bold;">
+                    WELCOME {{session.get('adminusername')}}
                 </h2>
             </div>
         </div>
