@@ -1,0 +1,28 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body {
+    background-color: #1D1B1B !important;
+}
+
+.content-head h2 {
+    background: white;
+    width: 20%;
+    padding: 4px;
+    border-radius: 0 0 20px 0;
+    color: #141414 !important;
+}
+
+/* .bb-addpost-section {
+    height: 80vh !important;
+    
+} */
+
+textarea {
+    background-color: rgb(221, 212, 212) !important;
+    height: 50vh;
+}

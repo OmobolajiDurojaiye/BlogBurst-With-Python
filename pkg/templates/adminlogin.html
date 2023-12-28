@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Login || Admin</title>
-    <link rel="stylesheet" href="adminlogin.css" type="text/css">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/adminlogin.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Lato:wght@100&family=Montserrat:ital,wght@1,100&family=Open+Sans:wght@300&family=Poppins:ital,wght@0,100;1,100&family=Roboto:wght@100&family=Sometype+Mono&display=swap" rel="stylesheet">
@@ -32,7 +32,7 @@
 
     <div id="admin.html">
         <h2>Admin Login</h2>
-        <form action="admin.html" method="post">
+        <form action="/admin" method="post">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
     

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}
+    New Post ||
+    {{super()}}
+{% endblock title %}
+
+    {% block maincss %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/newpost.css')}}">
+    {% endblock maincss %}
+    
+    {% block content %}
+    <div class="content-head">
+        <h2>
+            Add New Post
+        </h2>
+    </div>
+
+    <div class="container bb-addpost-section mt-3">
+        <form action="/newpost" method="post">
+
+            {{ form.csrf_token }}
+
+            <div class="posttitle">
+                {{ form.post_title.label(class="form-label", style="color: plum !important; font-weight: bold;") }}
+                {{ form.post_title(class_="form-control", placeholder="Blog Title", style="color: plum !important; font-weight: bold;") }}
+                {% if form.post_title.errors %}
+                <div class="alert alert-danger">
+                    {{ form.post_title.errors[0] }}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="mt-4">
+                {{ form.post_image.label(class="form-label") }}
+                {{ form.post_image(class="form-control", style="color: black !important; font-weight: light;") }}
+                {% if form.post_image.errors %}
+                <div class="alert alert-danger">
+                    {{ form.post_image.errors[0] }}
+                </div>
+                {% endif %}
+            </div>
+        
+            <div class="postcontent mt-4">
+                {{ form.post_content.label(class="form-label") }}
+                {{ form.post_content(class="form-control", style="color: black !important; font-weight: bold;") }}
+                {% if form.post_content.errors %}
+                <div class="alert alert-danger">
+                    {{ form.post_content.errors[0] }}
+                </div>
+                {% endif %}
+
+            </div>
+        
+            <div>
+                {{ form.submit(class="btn bb-btn-plum mt-3 mb-4") }}
+            </div>
+        
+        </form>
+    </div>
+    {% endblock content %}
+    <!--main items here-->
+    
+
+</body>
+</html>

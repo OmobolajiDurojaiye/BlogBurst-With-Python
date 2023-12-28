@@ -172,45 +172,12 @@
             
             <div class="col bb-blogger-panel">
 
-                <a href="" title="Add New Post" data-bs-toggle="modal" data-bs-target="#newpost">
+                <a href="/newpost" title="Add New Post">
                     <img src="{{url_for('static', filename='icons/bb-add-post.png')}}" height="40" width="40" class="img-fluid">
                     <p style="color: white; font-size: 0.8em;">
                         Add New Post
                     </p>
                 </a>
-
-
-
-
-                <div class="modal fade" id="newpost" tabindex="-1" aria-labelledby="newpostmodal" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                      <div style="background-color: #141414 !important;" class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="newpostmodal" style="font-weight: bold !important; color: plum !important;">Post New Blog</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          
-                            <form action="" method="post">
-
-                                <div class="posttitle">
-                                    <input type="text" class="form-control" style="color: plum !important; font-weight: bold;" placeholder="Blog Title">
-                                </div>
-
-                                <div class="postcontent mt-4">
-                                    <label for="postcontent">Post Content</label>
-                                    <textarea name="" id="postcontent" cols="100" rows="10" style="color: black !important; font-weight: bold;" class="form-control"></textarea>
-                                </div>
-
-                            </form>
-
-                        </div>
-                        <div class="modal-footer">
-                          <a type="button" class="btn bb-btn-plum" data-bs-dismiss="modal">Post</a>
-                        </div>
-                      </div>
-                    </div>
-                </div>
 
             </div>
 

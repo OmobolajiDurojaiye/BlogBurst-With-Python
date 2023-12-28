@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Admin || BlogBurst</title>
-    <link rel="stylesheet" href="admin.css" type="text/css">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Agbalumo&family=Lato:wght@100&family=Montserrat:ital,wght@1,100&family=Open+Sans:wght@300&family=Poppins:ital,wght@0,100;1,100&family=Roboto:wght@100&family=Sometype+Mono&display=swap" rel="stylesheet">
@@ -33,27 +33,27 @@
     <div id="admin-container">
         <div id="sidebar">
             <a href="#">
-                <img src="icons/user-management.png" alt=""> &nbsp;
+                <img src="{{url_for('static', filename='icons/user-management.png')}}" alt=""> &nbsp;
                 User Management
             </a>
             <a href="#">
-                <img src="icons/content-management.png" alt=""> &nbsp;
+                <img src="{{url_for('static', filename='icons/content-management.png')}}" alt=""> &nbsp;
                 Content Management
             </a>
             <a href="#">
-                <img src="icons/analytic.png" alt=""> &nbsp;
+                <img src="{{url_for('static', filename='icons/analytic.png')}}" alt=""> &nbsp;
                 Analytics
             </a>
             <a href="#">
-                <img src="icons/security.png" alt=""> &nbsp;
+                <img src="{{url_for('static', filename='icons/security.png')}}" alt=""> &nbsp;
                 Security
             </a>
             <a href="#">
-                <img src="icons/announcement.png" alt=""> &nbsp;
+                <img src="{{url_for('static', filename='icons/announcement.png')}}" alt=""> &nbsp;
                 Anouncement
             </a>
-            <a href="adminlogin.html">
-                <img src="icons/bb-logout.png" alt=""> &nbsp;
+            <a href="/admin_login">
+                <img src="{{url_for('static', filename='icons/bb-logout.png')}}" alt=""> &nbsp;
                 Logout
             </a>
         </div>
