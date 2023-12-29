@@ -9,7 +9,7 @@ def not_found_error(error):
 
 
 #adminlogin
-@app.route('/admin_login', methods=['GET', 'POST'])
+@app.route('/admin_login/', methods=['GET', 'POST'])
 def admin_login():
     form = AdminLoginForm()
     if form.validate_on_submit():
@@ -24,22 +24,22 @@ def admin_login():
 
 
 #admin
-@app.route('/admin')
+@app.route('/admin/')
 def admin():
     if session.get('adminusername') == None:
-        return redirect('/admin_login')
+        return redirect('/admin_login/')
     else:
         return render_template("admin.html")
 
 #adminlogout
-@app.route('/adminlogout')
+@app.route('/adminlogout/')
 def adminlogout():
     session.pop('adminusername', None)
-    return redirect('/admin_login')
+    return redirect('/admin_login/')
 
 #homepage
 @app.route('/')
-@app.route('/index')
+@app.route('/index/')
 def index():
     # return render_template("index.html")
     #since the modal is in index page, the form validator should be here
@@ -56,13 +56,13 @@ def index():
 
         session['username'] = userfirstname
 
-        return redirect('/login')
+        return redirect('/login/')
     
     return render_template('index.html', form=form)
 
 
 #about
-@app.route('/Who we are')
+@app.route('/Who we are/')
 def about():
     form = RegistrationForm()
 
@@ -77,7 +77,7 @@ def about():
 
         session['username'] = userfirstname
 
-        return redirect('/login')
+        return redirect('/login/')
     
     return render_template('about.html', form=form)
 
@@ -88,26 +88,31 @@ def about():
 
 
 #blog
-@app.route('/feed', methods=['GET', 'POST'])
+@app.route('/feed/', methods=['GET', 'POST'])
 def feed():
     return render_template("feed.html")
 
 #categories
-@app.route('/categories')
+@app.route('/categories/')
 def categories():
     return render_template("explore.html")
 
+#academic blogs
+@app.route('/Academic Blogs/')
+def academic_category():
+    return render_template('academic_blogs.html')
+
 
 #connect
-@app.route('/connect')
+@app.route('/connect/')
 def connect():
     return render_template("connect.html")
 
 #userprofile
-@app.route('/profile', methods=['GET', 'POST'])
+@app.route('/profile/', methods=['GET', 'POST'])
 def profile():
     if session.get('useremail') is None:
-        return redirect('/login')
+        return redirect('/login/')
     
     form = EditProfileForm()
 
@@ -126,26 +131,26 @@ def profile():
     return render_template('profile.html', form=form)
 
 #Login 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login/', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         useremail = form.userEmail.data
         password = form.userPassword.data
         session['useremail'] = useremail
-        return redirect('/profile')
+        return redirect('/profile/')
 
     return render_template('login.html', form=form)
 
 
 #Logout   
-@app.route('/logout')
+@app.route('/logout/')
 def logout():
     session.pop('useremail', None)
-    return redirect('/index')
+    return redirect('/index/')
     
 #add new post
-@app.route('/newpost', methods=['GET', 'POST'])
+@app.route('/newpost/', methods=['GET', 'POST'])
 def create_post():
     form = BlogPostForm()
 
@@ -159,5 +164,5 @@ def create_post():
         session['content'] = post_content
 
         return render_template("feed.html", post_title=post_title, post_content=post_content, post_image=post_image)
-
-    return render_template('newpost.html', form=form)
+    else:
+        return render_template('newpost.html', form=form)

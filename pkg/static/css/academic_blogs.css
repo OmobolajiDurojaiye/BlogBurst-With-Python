@@ -1,0 +1,23 @@
+body {
+    background-color: #1D1B1B !important;
+}
+
+.content-head h2 {
+    /* background: white; */
+    width: 100%;
+    padding: 4px;
+    text-align: center;
+    border-bottom: 1px solid grey;
+}
+
+.posts {
+    height: max-content;
+    padding: 20px 0;
+    border: 2px solid black;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.card-border {
+    border: 2px solid black !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

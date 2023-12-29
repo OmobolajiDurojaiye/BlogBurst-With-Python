@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, Email, URL
 
 
 class LoginForm(FlaskForm):
-    userEmail = StringField('Email address', validators=[DataRequired(), Email()])
+    userEmail = StringField('Email address', validators=[DataRequired(), Email('Enter a valid email')])
     userPassword = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log in')
 
@@ -35,8 +35,8 @@ class EditProfileForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
     bio = TextAreaField('Bio', validators=[DataRequired()])
-    facebook = StringField('Facebook @', validators=[URL()])
-    instagram = StringField('Instagram @', validators=[URL()])
-    x = StringField('X @', validators=[URL()])
+    facebook = StringField('Facebook @', validators=[URL('Enter a Valid URL')])
+    instagram = StringField('Instagram @', validators=[URL('Enter a Valid URL')])
+    x = StringField('X @', validators=[URL('Enter a Valid URL')])
     email = StringField('E-Mail @', validators=[Email()])
-    github = StringField('GitHub @', validators=[URL()])
+    github = StringField('GitHub @', validators=[URL('Enter a Valid URL')])

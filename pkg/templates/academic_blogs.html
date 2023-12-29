@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Categories- Academic ||
+    {{super()}}
+{% endblock title %}
+
+{% block maincss %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/academic_blogs.css')}}">
+{% endblock maincss %}
+
+{% block content %}
+
+<div class="content-head">
+    <h2>
+        Academic Blogs
+    </h2>
+</div>
+
+<div class="container posts mt-3">
+
+    <div class="card card-border" style="width: 18rem;">
+        <img src="{{ url_for('static', filename='Images/BB-logo.png') }}" class="card-img-top" alt="...">
+        <div class="card-body" style="background-color: #141414 !important;">
+          <h5 class="card-title" style="border-bottom: 1px solid plum;">The Importance Of Primary Education</h5>
+          <p class="card-text" style="text-align: left !important;">
+            Primary education: essential for foundational skills, individual growth, and breaking the cycle of poverty, paving the way for a brighter future.</p>
+          <a href="#" class="btn bb-btn-plum">Read</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
