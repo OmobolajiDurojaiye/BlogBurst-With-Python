@@ -182,7 +182,10 @@
             </div>
             <div class="modal-body">
             
-                <form id="regform" action="/">
+                <form id="regform" method="post" action="/login">
+
+                    {{ form.csrf_token }}
+
                     <div class="warn">
                         <p id="warning">
 
@@ -190,31 +193,41 @@
                     </div>
 
                     <div class="mb-3">
-                      <label for="firstname" class="form-label">First Name</label>
-                      <input type="text" class="form-control" id="firstname" name="userfirstname">
+                        {{ form.userfirstname.label(class="form-label") }}
+                        {{ form.userfirstname(class="form-control") }}
                     </div>
 
                     <div class="mb-3">
-                      <label for="lastname" class="form-label">Last Name</label>
-                      <input type="text" class="form-control" name="userlastname" id="lastname">
+                        {{ form.userlastname.label(class="form-label") }}
+                        {{ form.userlastname(class="form-control") }}
                     </div>
                     
                     <div class="mb-3">
-                        <label for="regemail" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="regemail" name="userregemail" aria-describedby="emailHelp">
+                        {{ form.userregemail.label(class="form-label") }}
+                        {{ form.userregemail(class="form-control", id="regemail", aria_describedby="emailHelp") }}
                     </div>
   
                     <div class="mb-3">
-                        <label for="regpwd" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="userregpwd" id="regpwd">
+                        {{ form.userregpwd.label(class="form-label") }}
+                        {{ form.userregpwd(class="form-control", id="regpwd") }}
                     </div>
 
                     <div class="mb-3">
-                        <label for="dateofbirth" class="form-label">Date Of Birth</label>
-                        <input type="date" class="form-control" id="dateofbirth" name="userdateofbirth">
+                        {{ form.userdateofbirth.label(class="form-label") }}
+                        {{ form.userdateofbirth(class="form-control", id="dateofbirth") }}
                     </div>
 
                     <!--gender-->
+                    <!-- <div class="form-check form-check-block">
+                        {{ form.usergender(class="form-check-input", id="male", value="male") }}
+                        {{ form.usergender.label(class="form-check-label", for="male") }}
+                    </div>
+                    
+                    <div class="form-check form-check-block mb-3">
+                        {{ form.usergender(class="form-check-input", id="female", value="female") }}
+                        {{ form.usergender.label(class="form-check-label", for="female") }}
+                    </div> -->
+
                     <div class="form-check form-check-block">
                         <input class="form-check-input" type="radio" name="usergender" id="male" value="option1">
                         <label class="form-check-label" for="male" value="male">Male</label>
@@ -228,18 +241,16 @@
 
                     <!--agreement-->
                     <div class="mb-3 form-check">
-                      <input type="checkbox" class="form-check-input" id="agree">
-                      <label class="form-check-label" for="exampleCheck1">
-                        By clicking this, you agree to our terms and conditions
-                      </label>
+                        {{ form.agree(class="form-check-input", id="agree") }}
+                        {{ form.agree.label(class="form-check-label", for="agree") }}
                     </div>
                     <!--agreement-->
-
-                    <button type="submit" id="remove-dis" class="btn bb-btn-modal-plum" disabled>Sign Up</button>
+                    
+                    {{ form.submit(class="btn bb-btn-modal-plum", id="remove-dis") }}
 
                     <!--Has account already?-->
                     <p style="color: plum; margin-top: 10px;">
-                        Already have an account? <a style="color: black;" href="login.html">Sign in</a>
+                        Already have an account? <a style="color: black;" href="/login">Sign in</a>
                     </p>
                     <!--Has account already?-->
                 </form>
@@ -256,8 +267,8 @@
 
 
 
-    <script src="{{url_for('static', filename='script/jquery.js')}}"></script>
-    <script src="{{url_for('static', filename='bootstrap/js/bootstrap.bundle.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/script/jquery.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.js')}}"></script>
     <script>
         $(document).ready(function(){
             //Checkbox button disabled

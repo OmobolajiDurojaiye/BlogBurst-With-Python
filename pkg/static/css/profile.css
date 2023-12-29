@@ -8,6 +8,18 @@ body {
     background-color: #1d1b1b !important;
 }
 
+.bb-settings-modal label {
+    color: black !important;
+    font-weight: bold !important;
+}
+
+input, textarea {
+    background-color: #141414 !important;
+    border: 2px solid black !important;
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
 .bb-profile-basicinfo {
     height: max-content;
     /* border: 1px solid plum; */
@@ -23,7 +35,7 @@ body {
 }
 
 .user-info {
-    height: 50vh;
+    height: 55vh;
     width: 5% !important;
     /* border: 1px solid plum; */
     margin: 0 20px;

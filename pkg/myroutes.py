@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request, session
 from pkg import app
-from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, AdminLoginForm
+from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, AdminLoginForm, EditProfileForm
 
 #custom errors
 @app.errorhandler(404)
@@ -60,18 +60,35 @@ def index():
     
     return render_template('index.html', form=form)
 
+
 #about
 @app.route('/Who we are')
 def about():
-    return render_template("about.html")
+    form = RegistrationForm()
+
+    if form.validate_on_submit():
+        userfirstname = form.userfirstname.data
+        userlastname = form.userlastname.data
+        userregemail = form.userregemail.data
+        userregpwd = form.userregpwd.data
+        userdateofbirth = form.userdateofbirth.data
+        usergender = form.usergender.data
+        agree = form.agree.data
+
+        session['username'] = userfirstname
+
+        return redirect('/login')
+    
+    return render_template('about.html', form=form)
 
 # #sign in
 # @app.route('/sign in')
 # def sign_in():
 #     return render_template('login.html')
 
+
 #blog
-@app.route('/feed')
+@app.route('/feed', methods=['GET', 'POST'])
 def feed():
     return render_template("feed.html")
 
@@ -80,17 +97,35 @@ def feed():
 def categories():
     return render_template("explore.html")
 
+
+#connect
 @app.route('/connect')
 def connect():
     return render_template("connect.html")
 
-@app.route('/profile')
+#userprofile
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    if session.get('useremail') == None:
+    if session.get('useremail') is None:
         return redirect('/login')
-    else:
-        return render_template("profile.html")
+    
+    form = EditProfileForm()
 
+    if form.validate_on_submit():
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        bio = form.bio.data
+        facebook = form.facebook.data
+        instagram = form.instagram.data
+        x = form.x.data
+        email = form.email.data
+        github = form.github.data
+
+        return render_template('profile.html', form=form)
+
+    return render_template('profile.html', form=form)
+
+#Login 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -102,12 +137,14 @@ def login():
 
     return render_template('login.html', form=form)
 
-        
+
+#Logout   
 @app.route('/logout')
 def logout():
     session.pop('useremail', None)
     return redirect('/index')
     
+#add new post
 @app.route('/newpost', methods=['GET', 'POST'])
 def create_post():
     form = BlogPostForm()
