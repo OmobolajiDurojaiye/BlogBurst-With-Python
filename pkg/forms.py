@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, RadioField, BooleanField, DateField, TextAreaField, FileField
-from wtforms.validators import DataRequired, Email, URL
+from wtforms.validators import DataRequired, Email, URL, Length
 
 
 class LoginForm(FlaskForm):
@@ -25,6 +25,7 @@ class BlogPostForm(FlaskForm):
     post_image = FileField('Add Image')
     post_content = TextAreaField('Post Content', validators=[DataRequired()])
     submit = SubmitField('Post')
+    post_description = TextAreaField('Post Description', validators=[DataRequired(), Length(max=100)] )
 
 class AdminLoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

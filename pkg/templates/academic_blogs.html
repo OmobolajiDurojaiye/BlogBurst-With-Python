@@ -22,9 +22,9 @@
     <div class="card card-border" style="width: 18rem;">
         <img src="{{ url_for('static', filename='Images/BB-logo.png') }}" class="card-img-top" alt="...">
         <div class="card-body" style="background-color: #141414 !important;">
-          <h5 class="card-title" style="border-bottom: 1px solid plum;">The Importance Of Primary Education</h5>
+          <h5 class="card-title" style="border-bottom: 1px solid plum;">{{session.get('title')}}</h5>
           <p class="card-text" style="text-align: left !important;">
-            Primary education: essential for foundational skills, individual growth, and breaking the cycle of poverty, paving the way for a brighter future.</p>
+            {{session.get('description')}}</p>
           <a href="#" class="btn bb-btn-plum">Read</a>
         </div>
     </div>

@@ -158,11 +158,13 @@ def create_post():
         post_title = form.post_title.data
         post_image = form.post_image.data
         post_content = form.post_content.data
+        post_description = form.post_description.data
 
         session['title'] = post_title
         session['image'] = post_image
         session['content'] = post_content
+        session['description'] = post_description
 
-        return render_template("feed.html", post_title=post_title, post_content=post_content, post_image=post_image)
+        return render_template("feed.html", post_title=post_title, post_content=post_content, post_image=post_image,post_description=post_description)
     else:
         return render_template('newpost.html', form=form)
