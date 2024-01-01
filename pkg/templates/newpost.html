@@ -12,7 +12,7 @@
     {% block content %}
     <div class="content-head">
         <h2>
-            Add New Post
+            Add New Blog
         </h2>
     </div>
 
@@ -33,7 +33,7 @@
 
             <div class="mt-4">
                 {{ form.post_image.label(class="form-label") }}
-                {{ form.post_image(class="form-control", style="color: black !important; font-weight: light;") }}
+                {{ form.post_image(class="form-control", style="color: black !important; font-weight: light; width: 40%;") }}
                 {% if form.post_image.errors %}
                 <div class="alert alert-danger">
                     {{ form.post_image.errors[0] }}
@@ -92,7 +92,7 @@
                     <!-- <input type="color" id="colorPicker" title="Text Color"> -->
                 </div>
                 <!-- {{ form.post_content.label(class="form-label") }} -->
-                {{ form.post_content(class="form-control", style="color: black !important; font-weight: bold;", placeholder='Post Content Here') }}
+                {{ form.post_content(class="form-control post_content", style="color: black !important; font-weight: bold;", placeholder='Post Content Here') }}
                 {% if form.post_content.errors %}
                 <div class="alert alert-danger">
                     {{ form.post_content.errors[0] }}

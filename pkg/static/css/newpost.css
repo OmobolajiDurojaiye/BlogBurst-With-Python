@@ -11,8 +11,8 @@ body {
 
 .content-head h2 {
     background: white;
-    width: 20%;
-    padding: 4px;
+    width: max-content;
+    padding: 4px 4px 4px 60px;
     border-radius: 0 0 20px 0;
     color: #141414 !important;
 }
@@ -27,8 +27,13 @@ textarea {
     height: 50vh;
 }
 
+.post_content {
+    border-radius: 0 0 10px 10px !important;
+}
+
 .text-tools {
-    border: 2px solid black;
+    border: 1px solid rgb(221, 212, 212) !important;
+    /* border: 2px solid black; */
     background-color: black;
     padding: 5px;
     border-radius: 10px 10px 0 0;

@@ -102,6 +102,45 @@ def categories():
 def academic_category():
     return render_template('academic_blogs.html')
 
+#technical blogs
+@app.route('/Technical Blogs/')
+def technical_category():
+    return render_template('technical_blogs.html')
+
+#creative blogs
+@app.route('/Creative Blogs/')
+def creative_category():
+    return render_template('creative_blogs.html')
+
+#poetry blogs
+@app.route('/Poetic Blogs/')
+def poetry_category():
+    return render_template('poetic_blogs.html')
+
+#journalistic blogs
+@app.route('/Journalistic Blogs/')
+def journalistic_category():
+    return render_template('journalistic_blogs.html')
+
+#business blogs
+@app.route('/Business Blogs/')
+def business_category():
+    return render_template('business_blogs.html')
+
+#Food and Recipe blogs
+@app.route('/Food-and-recipe Blogs/')
+def Food_category():
+    return render_template('Food-and-recipe_blogs.html')
+
+#nature blogs
+@app.route('/Nature Blogs/')
+def nature_category():
+    return render_template('nature_blogs.html')
+
+#humor blogs
+@app.route('/Humor Blogs/')
+def humor_category():
+    return render_template('humor_blogs.html')
 
 #connect
 @app.route('/connect/')

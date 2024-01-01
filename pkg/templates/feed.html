@@ -44,7 +44,15 @@
                 <!-- Contains post content -->
                 <div class="row bb-post-content">
                     <h2>{{ session.get('title') }}</h2>
-                    <p>{{ session.get('content') }}</p>
+                    <p>
+                        {% set post_content = session.get('content') %}
+                        {% set words = post_content.split() %}
+                        {% if words|length > 200 %}
+                            {{ ' '.join(words[:200]) }} ...
+                        {% else %}
+                            {{ post_content }}
+                        {% endif %}
+                    </p>
                 </div>
                 <!-- Contains post content -->
 
@@ -72,7 +80,7 @@
                     </div>
                     <div class="col">
                         <a href="/feed">
-                            <button class="btn btn-success btn-sm" data-bs-toggle="tooltip" title="Read">
+                            <button class="btn btn-success btn-sm" data-bs-toggle="tooltip modal" title="Read" data-bs-target="#readMoreModal" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-book-fill" viewBox="0 0 16 16">
                                     <path
@@ -143,6 +151,28 @@
         </div>
     </div>
 
+    <!-- ReadMoreModal -->
+    <div class="modal fade" id="readMoreModal" tabindex="-1" aria-labelledby="readMoreModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="readMoreModalLabel">
+            {{ session.get('title') }}
+        </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>
+            {{ session.get('content') }}
+        </p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn bb-btn-plum" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!--ReadMoreModal ends here-->
 
 
     {% endblock content %}
