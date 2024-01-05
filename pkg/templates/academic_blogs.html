@@ -1,34 +1,14 @@
-{% extends "base.html" %}
+{% extends "blogcategoriesbase.html" %}
 
-{% block title %}
-    Categories- Academic ||
-    {{super()}}
-{% endblock title %}
 
-{% block maincss %}
-    <link rel="stylesheet" href="{{url_for('static', filename='css/academic_blogs.css')}}">
-{% endblock maincss %}
+{% block blogtype %}
+    Academic {{ super() }}
+{% endblock blogtype %}
 
-{% block content %}
+{%block title%} 
+    {{session.get('title')}}
+{%endblock title%}
 
-<div class="content-head">
-    <h2>
-        Academic Blogs
-    </h2>
-</div>
-
-<div class="container posts mt-3">
-
-    <div class="card card-border" style="width: 18rem;">
-        <img src="{{ url_for('static', filename='Images/BB-logo.png') }}" class="card-img-top" alt="...">
-        <div class="card-body" style="background-color: #141414 !important;">
-          <h5 class="card-title" style="border-bottom: 1px solid plum;">{{session.get('title')}}</h5>
-          <p class="card-text" style="text-align: left !important;">
-            {{session.get('description')}}</p>
-          <a href="#" class="btn bb-btn-plum">Read</a>
-        </div>
-    </div>
-
-</div>
-
-{% endblock content %}
+{%block blog_content%} 
+    {{session.get('description')}}
+{%endblock blog_content%}

@@ -98,47 +98,47 @@ def categories():
     return render_template("explore.html")
 
 #academic blogs
-@app.route('/Academic Blogs/')
+@app.route('/categories/Academic Blogs/')
 def academic_category():
     return render_template('academic_blogs.html')
 
 #technical blogs
-@app.route('/Technical Blogs/')
+@app.route('/categories/Technical Blogs/')
 def technical_category():
     return render_template('technical_blogs.html')
 
 #creative blogs
-@app.route('/Creative Blogs/')
+@app.route('/categories/Creative Blogs/')
 def creative_category():
     return render_template('creative_blogs.html')
 
 #poetry blogs
-@app.route('/Poetic Blogs/')
+@app.route('/categories/Poetic Blogs/')
 def poetry_category():
     return render_template('poetic_blogs.html')
 
 #journalistic blogs
-@app.route('/Journalistic Blogs/')
+@app.route('/categories/Journalistic Blogs/')
 def journalistic_category():
     return render_template('journalistic_blogs.html')
 
 #business blogs
-@app.route('/Business Blogs/')
+@app.route('/categories/Business Blogs/')
 def business_category():
     return render_template('business_blogs.html')
 
 #Food and Recipe blogs
-@app.route('/Food-and-recipe Blogs/')
+@app.route('/categories/Food-and-recipe Blogs/')
 def Food_category():
     return render_template('Food-and-recipe_blogs.html')
 
 #nature blogs
-@app.route('/Nature Blogs/')
+@app.route('/categories/Nature Blogs/')
 def nature_category():
     return render_template('nature_blogs.html')
 
 #humor blogs
-@app.route('/Humor Blogs/')
+@app.route('/categories/Humor Blogs/')
 def humor_category():
     return render_template('humor_blogs.html')
 
@@ -207,3 +207,8 @@ def create_post():
         return render_template("feed.html", post_title=post_title, post_content=post_content, post_image=post_image,post_description=post_description)
     else:
         return render_template('newpost.html', form=form)
+
+
+@app.route('/All Posts/')
+def all_post():
+    return render_template('all_posts.html')

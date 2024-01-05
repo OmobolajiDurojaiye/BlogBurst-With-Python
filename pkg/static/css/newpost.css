@@ -9,6 +9,12 @@ body {
     background-color: #1D1B1B !important;
 }
 
+/* .content-head {
+    position: relative;
+    left: 2px;
+    z-index: ;
+} */
+
 .content-head h2 {
     background: white;
     width: max-content;

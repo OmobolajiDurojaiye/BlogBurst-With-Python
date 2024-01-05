@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="keywords" content="BlogBurst, blogs, blogging platform, diverse ideas, opinions, community, writers, topics, discussions, technical, business, poetry, creativity, conversations, user-generated content, reader engagement, knowledge sharing, vibrant community, sign up, contribute, connect, explore, BlogBurst app">
+    <meta name="description" content="Welcome to BlogBurst - Your platform for diverse ideas and opinions! Join our community, share your thoughts on a myriad of topics, and discover a world of engaging content created by passionate writers. Sign up today to be a part of the vibrant BlogBurst community, where ideas flourish, discussions thrive, and knowledge is shared. Explore, and connect with like-minded individuals on a variety of blog topics ranging from technical and academic to nature and creativity. Unleash your creativity, ignite conversations, and immerse yourself in the rich tapestry of perspectives at BlogBurst.">
+    <meta name="author" content="Omobolaji Durojaiye">
     <title>{% block title %}Blogburst{% endblock title %}</title>
     {% block maincss %}
     {% endblock maincss %}
@@ -139,6 +142,16 @@
     <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.js')}}"></script>
     <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     {% block script %}
+
+
+        <script>
+            //Bootstrap tooltip starts
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl)
+                });
+            //Bootstrap tooltip ends
+        </script>
 
     {% endblock script %}
 
