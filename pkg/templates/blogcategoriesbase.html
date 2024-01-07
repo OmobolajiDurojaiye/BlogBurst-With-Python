@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{#{% block title %}
+{% block title %}
     Categories ||
     {{super()}}
-{% endblock title %}#}
+{% endblock title %}
 
 {% block maincss %}
     <link rel="stylesheet" href="{{url_for('static', filename='css/blogcategories.css')}}">
@@ -22,7 +22,7 @@
     <div class="card card-border" style="width: 18rem;">
         <img src="{{ url_for('static', filename='Images/BB-logo.png') }}" class="card-img-top" alt="...">
         <div class="card-body" style="background-color: #141414 !important;">
-          <h5 class="card-title" style="border-bottom: 1px solid plum;">{%block title%} {%endblock title%}</h5>
+          <h5 class="card-title" style="border-bottom: 1px solid plum;">{%block post_title%} {%endblock post_title%}</h5>
           <p class="card-text" style="text-align: left !important;">
             {%block blog_content%} {%endblock blog_content%}</p>
           <a href="#" class="btn bb-btn-plum">Read</a>

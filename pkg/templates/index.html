@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="keywords" content="BlogBurst, blogs, blogging platform, diverse ideas, opinions, community, writers, topics, discussions, technical, business, poetry, creativity, conversations, user-generated content, reader engagement, knowledge sharing, vibrant community, sign up, contribute, connect, explore, BlogBurst app">
+    <meta name="description" content="Welcome to BlogBurst - Your platform for diverse ideas and opinions! Join our community, share your thoughts on a myriad of topics, and discover a world of engaging content created by passionate writers. Sign up today to be a part of the vibrant BlogBurst community, where ideas flourish, discussions thrive, and knowledge is shared. Explore, and connect with like-minded individuals on a variety of blog topics ranging from technical and academic to nature and creativity. Unleash your creativity, ignite conversations, and immerse yourself in the rich tapestry of perspectives at BlogBurst.">
+    <meta name="author" content="Omobolaji Durojaiye">
     <title>BlogBurst</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" type="text/css">
     <link rel="stylesheet" href="{{url_for('static', filename='css/animate.min.css')}}" type="text/css">
@@ -29,7 +32,13 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
-    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div style="margin-bottom: 0 !important;" class="alert alert-{{ category }}">
+                Hi! , {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
     <header>
         <div class="bb-logo">
             <a class="navbar-brand" href="#">
@@ -167,6 +176,7 @@
                     </a>
                 </div>
             </div>
+
             <div class="top-stories">
                 <img src="{{url_for('static', filename='Images/flower.png')}}" alt="">
                 <div class="title">
@@ -178,6 +188,19 @@
                     </a>
                 </div>
             </div>
+
+            <div class="top-stories">
+                <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
+                <div class="title">
+                    <p>
+                        Food & Recipe
+                    </p>
+                    <a href="">
+                        {{session.get('title')}}
+                    </a>
+                </div>
+            </div>
+
             <div class="top-stories">
                 <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
                 <div class="title">
@@ -189,6 +212,7 @@
                     </a>
                 </div>
             </div>
+
             <div class="top-stories">
                 <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
                 <div class="title">
@@ -200,6 +224,7 @@
                     </a>
                 </div>
             </div>
+
             <div class="top-stories">
                 <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
                 <div class="title">
@@ -211,6 +236,7 @@
                     </a>
                 </div>
             </div>
+            
             <div class="top-stories">
                 <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
                 <div class="title">
@@ -222,17 +248,7 @@
                     </a>
                 </div>
             </div>
-            <div class="top-stories">
-                <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
-                <div class="title">
-                    <p>
-                        Food & Recipe
-                    </p>
-                    <a href="">
-                        25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
-                    </a>
-                </div>
-            </div>
+
             <div class="top-stories">
                 <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
                 <div class="title">

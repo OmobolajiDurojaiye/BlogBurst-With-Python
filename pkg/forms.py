@@ -33,9 +33,9 @@ class AdminLoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class EditProfileForm(FlaskForm):
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField('Last Name', validators=[DataRequired()])
-    bio = TextAreaField('Bio', validators=[DataRequired()])
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
+    bio = TextAreaField('Bio')
     facebook = StringField('Facebook @', validators=[URL('Enter a Valid URL')])
     instagram = StringField('Instagram @', validators=[URL('Enter a Valid URL')])
     x = StringField('X @', validators=[URL('Enter a Valid URL')])

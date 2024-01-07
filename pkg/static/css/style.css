@@ -237,7 +237,7 @@ header {
 .title {
     height: 30%;
     /* border: 1px solid red; */
-    padding: 10px;
+    padding: 10px 10px 25px 10px;
     background: rgba(0, 0, 0, 0.5);
     border-radius: 0 0 10px 10px;
 }

@@ -3,6 +3,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    font-weight: bold;
 }
 
 body {
@@ -84,7 +85,7 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* background-image: url(Images/blog-about.gif); */
+    background-image: url(../Images/blog-about.gif);
     background-position: center;
     background-size: cover;
 }

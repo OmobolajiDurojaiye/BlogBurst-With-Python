@@ -5,9 +5,9 @@
     Academic {{ super() }}
 {% endblock blogtype %}
 
-{%block title%} 
+{%block post_title%} 
     {{session.get('title')}}
-{%endblock title%}
+{%endblock post_title%}
 
 {%block blog_content%} 
     {{session.get('description')}}

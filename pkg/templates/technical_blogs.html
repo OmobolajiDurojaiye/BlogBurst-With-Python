@@ -4,3 +4,11 @@
 {% block blogtype %}
     Technical {{ super() }}
 {% endblock blogtype %}
+
+{%block post_title%} 
+    {{session.get('title')}}
+{%endblock post_title%}
+
+{%block blog_content%} 
+    {{session.get('description')}}
+{%endblock blog_content%}

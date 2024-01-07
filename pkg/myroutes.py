@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, request, session
+from flask import Flask, render_template, url_for, redirect, request, session, flash
 from pkg import app
 from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, AdminLoginForm, EditProfileForm
 
@@ -165,7 +165,9 @@ def profile():
         email = form.email.data
         github = form.github.data
 
-        return render_template('profile.html', form=form)
+        session['user_profilename'] = f"{first_name} {last_name}"
+
+        return redirect('/profile/')
 
     return render_template('profile.html', form=form)
 
@@ -177,6 +179,9 @@ def login():
         useremail = form.userEmail.data
         password = form.userPassword.data
         session['useremail'] = useremail
+
+        flash('You are now logged in')
+
         return redirect('/profile/')
 
     return render_template('login.html', form=form)
@@ -186,6 +191,8 @@ def login():
 @app.route('/logout/')
 def logout():
     session.pop('useremail', None)
+    
+    flash('You have been successfully logged out. Get back soon', 'danger')
     return redirect('/index/')
     
 #add new post
@@ -212,3 +219,9 @@ def create_post():
 @app.route('/All Posts/')
 def all_post():
     return render_template('all_posts.html')
+
+
+#This's for testing 
+# @app.route('/cat/')
+# def cat():
+#     return render_template('blogcategoriesbase.html')
