@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "user/base.html" %}
 
 {% block title %}
     Profile ||
@@ -123,14 +123,14 @@
 
                 <div class="posts">
                     <h5>
-                        <!-- {{session.get('title')}} -->
-                        {% set post_title = session.get('title') %}
+                        {{session.get('title')}}
+                        {#{% set post_title = session.get('title') %}
                         {% set words = post_title.split() %}
                         {% if words|length > 4 %}
                             {{ ' '.join(words[:4]) }} ...
                         {% else %}
                             {{ post_title }}
-                        {% endif %}
+                        {% endif %}#}
                         <span style="padding-left: 20px;"> 
                             <button class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Update" data-bs-target="#readMoreModal" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">

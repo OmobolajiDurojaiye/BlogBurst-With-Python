@@ -8,35 +8,6 @@ def not_found_error(error):
     return render_template('page404.html')
 
 
-#adminlogin
-@app.route('/admin_login/', methods=['GET', 'POST'])
-def admin_login():
-    form = AdminLoginForm()
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-
-        session['adminusername'] = username
-
-        return render_template('admin.html')
-    
-    return render_template('adminlogin.html', form=form)
-
-
-#admin
-@app.route('/admin/')
-def admin():
-    if session.get('adminusername') == None:
-        return redirect('/admin_login/')
-    else:
-        return render_template("admin.html")
-
-#adminlogout
-@app.route('/adminlogout/')
-def adminlogout():
-    session.pop('adminusername', None)
-    return redirect('/admin_login/')
-
 #homepage
 @app.route('/')
 @app.route('/index/')
@@ -58,7 +29,7 @@ def index():
 
         return redirect('/login/')
     
-    return render_template('index.html', form=form)
+    return render_template('user/index.html', form=form)
 
 
 #about
@@ -79,7 +50,7 @@ def about():
 
         return redirect('/login/')
     
-    return render_template('about.html', form=form)
+    return render_template('user/about.html', form=form)
 
 # #sign in
 # @app.route('/sign in')
@@ -90,62 +61,62 @@ def about():
 #blog
 @app.route('/feed/', methods=['GET', 'POST'])
 def feed():
-    return render_template("feed.html")
+    return render_template("user/feed.html")
 
 #categories
 @app.route('/categories/')
 def categories():
-    return render_template("explore.html")
+    return render_template("user/explore.html")
 
 #academic blogs
 @app.route('/categories/Academic Blogs/')
 def academic_category():
-    return render_template('academic_blogs.html')
+    return render_template('user/academic_blogs.html')
 
 #technical blogs
 @app.route('/categories/Technical Blogs/')
 def technical_category():
-    return render_template('technical_blogs.html')
+    return render_template('user/technical_blogs.html')
 
 #creative blogs
 @app.route('/categories/Creative Blogs/')
 def creative_category():
-    return render_template('creative_blogs.html')
+    return render_template('user/creative_blogs.html')
 
 #poetry blogs
 @app.route('/categories/Poetic Blogs/')
 def poetry_category():
-    return render_template('poetic_blogs.html')
+    return render_template('user/poetic_blogs.html')
 
 #journalistic blogs
 @app.route('/categories/Journalistic Blogs/')
 def journalistic_category():
-    return render_template('journalistic_blogs.html')
+    return render_template('user/journalistic_blogs.html')
 
 #business blogs
 @app.route('/categories/Business Blogs/')
 def business_category():
-    return render_template('business_blogs.html')
+    return render_template('user/business_blogs.html')
 
 #Food and Recipe blogs
 @app.route('/categories/Food-and-recipe Blogs/')
 def Food_category():
-    return render_template('Food-and-recipe_blogs.html')
+    return render_template('user/Food-and-recipe_blogs.html')
 
 #nature blogs
 @app.route('/categories/Nature Blogs/')
 def nature_category():
-    return render_template('nature_blogs.html')
+    return render_template('user/nature_blogs.html')
 
 #humor blogs
 @app.route('/categories/Humor Blogs/')
 def humor_category():
-    return render_template('humor_blogs.html')
+    return render_template('user/humor_blogs.html')
 
 #connect
 @app.route('/connect/')
 def connect():
-    return render_template("connect.html")
+    return render_template("user/connect.html")
 
 #userprofile
 @app.route('/profile/', methods=['GET', 'POST'])
@@ -169,7 +140,7 @@ def profile():
 
         return redirect('/profile/')
 
-    return render_template('profile.html', form=form)
+    return render_template('user/profile.html', form=form)
 
 #Login 
 @app.route('/login/', methods=['GET', 'POST'])
@@ -184,7 +155,7 @@ def login():
 
         return redirect('/profile/')
 
-    return render_template('login.html', form=form)
+    return render_template('user/login.html', form=form)
 
 
 #Logout   
@@ -211,14 +182,14 @@ def create_post():
         session['content'] = post_content
         session['description'] = post_description
 
-        return render_template("feed.html", post_title=post_title, post_content=post_content, post_image=post_image,post_description=post_description)
+        return render_template("user/feed.html", post_title=post_title, post_content=post_content, post_image=post_image,post_description=post_description)
     else:
-        return render_template('newpost.html', form=form)
+        return render_template('user/newpost.html', form=form)
 
 
 @app.route('/All Posts/')
 def all_post():
-    return render_template('all_posts.html')
+    return render_template('user/all_posts.html')
 
 
 #This's for testing 
