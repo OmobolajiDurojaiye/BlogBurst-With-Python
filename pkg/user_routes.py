@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request, session, flash
 from pkg import app
+from pkg.models import db, Post
 from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, AdminLoginForm, EditProfileForm
 
 #custom errors
@@ -58,10 +59,11 @@ def about():
 #     return render_template('login.html')
 
 
-#blog
+#blogs
 @app.route('/feed/', methods=['GET', 'POST'])
 def feed():
-    return render_template("user/feed.html")
+    posts = Post.query.order_by(Post.post_created_on.desc()).all() 
+    return render_template("user/feed.html", posts=posts)
 
 #categories
 @app.route('/categories/')
@@ -177,12 +179,11 @@ def create_post():
         post_content = form.post_content.data
         post_description = form.post_description.data
 
-        session['title'] = post_title
-        session['image'] = post_image
-        session['content'] = post_content
-        session['description'] = post_description
+        new_post = Post(post_title=post_title, post_image=post_image, post_content=post_content, post_description=post_description)
+        db.session.add(new_post)
+        db.session.commit()
 
-        return render_template("user/feed.html", post_title=post_title, post_content=post_content, post_image=post_image,post_description=post_description)
+        return redirect("/feed/")
     else:
         return render_template('user/newpost.html', form=form)
 
