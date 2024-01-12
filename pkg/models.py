@@ -14,3 +14,17 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"<{self.post_title}:{self.post_content}>"
+
+class User(db.Model):
+    __tablename__ = 'users'
+    user_id = db.Column(db.Integer(), primary_key=True)
+    user_fname = db.Column(db.String(50), nullable=False)
+    user_lname = db.Column(db.String(50), nullable=False)
+    user_email = db.Column(db.String(100), unique=True, nullable=False)
+    user_password = db.Column(db.String(255), nullable=False)
+    user_date_of_birth = db.Column(db.Date())
+    user_gender = db.Column(db.String(10))
+    user_profile_pic = db.Column(db.String(255))
+
+    def __repr__(self):
+        return f"<{self.user_fname} {self.user_lname}>"

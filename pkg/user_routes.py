@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, redirect, request, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 from pkg import app
-from pkg.models import db, Post
+from pkg.models import db, Post, User
 from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, AdminLoginForm, EditProfileForm
 
 #custom errors
@@ -10,8 +11,8 @@ def not_found_error(error):
 
 
 #homepage
-@app.route('/')
-@app.route('/index/')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index/', methods=['GET', 'POST'])
 def index():
     # return render_template("index.html")
     #since the modal is in index page, the form validator should be here
@@ -22,11 +23,17 @@ def index():
         userlastname = form.userlastname.data
         userregemail = form.userregemail.data
         userregpwd = form.userregpwd.data
+        hashed_pwd = generate_password_hash(userregpwd)
         userdateofbirth = form.userdateofbirth.data
         usergender = form.usergender.data
         agree = form.agree.data
 
-        session['username'] = userfirstname
+        user = User(user_fname=userfirstname, user_lname=userlastname, user_email=userregemail, user_password=hashed_pwd, user_date_of_birth=userdateofbirth, user_gender=usergender)
+
+        db.session.add(user)
+        db.session.commit()
+        id = user.user_id
+        session['useronline'] = id
 
         return redirect('/login/')
     
@@ -73,7 +80,8 @@ def categories():
 #academic blogs
 @app.route('/categories/Academic Blogs/')
 def academic_category():
-    return render_template('user/academic_blogs.html')
+    posts = Post.query.order_by(Post.post_created_on.desc()).all() 
+    return render_template('user/academic_blogs.html', posts=posts)
 
 #technical blogs
 @app.route('/categories/Technical Blogs/')
