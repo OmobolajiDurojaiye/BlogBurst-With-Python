@@ -121,126 +121,97 @@
                     </h3>
                 </div>
 
-                <div class="posts">
-                    <h5>
-                        {#{{session.get('title')}}
-                        {% set post_title = session.get('title') %}
-                        {% set words = post_title.split() %}
-                        {% if words|length > 4 %}
-                            {{ ' '.join(words[:4]) }} ...
-                        {% else %}
-                            {{ post_title }}
-                        {% endif %}#}
-                        <span style="padding-left: 20px;"> 
-                            <button class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Update" data-bs-target="#readMoreModal" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
-                                </svg>
-                            </button>
-                            
-                            <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Delete" data-bs-target="#readMoreModal" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                </svg>
-                            </button>
-                        </span>
-                    </h5>
+                {% if user_posts %}
+                    {% for post in user_posts %}
+                        <div class="posts">
+                            <h6>
+                                {% set title = post.posts_title.split() %}
+                                {% if title|length > 5 %}
+                                    {{ ' '.join(title[:4]) }}...
+                                {% else %}
+                                    {{ post.posts_title }}
+                                {% endif %}
+                                <span style="padding-left: 20px;"> 
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="tooltip" title="Update" data-bs-target="#readMoreModal" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                                            <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+                                        </svg>
+                                    </button>
+                                    
+                                    <form action="{{ url_for('delete_post', post_id=post.posts_id) }}" method="post" style="display: inline;">
+                                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                                        <button type="submit" class="btn btn-sm btn-danger" data-bs-toggle="tooltip" title="Delete">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </span>
+                            </h6>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="position: relative; top: 5vh;">
+                        You have not posted anything.
+                    </p>
+                {% endif %}
+
+            </div>
+
+
+            <div class="row bb-profile-blogger-additional">
+                
+                <div class="col bb-blogger-panel">
+
+                    <a href="/newpost" title="Add New Post">
+                        <img src="{{url_for('static', filename='icons/bb-add-post.png')}}" height="40" width="40" class="img-fluid">
+                        <p style="color: white; font-size: 0.8em;">
+                            Add New Post
+                        </p>
+                    </a>
+
                 </div>
 
-                <!-- <div class="posts">
-                    <h5>
-                        {{session.get('title')}}
-                        <span style="padding-left: 20px;"> 
-                            <button class="btn btn-sm btn-warning">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
-                                </svg>
-                            </button>
-                            
-                            <button class="btn btn-sm btn-danger">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                </svg>
-                            </button>
-                        </span>
-                    </h5>
+                <div class="col bb-blogger-panel">
+
+                    <a href="/connect" title="Collaborate">
+                        <img src="{{url_for('static', filename='icons/bb-collaboration.png')}}" height="40" width="40" class="img-fluid">
+                        <p style="color: white; font-size: 0.8em;">
+                            Collaborate
+                        </p>
+                    </a>
+
                 </div>
 
-                <div class="posts">
-                    <h5>
-                        {{session.get('title')}}
-                        <span style="padding-left: 20px;"> 
-                            <button class="btn btn-sm btn-warning">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
-                                </svg>
-                            </button>
-                            
-                            <button class="btn btn-sm btn-danger">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                                </svg>
-                            </button>
-                        </span>
-                    </h5>
-                </div> -->
+                <div class="col bb-blogger-panel">
+
+                    <a href="/All Posts/" title="View All Post">
+                        <img src="{{url_for('static', filename='icons/bb-all-posts.png')}}" height="40" width="40" class="img-fluid">
+                        <p style="color: white; font-size: 0.8em;">
+                            All Post
+                        </p>
+                    </a>
+
+                </div>
+
+                <div class="col bb-blogger-panel">
+
+                    <a href="" title="Support & Donate">
+                        <img src="{{url_for('static', filename='icons/bb-donation.png')}}" height="40" width="40" class="img-fluid">
+                        <p style="color: white; font-size: 0.8em;">
+                            Donate
+                        </p>
+                    </a>
+
+                </div>
+
+                <div class="col bb-blogger-panel">
+
+                    <img src="{{url_for('static', filename='Images/BB-logo.png')}}"  height="40" width="40" class="img-fluid">
+
+                </div>
 
             </div>
-
-        </div>
-
-        <div class="row bb-profile-blogger-additional">
-            
-            <div class="col bb-blogger-panel">
-
-                <a href="/newpost" title="Add New Post">
-                    <img src="{{url_for('static', filename='icons/bb-add-post.png')}}" height="40" width="40" class="img-fluid">
-                    <p style="color: white; font-size: 0.8em;">
-                        Add New Post
-                    </p>
-                </a>
-
-            </div>
-
-            <div class="col bb-blogger-panel">
-
-                <a href="/connect" title="Collaborate">
-                    <img src="{{url_for('static', filename='icons/bb-collaboration.png')}}" height="40" width="40" class="img-fluid">
-                    <p style="color: white; font-size: 0.8em;">
-                        Collaborate
-                    </p>
-                </a>
-
-            </div>
-
-            <div class="col bb-blogger-panel">
-
-                <a href="/All Posts/" title="View All Post">
-                    <img src="{{url_for('static', filename='icons/bb-all-posts.png')}}" height="40" width="40" class="img-fluid">
-                    <p style="color: white; font-size: 0.8em;">
-                        All Post
-                    </p>
-                </a>
-
-            </div>
-
-            <div class="col bb-blogger-panel">
-
-                <a href="" title="Support & Donate">
-                    <img src="{{url_for('static', filename='icons/bb-donation.png')}}" height="40" width="40" class="img-fluid">
-                    <p style="color: white; font-size: 0.8em;">
-                        Donate
-                    </p>
-                </a>
-
-            </div>
-
-            <div class="col bb-blogger-panel">
-
-                <img src="{{url_for('static', filename='Images/BB-logo.png')}}"  height="40" width="40" class="img-fluid">
-
-            </div>
-
         </div>
 
     </div>
@@ -260,7 +231,7 @@
             </div>
             <div class="modal-body">
              
-                <form action="/profile/" method="post" enctype="multipart/form-data">
+                <form action="{{ url_for('profile') }}" method="post" enctype="multipart/form-data">
 
                     {{ form.csrf_token }}
 
@@ -269,10 +240,11 @@
                             Change Your Profile Picture
                         </p>
                         <div class="img-cont">
-                            <img src="" alt="">
+                            <img src="{{user.users_profile_pic}}" alt="">
                         </div>
                         <div class="mb-3 edit-img">
-                            {{ form.image(class="form-control") }}
+                            <!-- <label for="dp">Upload a Profile Picture</label> -->
+                            <input id="profile-pic" name="dp" required type="file">
                         </div>
                     </div>
 

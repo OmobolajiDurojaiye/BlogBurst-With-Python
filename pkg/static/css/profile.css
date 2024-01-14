@@ -25,7 +25,7 @@ input, textarea {
     /* border: 1px solid plum; */
     position: relative;
     top: 20px;
-    padding: 5vh 0;
+    padding: 5vh 10px;
     display: flex;
     justify-content: space-around;
     align-items: center;

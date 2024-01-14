@@ -6,8 +6,8 @@
     <meta name="keywords" content="Blog, Article, BlogBurst">
     <meta name="author" content="Omobolaji Durojaiye">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Login || Admin</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/adminlogin.css')}}" type="text/css">
+    <title>Admin || BlogBurst</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/admin.css')}}" type="text/css">
     <link rel="stylesheet" href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,39 +32,43 @@
 </head>
 <body>
     
-    <div class="head">
-        <h2>
-            BlogBurst Admin
-        </h2>
-    </div> <br>
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="alert alert-danger" style="font-weight: bold;" role="alert">
-        {{ messages[0] }}
-        </div>
-    {% endif %}
-    {% endwith %}
-
-    <div id="login-container">
-        <h2>Admin Login</h2>
-        <form method="POST">
-            {{ form.csrf_token }}
+    <div id="admin-container">
+        <div id="sidebar">
+            <h2 style="text-align: center; border-bottom: 2px solid rgb(202, 107, 202);">
+                ADMIN
+            </h2>
+            <div>
+                <a href="#">
+                    <img src="{{url_for('static', filename='icons/user-management.png')}}" alt=""> &nbsp;
+                    User Management
+                </a>
+                <a href="#">
+                    <img src="{{url_for('static', filename='icons/content-management.png')}}" alt=""> &nbsp;
+                    Content Management
+                </a>
+                <a href="#">
+                    <img src="{{url_for('static', filename='icons/security.png')}}" alt=""> &nbsp;
+                    Security
+                </a>
+                <a href="#">
+                    <img src="{{url_for('static', filename='icons/announcement.png')}}" alt=""> &nbsp;
+                    Anouncement
+                </a>
+            </div>
             
-            <div class="form-group">
-                {{ form.username.label(class="form-label") }}
-                {{ form.username(class="form-control col", placeholder="Enter your username") }}
+
+            <div style="margin-top: 50vh;">
+                <a href="/adminlogout">
+                    <img src="{{url_for('static', filename='icons/bb-logout.png')}}" alt=""> &nbsp;
+                    Logout
+                </a>
             </div>
-        
-            <div class="form-group">
-                {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-control col", placeholder="Enter your password") }}
-            </div>
-        
-            <div class="form-group">
-                {{ form.submit(class="btn bb-btn-plum mt-4") }}
-            </div>
-        </form>
+            
+        </div>
+    
+        {% block content %}
+        {% endblock content %}
     </div>
 
 

@@ -8,3 +8,44 @@
 body {
     background-color: #1d1b1b !important;
 }
+
+.content {
+    border: 2px solid black !important;
+    margin: 5vh;
+    border-radius: 10px;
+    height: 90vh !important;
+    width: 80%;
+    position: relative;
+    left: 10%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    /* background-color: white; */
+}
+
+.head {
+    height: 10vh;
+    border-bottom: 2px solid plum;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.posts {
+    margin: 10px 0;
+}
+
+.posts li {
+    color: #fff !important;
+    padding: 20px;
+    width: 90%;
+    /* border: 1px solid black; */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 10px;
+}
+
+.posts li:hover {
+    background-color: #fff;
+    color: black !important;
+    padding: 20px;
+    width: 90%;
+    transition: .5s;
+}

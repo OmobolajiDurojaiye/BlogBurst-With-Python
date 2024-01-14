@@ -1,14 +1,12 @@
 {% extends "user/blogcategoriesbase.html" %}
 
 
-{% block blogtype %}
-    Academic {{ super() }}
-{% endblock blogtype %}
+{% for post in posts %}
+    {% block post_title %} 
+        {{ post.posts_title }}  {# Assuming 'title' is the correct attribute name #}
+    {% endblock post_title %}
 
-{%block post_title%} 
-    {{session.get('title')}}
-{%endblock post_title%}
-
-{%block blog_content%} 
-    {{session.get('description')}}
-{%endblock blog_content%}
+    {% block blog_content %} 
+        {{ post.posts_description }}  {# Assuming 'description' is the correct attribute name #}
+    {% endblock blog_content %}
+{% endfor %}

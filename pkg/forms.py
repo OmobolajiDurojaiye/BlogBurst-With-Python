@@ -42,4 +42,4 @@ class EditProfileForm(FlaskForm):
     x = StringField('X @', validators=[URL('Enter a Valid URL')])
     email = StringField('E-Mail @', validators=[Email()])
     github = StringField('GitHub @', validators=[URL('Enter a Valid URL')])
-    image = FileField('Upload Cover', validators=[FileAllowed(['jpg', 'jpeg', 'png'],"we only allow images")])
+    # image = FileField('Upload Cover', validators=[FileAllowed(['jpg', 'jpeg', 'png'], "we only allow images")])

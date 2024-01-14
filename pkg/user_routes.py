@@ -1,3 +1,5 @@
+import os, random, string
+from functools import wraps
 from flask import Flask, render_template, url_for, redirect, request, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from pkg import app
@@ -64,18 +66,6 @@ def about():
     
     return render_template('user/about.html', form=form)
 
-# #sign in
-# @app.route('/sign in')
-# def sign_in():
-#     return render_template('login.html')
-
-
-# @app.route('/feed/', methods=['GET', 'POST'])
-# def feed():
-#     # Use the join() method to load the relationship between Post and User
-#     posts = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
-#     return render_template("user/feed.html", posts=posts)
-
 @app.route('/feed/', methods=['GET', 'POST'])
 def feed():
     posts_with_writer_names = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
@@ -90,7 +80,7 @@ def categories():
 #academic blogs
 @app.route('/categories/Academic Blogs/')
 def academic_category():
-    posts = Post.query.order_by(Post.post_created_on.desc()).all() 
+    posts = Post.query.all()
     return render_template('user/academic_blogs.html', posts=posts)
 
 #technical blogs
@@ -138,34 +128,64 @@ def humor_category():
 def connect():
     return render_template("user/connect.html")
 
+# ...
+
 @app.route('/profile/', methods=['GET', 'POST'])
 def profile():
-
-
-    form = EditProfileForm()  # Pass user object to the form
     user_id = session.get('useronline')
     user = User.query.get(user_id)
+    oldpix = user.users_profile_pic
+
+    if user_id is None:
+        flash('Please log in first', category='error')
+        return redirect('/login')
+
+    if user is None:
+        flash('User not found', category='error')
+        return redirect('/')
+
+    form = EditProfileForm()
 
     if request.method == 'POST' and form.validate_on_submit():
-            
-        user_id = session.get('useronline')
-        if user_id == None:
-            flash('Please log in first', category='error')
-            return redirect('/login')
-        
-        user = User.query.get(user_id)
-        if user == False:
-            flash('User not found', category='error')
-            return redirect('/')
-
         # Retrieve form inputs from request
         first_name = form.first_name.data
         last_name = form.last_name.data
         bio = form.bio.data
+        dp = request.files.get("dp")
+        filename = dp.filename
+        if filename == "":
+            flash("Please select a file", category="error")
+            return redirect("/changedp")
+        else:
+            name, ext = os.path.splitext(filename)
+            allowed = ['.jpg', '.png', '.jpeg']
+            if ext.lower() in allowed:
+                final_name = str(int(random.random() * 100000)) + ext
+                dp.save(f"pkg/static/uploads/{final_name}")
+                user = User.query.get(user_id)  # Fix: Use user_id instead of id
+                user.users_profile_pic = final_name
+                db.session.commit()
+                try:
+                    os.remove(f"pkg/static/uploads/{oldpix}")
+                except:
+                    pass
+                flash("Profile picture added", category='success')
+                return redirect("/profile")
 
-        return redirect('/profile/', form=form, user=user)
-    else:
-        return render_template('user/profile.html', form=form, user=user)
+        # Update user profile information
+        user.users_fname = first_name
+        user.users_lname = last_name
+        user.users_bio = bio
+        user.users_profile_pic = filename
+
+        db.session.commit()
+
+        flash('Profile updated successfully', category='success')
+        return redirect('/profile/')
+
+    user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()
+
+    return render_template('user/profile.html', form=form, user=user, user_posts=user_posts)
 
 
 
@@ -234,7 +254,27 @@ def create_post():
 
 @app.route('/All Posts/')
 def all_post():
-    return render_template('user/all_posts.html')
+    user_id = session.get('useronline')
+    user = User.query.get(user_id)
+    user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()
+    return render_template('user/all_posts.html', user_posts=user_posts, user=user)
+
+
+# delete post
+@app.route('/delete_post/<int:post_id>', methods=['POST', 'GET'])
+def delete_post(post_id):
+    user_id = session.get('useronline')
+    post = Post.query.filter_by(posts_id=post_id, post_writer=user_id).first()
+
+    if post:
+        db.session.delete(post)
+        db.session.commit()
+        flash('Post deleted successfully', 'success')
+    else:
+        flash('Post not found or you do not have permission to delete it', 'error')
+
+    return redirect(url_for('all_post'))
+
 
 
 #This's for testing 
