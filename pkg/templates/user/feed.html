@@ -21,17 +21,16 @@
         <!--container that hold all items-->
 
         <div class="row bb-feed-content">
-            {% for post in posts %}
+            {% for post, user in posts_with_writer_names %}
                 <div class="row bb-posts">
                     <!-- Contains profile pic and profile name -->
                     <div class="col bb-post-head">
                         <div class="profile-pic">
                             <img src="{{ url_for('static', filename='Images/BB-logo.png') }}" alt="">
                         </div>
-
                         <div class="profile-name">
                             <a href="" class="modal-xl" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                {{session.get('username')}} 
+                                {{ user.users_fname }} {{ user.users_lname }}
                             </a>
                         </div>
                     </div>
@@ -39,10 +38,10 @@
 
                     <!-- Contains post content -->
                     <div class="row bb-post-content">
-                        <h2>{{ post.post_title }}</h2>
+                        <h2>{{ post.posts_title }}</h2>
                         <p style="color: plum !important;" class="post-time">Posted on {{ post.post_created_on }}</p>
                         <p>
-                            {% set words = post.post_content.split() %}
+                            {% set words = post.posts_content.split() %}
                             {% if words|length > 200 %}
                                 {{ ' '.join(words[:200]) }} ...
                             {% else %}
@@ -76,7 +75,7 @@
                         </div>
                         <div class="col">
                             <a href="#">
-                                <button class="btn btn-success btn-sm" data-bs-toggle="modal" title="Read" data-bs-target="#readMoreModal{{ post.id }}" >
+                                <button class="btn btn-success btn-sm" data-bs-toggle="modal" title="Read" data-bs-target="#readMoreModal{{ post.posts_id }}" >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-book-fill" viewBox="0 0 16 16">
                                         <path
@@ -90,7 +89,7 @@
                 </div>
             {% endfor %}
 
-            {% if posts|length == 0 %}
+            {% if posts_with_writer_names|length == 0 %}
                 <p>Nothing to see here.</p>
             {% endif %}
         </div>
@@ -115,8 +114,8 @@
 
                         <div class="name">
                             <h4>
-                                {{session.get('username')}} <br>
-                                <span style="font-size: 0.5em;">{{session.get('useremail')}}</span>
+                                {#{{session.get('username')}}#} <br>
+                                <span style="font-size: 0.5em;">{#{{session.get('useremail')}}#}</span>
                             </h4>
                         </div>
                     </div>
@@ -139,18 +138,18 @@
     </div>
 
     <!-- ReadMoreModal -->
-    {% for post in posts %}
-    <div class="modal fade" id="readMoreModal{{ post.id }}" tabindex="-1" aria-labelledby="readMoreModalLabel{{ post.id }}" aria-hidden="true">
+    {% for post, user in posts_with_writer_names %}
+    <div class="modal fade" id="readMoreModal{{ post.posts_id }}" tabindex="-1" aria-labelledby="readMoreModalLabel{{ post.posts_id }}" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content" style="background-color: #141414 !important; padding: 20px 40px;">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="readMoreModalLabel{{ post.id }}">
-                        {{ post.post_title }}
+                    <h1 class="modal-title fs-5" id="readMoreModalLabel{{ post.posts_id }}">
+                        {{ post.posts_title }}
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
                 </div>
                 <div class="modal-body">
-                    {% set words = post.post_content.split() %}
+                    {% set words = post.posts_content.split() %}
                     <p>
                         <span style="color: white !important;">{{ ' '.join(words[:200]) }}</span>
                         <span style="color: plum !important;">{{ ' '.join(words[200:]) }}</span>
@@ -164,6 +163,7 @@
     </div>
     {% endfor %}
     <!-- ReadMoreModal ends here -->
+
 
 
     {% endblock content %}

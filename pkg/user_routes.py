@@ -10,34 +10,38 @@ def not_found_error(error):
     return render_template('page404.html')
 
 
-#homepage
+# homepage
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index/', methods=['GET', 'POST'])
 def index():
-    # return render_template("index.html")
-    #since the modal is in index page, the form validator should be here
     form = RegistrationForm()
 
     if form.validate_on_submit():
-        userfirstname = form.userfirstname.data
-        userlastname = form.userlastname.data
-        userregemail = form.userregemail.data
-        userregpwd = form.userregpwd.data
-        hashed_pwd = generate_password_hash(userregpwd)
-        userdateofbirth = form.userdateofbirth.data
-        usergender = form.usergender.data
-        agree = form.agree.data
+        fname = form.userfirstname.data
+        lname = form.userlastname.data
+        email = form.userregemail.data
+        pwd = form.userregpwd.data
+        hashed_pwd = generate_password_hash(pwd)
+        dob = form.userdateofbirth.data
+        gender = request.form.get('usergender')
 
-        user = User(user_fname=userfirstname, user_lname=userlastname, user_email=userregemail, user_password=hashed_pwd, user_date_of_birth=userdateofbirth, user_gender=usergender)
+        user = User(
+            users_fname=fname,
+            users_lname=lname,
+            users_email=email,
+            users_password=hashed_pwd,
+            users_date_of_birth=dob,
+            user_gender=gender
+        )
 
         db.session.add(user)
         db.session.commit()
-        id = user.user_id
-        session['useronline'] = id
 
-        return redirect('/login/')
-    
-    return render_template('user/index.html', form=form)
+        session["useronline"] = user.users_id  # Make sure to use the correct primary key field
+
+        return redirect('/index/')
+
+    return render_template('user/index.html', form=form)    
 
 
 #about
@@ -66,11 +70,17 @@ def about():
 #     return render_template('login.html')
 
 
-#blogs
+# @app.route('/feed/', methods=['GET', 'POST'])
+# def feed():
+#     # Use the join() method to load the relationship between Post and User
+#     posts = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
+#     return render_template("user/feed.html", posts=posts)
+
 @app.route('/feed/', methods=['GET', 'POST'])
 def feed():
-    posts = Post.query.order_by(Post.post_created_on.desc()).all() 
-    return render_template("user/feed.html", posts=posts)
+    posts_with_writer_names = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
+
+    return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names)
 
 #categories
 @app.route('/categories/')
@@ -128,50 +138,70 @@ def humor_category():
 def connect():
     return render_template("user/connect.html")
 
-#userprofile
 @app.route('/profile/', methods=['GET', 'POST'])
 def profile():
-    if session.get('useremail') is None:
-        return redirect('/login/')
-    
-    form = EditProfileForm()
 
-    if form.validate_on_submit():
+
+    form = EditProfileForm()  # Pass user object to the form
+    user_id = session.get('useronline')
+    user = User.query.get(user_id)
+
+    if request.method == 'POST' and form.validate_on_submit():
+            
+        user_id = session.get('useronline')
+        if user_id == None:
+            flash('Please log in first', category='error')
+            return redirect('/login')
+        
+        user = User.query.get(user_id)
+        if user == False:
+            flash('User not found', category='error')
+            return redirect('/')
+
+        # Retrieve form inputs from request
         first_name = form.first_name.data
         last_name = form.last_name.data
         bio = form.bio.data
-        facebook = form.facebook.data
-        instagram = form.instagram.data
-        x = form.x.data
-        email = form.email.data
-        github = form.github.data
 
-        session['user_profilename'] = f"{first_name} {last_name}"
+        return redirect('/profile/', form=form, user=user)
+    else:
+        return render_template('user/profile.html', form=form, user=user)
 
-        return redirect('/profile/')
 
-    return render_template('user/profile.html', form=form)
 
-#Login 
-@app.route('/login/', methods=['GET', 'POST'])
+@app.route('/login/', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
-    if form.validate_on_submit():
-        useremail = form.userEmail.data
-        password = form.userPassword.data
-        session['useremail'] = useremail
+    if request.method == 'GET':
+        return render_template('user/login.html', form=form)
+    else:
+        if form.validate_on_submit():
+            email = form.userEmail.data
+            pwd = form.userPassword.data
 
-        flash('You are now logged in')
+            user = db.session.query(User).filter(User.users_email == email).first()
+            if user:
+                saved_pwd = user.users_password
+                check = check_password_hash(saved_pwd, pwd)
+                if check:
+                    session['useronline'] = user.users_id
+                    flash('Log in successful', category='success')
+                    return redirect('/profile')
+                else:
+                    flash("Invalid credentials", category="error")
+                    return redirect('/login/')
+            else:
+                flash("Invalid credentials", category="error")
+                return redirect('/login/')
+        else:
+            return render_template('user/login.html', form=form)
 
-        return redirect('/profile/')
-
-    return render_template('user/login.html', form=form)
 
 
 #Logout   
 @app.route('/logout/')
 def logout():
-    session.pop('useremail', None)
+    session.pop('useronline', None)
     
     flash('You have been successfully logged out. Get back soon', 'danger')
     return redirect('/index/')
@@ -187,9 +217,15 @@ def create_post():
         post_content = form.post_content.data
         post_description = form.post_description.data
 
-        new_post = Post(post_title=post_title, post_image=post_image, post_content=post_content, post_description=post_description)
-        db.session.add(new_post)
-        db.session.commit()
+        user_id = session.get('useronline')
+
+        if user_id is None:
+            flash('Please log in first', category='error')
+            return redirect('/login')
+        else:
+            new_post = Post(posts_title=post_title, posts_pic=post_image, posts_content=post_content, posts_description=post_description, post_writer=user_id)
+            db.session.add(new_post)
+            db.session.commit()
 
         return redirect("/feed/")
     else:

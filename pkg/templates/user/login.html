@@ -73,6 +73,15 @@
 
         <!--Login form starts here-->
         <div class="row bb-form-bg-plum">
+            <div class="pt-3">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="alert alert-danger mt-3" role="alert" style="text-align: center !important; width: 40%; position: relative; left: 30%;">
+                            {{ messages[0] }}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
             <div class="col-md-6 bb-content-left">
                 <h2 class="animate__animated animate__backInLeft">
                     Share your ideas, 
@@ -86,7 +95,7 @@
 
                 <div class="bb-form animate__animated animate__bounce ">
 
-                    <form action="/login" method="post" class="form-height-width">
+                    <form action="{{url_for('login')}}" method="post" class="form-height-width">
                         {{ form.csrf_token }}
                         
                         <div style="text-align:center;" class="mb-5">

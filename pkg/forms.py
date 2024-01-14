@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, RadioField, BooleanField, DateField, TextAreaField, FileField
 from wtforms.validators import DataRequired, Email, URL, Length
+from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 
 class LoginForm(FlaskForm):
@@ -15,7 +16,7 @@ class RegistrationForm(FlaskForm):
     userregemail = StringField('Email address', validators=[DataRequired(), Email()])
     userregpwd = PasswordField('Password', validators=[DataRequired()])
     userdateofbirth = DateField('Date Of Birth', validators=[DataRequired()])
-    usergender = RadioField('Gender', choices=[('male', 'Male'), ('female', 'Female')], validators=[DataRequired()])
+    # usergender = RadioField('Gender', choices=[('male', 'Male'), ('female', 'Female')], validators=[DataRequired()])
     agree = BooleanField('I agree to the terms and conditions', validators=[DataRequired()])
     submit = SubmitField('Sign Up')
 
@@ -41,3 +42,4 @@ class EditProfileForm(FlaskForm):
     x = StringField('X @', validators=[URL('Enter a Valid URL')])
     email = StringField('E-Mail @', validators=[Email()])
     github = StringField('GitHub @', validators=[URL('Enter a Valid URL')])
+    image = FileField('Upload Cover', validators=[FileAllowed(['jpg', 'jpeg', 'png'],"we only allow images")])

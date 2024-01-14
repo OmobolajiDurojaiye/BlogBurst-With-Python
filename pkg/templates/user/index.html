@@ -280,7 +280,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            
+             
                 <form id="regform" method="post" action="/index">
 
                     {{ form.csrf_token }}
@@ -315,17 +315,6 @@
                         {{ form.userdateofbirth.label(class="form-label") }}
                         {{ form.userdateofbirth(class="form-control", id="dateofbirth") }}
                     </div>
-
-                    <!--gender-->
-                    <!-- <div class="form-check form-check-block">
-                        {{ form.usergender(class="form-check-input", id="male", value="male") }}
-                        {{ form.usergender.label(class="form-check-label", for="male") }}
-                    </div>
-                    
-                    <div class="form-check form-check-block mb-3">
-                        {{ form.usergender(class="form-check-input", id="female", value="female") }}
-                        {{ form.usergender.label(class="form-check-label", for="female") }}
-                    </div> -->
 
                     <div class="form-check form-check-block">
                         <input class="form-check-input" type="radio" name="usergender" id="male" value="option1">

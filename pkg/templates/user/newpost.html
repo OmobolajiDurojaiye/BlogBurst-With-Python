@@ -24,11 +24,6 @@
             <div class="posttitle">
                 {{ form.post_title.label(class="form-label", style="color: plum !important; font-weight: bold;") }}
                 {{ form.post_title(class_="form-control", placeholder="Blog Title", style="color: plum !important; font-weight: bold;") }}
-                {% if form.post_title.errors %}
-                <div class="alert alert-danger">
-                    {{ form.post_title.errors[0] }}
-                </div>
-                {% endif %}
             </div>
 
             <div class="mt-4">

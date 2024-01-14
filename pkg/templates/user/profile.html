@@ -15,7 +15,7 @@
         {% with messages = get_flashed_messages()%}
             {% for message in messages %}
                 <div style="color: #fff !important; background-color: plum !important;" class="alert">
-                    Hey {{ session.get('useremail') }}, {{ message }}
+                    Hey {{ user.users_fname }} {{ user.users_lname }} , {{ message }}
                 </div>
             {% endfor %}
         {% endwith %}
@@ -35,10 +35,10 @@
                     </div>
                     <img src="Images/BB-logo.png" alt="">
                     <p style="color: plum !important;">
-                        <!-- {{session.get('username')}} <br> -->
-                        {{ session.get('user_profilename') }} <br>
+                        {{ user.users_fname }} {{ user.user_lname }}
+                         <br>
                         <span style="font-size: 0.9em;">
-                            {{ session.get('useremail') }}
+                            {{ user.users_email }}
                         </span>
                     </p>
                 </div>
@@ -48,7 +48,7 @@
                         Bio
                     </h4>
                     <p>
-                        Passionate wordsmith weaving stories from the ordinary to the extraordinary. 
+                        {{bio}}
                     </p>
                 </div>
 
@@ -123,8 +123,8 @@
 
                 <div class="posts">
                     <h5>
-                        {{session.get('title')}}
-                        {#{% set post_title = session.get('title') %}
+                        {#{{session.get('title')}}
+                        {% set post_title = session.get('title') %}
                         {% set words = post_title.split() %}
                         {% if words|length > 4 %}
                             {{ ' '.join(words[:4]) }} ...
@@ -259,10 +259,22 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" style="color: white; font-weight: bolder;" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
-                
-                <form action="/profile/" method="post">
+             
+                <form action="/profile/" method="post" enctype="multipart/form-data">
 
                     {{ form.csrf_token }}
+
+                    <div class="profile-edit-img m-5">
+                        <p class="mt-4" style="text-align: center; color: white;">
+                            Change Your Profile Picture
+                        </p>
+                        <div class="img-cont">
+                            <img src="" alt="">
+                        </div>
+                        <div class="mb-3 edit-img">
+                            {{ form.image(class="form-control") }}
+                        </div>
+                    </div>
 
                     <div class="input-group mb-3 bb-settings-modal">
                         {{ form.first_name.label(class="input-group-text") }}

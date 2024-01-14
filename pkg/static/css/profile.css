@@ -135,6 +135,32 @@ input, textarea {
     border-radius: 10px;
 }
 
+.profile-edit-img {
+    height: 40vh;
+    border: 1px solid plum;
+}
+
+.img-cont {
+    border: 1px dotted white;
+    width: 20%;
+    height: 20vh;
+    position: relative;
+    left: 40%;
+    /* top: 5vh; */
+}
+
+.edit-img {
+    width: 50%;
+    position: relative;
+    left: 25%;
+    top: 5%;
+}
+
+.img-cont img {
+    width: 100%;
+    height: 20vh;
+}
+
 @media (max-width: 768px) {
     .row {
         flex-direction: column;
