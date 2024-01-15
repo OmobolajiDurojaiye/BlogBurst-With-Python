@@ -15,7 +15,8 @@ def admin_login():
     form = AdminLoginForm()
 
     if request.method == 'GET':
-        return render_template('admin/adminlogin.html', form=form)
+        if session.get('adminonline') == None:
+            return render_template('admin/adminlogin.html', form=form)
     else:
         admin_username =form.username.data.title()
         admin_password = form.password.data 
@@ -46,3 +47,8 @@ def admin():
 def adminlogout():
     session.pop('adminonline', None)
     return redirect('/admin/login/')
+
+
+@app.route('/admin/user management/')
+def user_management():
+    return render_template('admin/user_management.html')

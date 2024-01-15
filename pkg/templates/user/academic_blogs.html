@@ -1,12 +1,12 @@
 {% extends "user/blogcategoriesbase.html" %}
 
 
-{% for post in posts %}
+{% for posts in posts %}
     {% block post_title %} 
-        {{ post.posts_title }}  {# Assuming 'title' is the correct attribute name #}
+        {{ posts.posts_title }} 
     {% endblock post_title %}
 
     {% block blog_content %} 
-        {{ post.posts_description }}  {# Assuming 'description' is the correct attribute name #}
+        {{ posts.posts_description }} 
     {% endblock blog_content %}
 {% endfor %}

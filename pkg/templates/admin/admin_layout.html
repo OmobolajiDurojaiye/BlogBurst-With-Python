@@ -39,7 +39,11 @@
                 ADMIN
             </h2>
             <div>
-                <a href="#">
+                <a href="/admin/">
+                    <img src="{{url_for('static', filename='icons/bb-dashboard.png')}}" alt=""> &nbsp;
+                    Dashboard
+                </a>
+                <a href="/admin/user management/">
                     <img src="{{url_for('static', filename='icons/user-management.png')}}" alt=""> &nbsp;
                     User Management
                 </a>
@@ -58,7 +62,7 @@
             </div>
             
 
-            <div style="margin-top: 50vh;">
+            <div style="margin-top: 40vh;">
                 <a href="/adminlogout">
                     <img src="{{url_for('static', filename='icons/bb-logout.png')}}" alt=""> &nbsp;
                     Logout

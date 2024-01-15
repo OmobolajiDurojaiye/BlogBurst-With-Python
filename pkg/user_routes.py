@@ -113,7 +113,6 @@ def humor_category():
 def connect():
     return render_template("user/connect.html")
 
-# ...
 
 @app.route('/profile/', methods=['GET', 'POST'])
 def profile():
@@ -147,7 +146,7 @@ def profile():
             if ext.lower() in allowed:
                 final_name = str(int(random.random() * 100000)) + ext
                 dp.save(f"pkg/static/uploads/{final_name}")
-                user = User.query.get(user_id)  # Fix: Use user_id instead of id
+                user = User.query.get(user_id) 
                 user.users_profile_pic = final_name
                 db.session.commit()
                 try:
@@ -256,7 +255,7 @@ def delete_post(post_id):
         db.session.commit()
         flash('Post deleted successfully', 'success')
     else:
-        flash('Post not found or you do not have permission to delete it', 'error')
+        flash('Post not found', 'error')
 
     return redirect(url_for('all_post'))
 
