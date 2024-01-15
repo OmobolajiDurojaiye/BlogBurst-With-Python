@@ -55,11 +55,6 @@
                         Sign In
                     </a>
                 </li>
-                <li>
-                    <a class="bb-btn-modal-plum mx-2" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">
-                        Register
-                    </a>
-                </li>
             </ul>
         </nav>
     </header>
@@ -136,7 +131,7 @@
 
             <ol type="1">
                 <li>
-                    <b>Create Your Account:</b> <a style="color: plum; text-decoration: none;" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="#">Signing up</a> is quick and easy. 
+                    <b>Create Your Account:</b> <a style="color: plum; text-decoration: none;" href="/index">Signing up</a> is quick and easy. 
                     Become a part of the Blogburst community by creating your account and unlocking a world of possibilities.
                 </li>
                 <li><b>Craft Your Articles:</b> Use our intuitive editor to bring your ideas to life. 
@@ -173,100 +168,6 @@
         </p>
     </footer> -->
 
-
-
-    <!-- Registration modal starts here -->
-    <div class="modal fade animate__animated animate__rollIn" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h1 class="modal-title fs-5" style="color: plum !important; font-weight: bold !important;" id="staticBackdropLabel">Register</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            
-                <form id="regform" method="post" action="/login">
-
-                    {{ form.csrf_token }}
-
-                    <div class="warn">
-                        <p id="warning">
-
-                        </p>
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form.userfirstname.label(class="form-label") }}
-                        {{ form.userfirstname(class="form-control") }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form.userlastname.label(class="form-label") }}
-                        {{ form.userlastname(class="form-control") }}
-                    </div>
-                    
-                    <div class="mb-3">
-                        {{ form.userregemail.label(class="form-label") }}
-                        {{ form.userregemail(class="form-control", id="regemail", aria_describedby="emailHelp") }}
-                    </div>
-  
-                    <div class="mb-3">
-                        {{ form.userregpwd.label(class="form-label") }}
-                        {{ form.userregpwd(class="form-control", id="regpwd") }}
-                    </div>
-
-                    <div class="mb-3">
-                        {{ form.userdateofbirth.label(class="form-label") }}
-                        {{ form.userdateofbirth(class="form-control", id="dateofbirth") }}
-                    </div>
-
-                    <!--gender-->
-                    <!-- <div class="form-check form-check-block">
-                        {{ form.usergender(class="form-check-input", id="male", value="male") }}
-                        {{ form.usergender.label(class="form-check-label", for="male") }}
-                    </div>
-                    
-                    <div class="form-check form-check-block mb-3">
-                        {{ form.usergender(class="form-check-input", id="female", value="female") }}
-                        {{ form.usergender.label(class="form-check-label", for="female") }}
-                    </div> -->
-
-                    <div class="form-check form-check-block">
-                        <input class="form-check-input" type="radio" name="usergender" id="male" value="option1">
-                        <label class="form-check-label" for="male" value="male">Male</label>
-                    </div>
-
-                    <div class="form-check form-check-block mb-3">
-                        <input class="form-check-input" type="radio" name="usergender" id="female" value="option2">
-                        <label class="form-check-label" for="female" value="female">Female</label>
-                    </div>
-                    <!--gender-->
-
-                    <!--agreement-->
-                    <div class="mb-3 form-check">
-                        {{ form.agree(class="form-check-input", id="agree") }}
-                        {{ form.agree.label(class="form-check-label", for="agree") }}
-                    </div>
-                    <!--agreement-->
-                    
-                    {{ form.submit(class="btn bb-btn-modal-plum", id="remove-dis") }}
-
-                    <!--Has account already?-->
-                    <p style="color: plum; margin-top: 10px;">
-                        Already have an account? <a style="color: black;" href="/login">Sign in</a>
-                    </p>
-                    <!--Has account already?-->
-                </form>
-
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" id="bb-hinge-outro" data-bs-dismiss="modal">Close</button>
-            <!-- <button type="button" class="btn bb-btn-modal-plum">Understood</button> -->
-            </div>
-        </div>
-        </div>
-    </div>
-    <!-- Registration modal ends here -->
 
 
 

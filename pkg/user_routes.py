@@ -4,7 +4,7 @@ from flask import Flask, render_template, url_for, redirect, request, session, f
 from werkzeug.security import generate_password_hash, check_password_hash
 from pkg import app
 from pkg.models import db, Post, User
-from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, AdminLoginForm, EditProfileForm
+from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, EditProfileForm, UpdatePostForm
 
 #custom errors
 @app.errorhandler(404)
@@ -49,22 +49,7 @@ def index():
 #about
 @app.route('/Who we are/')
 def about():
-    form = RegistrationForm()
-
-    if form.validate_on_submit():
-        userfirstname = form.userfirstname.data
-        userlastname = form.userlastname.data
-        userregemail = form.userregemail.data
-        userregpwd = form.userregpwd.data
-        userdateofbirth = form.userdateofbirth.data
-        usergender = form.usergender.data
-        agree = form.agree.data
-
-        session['username'] = userfirstname
-
-        return redirect('/login/')
-    
-    return render_template('user/about.html', form=form)
+    return render_template('user/about.html')
 
 @app.route('/feed/', methods=['GET', 'POST'])
 def feed():
@@ -274,6 +259,34 @@ def delete_post(post_id):
         flash('Post not found or you do not have permission to delete it', 'error')
 
     return redirect(url_for('all_post'))
+
+
+@app.route('/update_post/<int:post_id>', methods=['GET', 'POST'])
+def update_post(post_id):
+    user_id = session.get('useronline')
+    post = Post.query.filter_by(posts_id=post_id, post_writer=user_id).first()
+
+    if post:
+        form = UpdatePostForm()
+
+        if request.method == 'POST' and form.validate_on_submit():
+            # Update the post with form data
+            post.posts_title = form.updated_title.data
+            post.posts_content = form.updated_content.data
+            post.posts_description = form.updated_description.data
+
+            # Commit the changes to the database
+            db.session.commit()
+
+            flash('Post updated successfully', 'success')
+            return redirect(url_for('all_post'))
+
+        return render_template('user/update_post.html', form=form, post=post)
+    
+    else:
+        flash('Post not found or you do not have permission to update it', 'error')
+        return redirect(url_for('all_post'))
+
 
 
 

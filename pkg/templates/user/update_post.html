@@ -1,0 +1,120 @@
+{% extends "user/base.html" %}
+
+{% block title %}
+    New Post ||
+    {{super()}}
+{% endblock title %}
+
+    {% block maincss %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/newpost.css')}}">
+    {% endblock maincss %}
+    
+    {% block content %}
+
+    <div class="content-head">
+        <h2>
+            Update Your Blog
+        </h2>
+    </div>
+    {% with messages = get_flashed_messages()%}
+        {% for message in messages %}
+            <div style="color: black !important; background-color: plum !important;" class="alert">
+                Hey {{ user.users_fname }} {{ user.users_lname }} , {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <div class="container bb-addpost-section mt-3">
+        <form action="{{ url_for('update_post', post_id=post.posts_id) }}" method="post">
+
+            {{ form.csrf_token }}
+
+            <div class="posttitle">
+                {{ form.updated_title.label(class="form-label", style="color: plum !important; font-weight: bold;") }}
+                {{ form.updated_title(class_="form-control", placeholder="Blog Title", style="color: plum !important; font-weight: bold;") }}
+            </div>
+
+            <div class="postdescription mt-4">
+                {{ form.updated_description.label(class="form-label") }}
+                {{ form.updated_description(class="form-control", style="color: black !important; font-weight: bold; height: 20vh;", placeholder='Give a Brief Description of What Your Article is About') }}
+                {% if form.updated_description.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.updated_description.errors[0] }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="postcontent mt-4">
+                {{ form.updated_content.label(class="form-label") }}
+                {{ form.updated_content(class="form-control post_content", style="color: black !important; font-weight: bold;", placeholder='Update Post Content Here') }}
+                {% if form.updated_content.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.updated_content.errors[0] }}
+                    </div>
+                {% endif %}
+            </div>
+        
+            <div>
+                {{ form.submit(class="btn bb-btn-plum mt-3 mb-4") }}
+            </div>
+        
+        </form>
+    </div>
+    {% endblock content %}
+    <!--main items here-->
+
+    {% block script %}
+    <script>
+        $(document).ready(function () {
+            var postContent = $("#postContent");
+
+            $("#boldButton").click(function (e) {
+                e.preventDefault();
+                document.execCommand("bold", false, null);
+            });
+
+            $("#italicButton").click(function (e) {
+                e.preventDefault();
+                document.execCommand("italic", false, null);
+            });
+
+            $("#underlineButton").click(function (e) {
+                e.preventDefault();
+                document.execCommand("underline", false, null);
+            });
+
+            $("#strikethroughButton").click(function (e) {
+                e.preventDefault();
+                document.execCommand("strikeThrough", false, null);
+            });
+
+            $("#alignLeftButton").click(function (e) {
+                e.preventDefault();
+                document.execCommand("justifyLeft", false, null);
+            });
+
+            $("#alignCenterButton").click(function (e) {
+                e.preventDefault();
+                document.execCommand("justifyCenter", false, null);
+            });
+
+            $("#alignRightButton").click(function (e) {
+                e.preventDefault();
+                document.execCommand("justifyRight", false, null);
+            });
+            // $("#colorPicker").change(function () {
+            //     document.execCommand("foreColor", false, $("#colorPicker").val());
+            // });
+
+            //Bootstrap tooltip starts
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            //Bootstrap tooltip ends
+        });
+    </script>
+    {% endblock script %}
+
+</body>
+</html>

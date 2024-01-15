@@ -43,7 +43,7 @@
                         <p>
                             {% set words = post.posts_content.split() %}
                             {% if words|length > 200 %}
-                                {{ ' '.join(words[:200]) }} ...Read more  ...
+                                {{ ' '.join(words[:200]) }} || Read more  ...
                             {% else %}
                                 {{ post.post_content }}
                             {% endif %}
@@ -102,6 +102,7 @@
 
     <!--profile modal-->
     <!-- Modal -->
+    {% for post, user in posts_with_writer_names %}
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="bb-profile-pop" aria-hidden="true">
         <div class="modal-dialog">
         <div style="background-color: #141414 !important;" class="modal-content">
@@ -117,8 +118,8 @@
 
                         <div class="name">
                             <h4>
-                                {#{{session.get('username')}}#} <br>
-                                <span style="font-size: 0.5em;">{#{{session.get('useremail')}}#}</span>
+                                {{user.users_fname}}<br>
+                                <span style="font-size: 0.5em;">{{user.users_email}}</span>
                             </h4>
                         </div>
                     </div>
@@ -139,6 +140,7 @@
         </div>
         </div>
     </div>
+    {% endfor %}
 
     <!-- ReadMoreModal -->
     {% for post, user in posts_with_writer_names %}

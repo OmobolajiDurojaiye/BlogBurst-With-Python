@@ -43,3 +43,9 @@ class EditProfileForm(FlaskForm):
     email = StringField('E-Mail @', validators=[Email()])
     github = StringField('GitHub @', validators=[URL('Enter a Valid URL')])
     # image = FileField('Upload Cover', validators=[FileAllowed(['jpg', 'jpeg', 'png'], "we only allow images")])
+
+class UpdatePostForm(FlaskForm):
+    updated_title = StringField('Update Title')
+    updated_content = TextAreaField('Update Content')
+    updated_description = TextAreaField('Update Description')
+    submit = SubmitField('Update Post')
