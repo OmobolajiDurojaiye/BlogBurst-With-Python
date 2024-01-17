@@ -217,7 +217,7 @@ body {
 
 .comment-input textarea {
     border: 1px solid plum;
-    height: 1%;
+    height: 2px !important;
     border-radius: 20px;
     background-color: transparent;
     color: #fff;

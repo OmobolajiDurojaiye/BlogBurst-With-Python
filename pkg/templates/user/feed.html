@@ -29,7 +29,7 @@
                             <img src="{{ url_for('static', filename='Images/BB-logo.png') }}" alt="">
                         </div>
                         <div class="profile-name">
-                            <a href="" class="modal-xl" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <a href="" class="modal-xl" data-bs-toggle="modal" data-bs-target="#exampleModal{{ user.users_id }}">
                                 {{ user.users_fname }} {{ user.users_lname }}
                             </a>
                         </div>
@@ -103,11 +103,11 @@
     <!--profile modal-->
     <!-- Modal -->
     {% for post, user in posts_with_writer_names %}
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="bb-profile-pop" aria-hidden="true">
+    <div class="modal fade" id="exampleModal{{ user.users_id }}" tabindex="-1" aria-labelledby="bb-profile-pop{{ user.users_id }}" aria-hidden="true">
         <div class="modal-dialog">
         <div style="background-color: #141414 !important;" class="modal-content">
             <div class="modal-header">
-            <h1 class="modal-title fs-5" id="bb-profile-pop">Profile</h1>
+            <h1 class="modal-title fs-5" id="bb-profile-pop{{ user.users_id }}">Profile</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -142,6 +142,7 @@
     </div>
     {% endfor %}
 
+
     <!-- ReadMoreModal -->
     {% for post, user in posts_with_writer_names %}
     <div class="modal fade" id="readMoreModal{{ post.posts_id }}" tabindex="-1" aria-labelledby="readMoreModalLabel{{ post.posts_id }}" aria-hidden="true">
@@ -168,22 +169,30 @@
 
                         <div class="comments">
                             <div class="comment-input mb-5">
-                                <textarea class="form-control" name="" id="" placeholder="Add a comment"></textarea>
-                                <button class="btn bb-btn-plum mt-2">Post</button>
+                                <form method="POST" action="{{ url_for('feed') }}">
+                                    {{ form.csrf_token }}
+                                    <!-- <input type="hidden" name="post_id" value="{{ post.posts_id }}"> -->
+                                    <textarea class="form-control" name="comment_content" placeholder="Add a comment">{{ form.comment_content.data }}</textarea>
+                                    <button type="submit" class="btn bb-btn-plum mt-2">{{ form.submit.label }}</button>
+                                </form>
                             </div>
 
+                            {% for comment in post.comments %}
                             <div class="mt-3 comments-already-posted">
-                                <div class="poster-dp">
-                                    <img src="{{url_for('static', filename='Images/BB-logo.png')}}" class="img-fluid" alt="">
-                                </div>
-                                <div class="poster-comment">
-                                    <p>
-                                        Very nice, I love this!
-                                    </p>
-                                </div>
+                                
+                                    <div class="poster-dp">
+                                        <img src="{{url_for('static', filename='Images/BB-logo.png')}}" class="img-fluid" alt="">
+                                    </div>
+                                    <div class="poster-comment">
+                                        <p>
+                                            {{ comment.comment_content }}
+                                        </p>
+                                    </div>
+                                
                             </div>
+                            {% endfor %}
 
-                            <div class="mt-3 comments-already-posted">
+                            <!-- <div class="mt-3 comments-already-posted">
                                 <div class="poster-dp">
                                     <img src="{{url_for('static', filename='Images/BB-logo.png')}}" class="img-fluid" alt="">
                                 </div>
@@ -193,7 +202,7 @@
                                         Creating that familiarity helps your growth.
                                     </p>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 

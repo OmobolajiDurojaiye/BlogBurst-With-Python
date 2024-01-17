@@ -50,6 +50,6 @@ class UpdatePostForm(FlaskForm):
     updated_description = TextAreaField('Update Description')
     submit = SubmitField('Update Post')
 
-class Comment(FlaskForm):
-    comment_content = StringField('What Do You Think')
+class CommentForm(FlaskForm):
+    comment_content = StringField('What Do You Think', validators=[DataRequired()])
     submit = SubmitField('Comment')

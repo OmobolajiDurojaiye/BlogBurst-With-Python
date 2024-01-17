@@ -3,8 +3,8 @@ from functools import wraps
 from flask import Flask, render_template, url_for, redirect, request, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from pkg import app
-from pkg.models import db, Post, User
-from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, EditProfileForm, UpdatePostForm
+from pkg.models import db, Post, User, Comment
+from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, EditProfileForm, UpdatePostForm, CommentForm
 
 #custom errors
 @app.errorhandler(404)
@@ -16,6 +16,7 @@ def not_found_error(error):
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index/', methods=['GET', 'POST'])
 def index():
+    posts = Post.query.order_by(Post.post_created_on.desc()).all()
     form = RegistrationForm()
 
     if form.validate_on_submit():
@@ -42,7 +43,7 @@ def index():
         session["useronline"] = user.users_id  
         return redirect('/index/')
 
-    return render_template('user/index.html', form=form)    
+    return render_template('user/index.html', form=form, posts=posts)    
 
 
 #about
@@ -52,9 +53,31 @@ def about():
 
 @app.route('/feed/', methods=['GET', 'POST'])
 def feed():
+
+    user_id = session.get('useronline')
+
+    if user_id is None:
+        flash('Please log in first', category='error')
+        return redirect('/login')
+    
+    user = User.query.get(user_id)
+
     posts_with_writer_names = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
 
-    return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names)
+    form = CommentForm()
+
+    if form.validate_on_submit():
+        content = form.comment_content.data
+        post_id = request.form.get('post_id') 
+
+        comment = Comment(comment_content=content, post_commented_on=post_id, user_commented=user_id)
+        db.session.add(comment)
+        db.session.commit()
+
+        flash('Comment added successfully', 'success')
+        return redirect(url_for('feed'))
+
+    return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names, form=form, user=user)
 
 #categories
 @app.route('/categories/')

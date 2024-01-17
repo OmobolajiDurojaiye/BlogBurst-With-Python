@@ -165,19 +165,21 @@
         </div>
 
         <div class="featured">
+            {% for post in posts %}
             <div class="top-stories">
                 <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
                 <div class="title">
                     <p>
-                        Food & Recipe
+                        <!--TAG GOES IN HERE-->
                     </p>
                     <a href="">
-                        25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
+                        {{post.posts_title}}
                     </a>
                 </div>
             </div>
+            {% endfor %}
 
-            <div class="top-stories">
+            <!-- <div class="top-stories">
                 <img src="{{url_for('static', filename='Images/flower.png')}}" alt="">
                 <div class="title">
                     <p>
@@ -259,7 +261,7 @@
                         25 Dessert Pizza Recipes That Are A Little Slice Of Heaven
                     </a>
                 </div>
-            </div>
+            </div> -->
         </div>
     </section>
 
