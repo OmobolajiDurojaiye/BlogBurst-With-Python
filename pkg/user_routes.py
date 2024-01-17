@@ -39,8 +39,7 @@ def index():
         db.session.add(user)
         db.session.commit()
 
-        session["useronline"] = user.users_id  # Make sure to use the correct primary key field
-
+        session["useronline"] = user.users_id  
         return redirect('/index/')
 
     return render_template('user/index.html', form=form)    
@@ -118,53 +117,47 @@ def connect():
 def profile():
     user_id = session.get('useronline')
     user = User.query.get(user_id)
-    oldpix = user.users_profile_pic
 
-    if user_id is None:
+    if user_id == None:
         flash('Please log in first', category='error')
         return redirect('/login')
 
-    if user is None:
+    if user == None:
         flash('User not found', category='error')
         return redirect('/')
 
     form = EditProfileForm()
 
     if request.method == 'POST' and form.validate_on_submit():
-        # Retrieve form inputs from request
+
         first_name = form.first_name.data
         last_name = form.last_name.data
         bio = form.bio.data
         dp = request.files.get("dp")
-        filename = dp.filename
-        if filename == "":
-            flash("Please select a file", category="error")
-            return redirect("/changedp")
-        else:
+
+        if dp and dp.filename != "":
+
+            filename = dp.filename 
             name, ext = os.path.splitext(filename)
             allowed = ['.jpg', '.png', '.jpeg']
+            
             if ext.lower() in allowed:
                 final_name = str(int(random.random() * 100000)) + ext
                 dp.save(f"pkg/static/uploads/{final_name}")
-                user = User.query.get(user_id) 
-                user.users_profile_pic = final_name
-                db.session.commit()
-                try:
-                    os.remove(f"pkg/static/uploads/{oldpix}")
-                except:
-                    pass
-                flash("Profile picture added", category='success')
-                return redirect("/profile")
 
-        # Update user profile information
+                user.users_profile_pic = final_name
+                flash("Profile picture added", category='success')
+            else:
+                flash("Invalid file type. Please upload a valid image.", category="error")
+
         user.users_fname = first_name
         user.users_lname = last_name
         user.users_bio = bio
-        user.users_profile_pic = filename
+        user.users_profile_pic = final_name
 
         db.session.commit()
-
         flash('Profile updated successfully', category='success')
+
         return redirect('/profile/')
 
     user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()

@@ -32,7 +32,7 @@ class Post(db.Model):
 
     posts_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     post_writer = db.Column(db.Integer, db.ForeignKey('users.users_id'), nullable=False)
-    posts_title = db.Column(db.String(60), nullable=False)
+    posts_title = db.Column(db.String(120), nullable=False)
     posts_content = db.Column(db.Text, nullable=False)
     posts_likes = db.Column(db.Integer, nullable=False, default=0)
     posts_status = db.Column(db.Enum('Approved', 'Deleted', 'Drafted')) #, nullable=False

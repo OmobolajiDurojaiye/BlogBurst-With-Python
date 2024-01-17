@@ -49,3 +49,7 @@ class UpdatePostForm(FlaskForm):
     updated_content = TextAreaField('Update Content')
     updated_description = TextAreaField('Update Description')
     submit = SubmitField('Update Post')
+
+class Comment(FlaskForm):
+    comment_content = StringField('What Do You Think')
+    submit = SubmitField('Comment')

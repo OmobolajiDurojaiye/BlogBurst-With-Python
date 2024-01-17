@@ -14,7 +14,7 @@
     <div class="content">
         {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <div class="alert alert-info" style="color: black;" role="alert">
+                <div class="alert alert-info" style="color: black !important;" role="alert">
                     {% for message in messages %}
                         {{ message }}
                     {% endfor %}

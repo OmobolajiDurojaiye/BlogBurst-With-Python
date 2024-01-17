@@ -145,7 +145,7 @@
     <!-- ReadMoreModal -->
     {% for post, user in posts_with_writer_names %}
     <div class="modal fade" id="readMoreModal{{ post.posts_id }}" tabindex="-1" aria-labelledby="readMoreModalLabel{{ post.posts_id }}" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content" style="background-color: #141414 !important; padding: 20px 40px;">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="readMoreModalLabel{{ post.posts_id }}">
@@ -154,11 +154,50 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
                 </div>
                 <div class="modal-body">
-                    {% set words = post.posts_content.split() %}
-                    <p style="text-align: left !important; line-height: 2;">
-                        <span style="color: white !important;">{{ ' '.join(words[:200]) }}</span>
-                        <span style="color: plum !important;">{{ ' '.join(words[200:]) }}</span>
-                    </p>
+                    <div class="post-content" style="border-bottom: 2px solid #fff !important;">
+                        {% set words = post.posts_content.split() %}
+                        <p style="text-align: left !important; line-height: 2;">
+                            <span style="color: white !important;">{{ ' '.join(words[:200]) }}</span>
+                            <span style="color: plum !important;">{{ ' '.join(words[200:]) }}</span>
+                        </p>
+                    </div>
+                    <div class="post-comment">
+                        <div class="head">
+                            <h3>Comments</h3>
+                        </div>
+
+                        <div class="comments">
+                            <div class="comment-input mb-5">
+                                <textarea class="form-control" name="" id="" placeholder="Add a comment"></textarea>
+                                <button class="btn bb-btn-plum mt-2">Post</button>
+                            </div>
+
+                            <div class="mt-3 comments-already-posted">
+                                <div class="poster-dp">
+                                    <img src="{{url_for('static', filename='Images/BB-logo.png')}}" class="img-fluid" alt="">
+                                </div>
+                                <div class="poster-comment">
+                                    <p>
+                                        Very nice, I love this!
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 comments-already-posted">
+                                <div class="poster-dp">
+                                    <img src="{{url_for('static', filename='Images/BB-logo.png')}}" class="img-fluid" alt="">
+                                </div>
+                                <div class="poster-comment">
+                                    <p>
+                                        Posting at the same time everyday lets your audience know when they can expect to hear from you. 
+                                        Creating that familiarity helps your growth.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn bb-btn-plum" data-bs-dismiss="modal">Close</button>
