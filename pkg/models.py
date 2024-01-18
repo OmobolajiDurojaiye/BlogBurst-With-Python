@@ -53,6 +53,8 @@ class Comment(db.Model):
     post_commented_on = db.Column(db.Integer, db.ForeignKey('posts.posts_id'), nullable=False)
     user_commented = db.Column(db.Integer, db.ForeignKey('users.users_id'), nullable=False)
     comment_content = db.Column(db.Text, nullable=False)
+    comment_made_on = db.Column(db.DateTime(), default=datetime.utcnow)
+    user = db.relationship('User', foreign_keys='Comment.user_commented')
 
 
 class Collaboration(db.Model):

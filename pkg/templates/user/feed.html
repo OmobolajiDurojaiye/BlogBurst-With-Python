@@ -10,6 +10,13 @@
 {% endblock maincss %}
 
 {% block content %}
+    {% with messages = get_flashed_messages()%}
+    {% for message in messages %}
+        <div style="color: #fff !important; background-color: plum !important;" class="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% endwith %}
     <!-- Main items here -->
     <div class="container-fluid ">
 
@@ -171,25 +178,32 @@
                             <div class="comment-input mb-5">
                                 <form method="POST" action="{{ url_for('feed') }}">
                                     {{ form.csrf_token }}
-                                    <!-- <input type="hidden" name="post_id" value="{{ post.posts_id }}"> -->
-                                    <textarea class="form-control" name="comment_content" placeholder="Add a comment">{{ form.comment_content.data }}</textarea>
-                                    <button type="submit" class="btn bb-btn-plum mt-2">{{ form.submit.label }}</button>
+                                    {#{{ form.comment_content.label }}#}
+                                    {{ form.comment_content(style="height: 10vh !important;", class="form-control mb-3 textarea", placeholder="Add a comment") }}
+                                    <input type="hidden" name="post_id" value="{{ post.posts_id }}">
+                                    {{ form.submit(style="background-color: plum !important; border: none !important; border-radius: 10px !important; padding: 10px !important;") }}
                                 </form>
                             </div>
 
                             {% for comment in post.comments %}
-                            <div class="mt-3 comments-already-posted">
-                                
+                                <div class="mt-3 comments-already-posted">
                                     <div class="poster-dp">
                                         <img src="{{url_for('static', filename='Images/BB-logo.png')}}" class="img-fluid" alt="">
                                     </div>
+                                    
+                                    <span style="font-size: 0.7em; position: relative; left: 0;">
+                                        {{ comment.user.users_fname }} <br> {{ comment.user.users_lname }}
+                                    </span>
+                                
                                     <div class="poster-comment">
                                         <p>
                                             {{ comment.comment_content }}
                                         </p>
+                                        <p style="color: plum; border-radius: 10px; margin-left: 5px; box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; height: max-content; padding: 5px !important;">
+                                            Commented | {{ comment.comment_made_on }}
+                                        </p>
                                     </div>
-                                
-                            </div>
+                                </div>
                             {% endfor %}
 
                             <!-- <div class="mt-3 comments-already-posted">

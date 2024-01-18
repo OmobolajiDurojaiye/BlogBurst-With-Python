@@ -53,28 +53,27 @@ def about():
 
 @app.route('/feed/', methods=['GET', 'POST'])
 def feed():
-
     user_id = session.get('useronline')
 
     if user_id is None:
         flash('Please log in first', category='error')
         return redirect('/login')
-    
-    user = User.query.get(user_id)
 
+    user = User.query.get(user_id)
+    
     posts_with_writer_names = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
 
     form = CommentForm()
 
     if form.validate_on_submit():
         content = form.comment_content.data
-        post_id = request.form.get('post_id') 
+        post_id = request.form.get('post_id')  # Get post_id from the form directly
 
         comment = Comment(comment_content=content, post_commented_on=post_id, user_commented=user_id)
         db.session.add(comment)
         db.session.commit()
 
-        flash('Comment added successfully', 'success')
+        flash('Your comment has been added successfully', 'success')
         return redirect(url_for('feed'))
 
     return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names, form=form, user=user)
