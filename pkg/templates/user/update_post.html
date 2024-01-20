@@ -26,27 +26,26 @@
 
     <div class="container bb-addpost-section mt-3">
         <form action="{{ url_for('update_post', post_id=post.posts_id) }}" method="post">
-
             {{ form.csrf_token }}
-
+        
             <div class="posttitle">
                 {{ form.updated_title.label(class="form-label", style="color: plum !important; font-weight: bold;") }}
-                {{ form.updated_title(class_="form-control", placeholder="Blog Title", style="color: plum !important; font-weight: bold;") }}
+                {{ form.updated_title(value=post.posts_title, class_="form-control", placeholder="Blog Title", style="color: plum !important; font-weight: bold;") }}
             </div>
-
+        
             <div class="postdescription mt-4">
                 {{ form.updated_description.label(class="form-label") }}
-                {{ form.updated_description(class="form-control", style="color: black !important; font-weight: bold; height: 20vh;", placeholder='Give a Brief Description of What Your Article is About') }}
+                {{ form.updated_description(value=post.posts_description, class="form-control", style="color: black !important; font-weight: bold; height: 20vh;", placeholder='Give a Brief Description of What Your Article is About') }}
                 {% if form.updated_description.errors %}
                     <div class="alert alert-danger">
                         {{ form.updated_description.errors[0] }}
                     </div>
                 {% endif %}
             </div>
-
+        
             <div class="postcontent mt-4">
                 {{ form.updated_content.label(class="form-label") }}
-                {{ form.updated_content(class="form-control post_content", style="color: black !important; font-weight: bold;", placeholder='Update Post Content Here') }}
+                {{ form.updated_content(value=post.posts_content, class="form-control post_content", style="color: black !important; font-weight: bold;", placeholder='Update Post Content Here') }}
                 {% if form.updated_content.errors %}
                     <div class="alert alert-danger">
                         {{ form.updated_content.errors[0] }}
@@ -57,14 +56,13 @@
             <div>
                 {{ form.submit(class="btn bb-btn-plum mt-3 mb-4") }}
             </div>
-        
         </form>
     </div>
     {% endblock content %}
     <!--main items here-->
 
     {% block script %}
-    <script>
+    <!-- <script>
         $(document).ready(function () {
             var postContent = $("#postContent");
 
@@ -113,7 +111,7 @@
             });
             //Bootstrap tooltip ends
         });
-    </script>
+    </script> -->
     {% endblock script %}
 
 </body>

@@ -33,10 +33,10 @@
                     <!-- Contains profile pic and profile name -->
                     <div class="col bb-post-head">
                         <div class="profile-pic">
-                            <img src="{{ url_for('static', filename='Images/BB-logo.png') }}" alt="">
+                            <img src="{{url_for('static', filename='icons/user-profile.png')}}" alt="">
                         </div>
                         <div class="profile-name">
-                            <a href="" class="modal-xl" data-bs-toggle="modal" data-bs-target="#exampleModal{{ user.users_id }}">
+                            <a href="{{ url_for('user_profile', user_id=user.users_id) }}">
                                 {{ user.users_fname }} {{ user.users_lname }}
                             </a>
                         </div>
@@ -61,16 +61,15 @@
                     <!-- Post actions -->
                     <div class="row bb-post-actions">
                         <div class="col">
-                            <button class="btn bb-btn-plum btn-sm" data-bs-toggle="tooltip" title="Like">
+                            <button class="btn bb-btn-plum btn-sm" data-post-id="{{ post.posts_id }}" data-bs-toggle="tooltip" title="Like">
                                 <span style="display: flex !important;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-fire" viewBox="0 0 16 16">
-                                    <path
-                                        d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15" />
-                                    </svg> 
+                                        class="bi bi-fire" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16m0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15" />
+                                    </svg>
                                     <span class="like-count">0</span>
-                                </span> 
-                                
+                                </span>
                             </button>
                         </div>
                         <div class="col">
@@ -107,49 +106,6 @@
     </div>
     <!-- Main items here -->
 
-    <!--profile modal-->
-    <!-- Modal -->
-    {% for post, user in posts_with_writer_names %}
-    <div class="modal fade" id="exampleModal{{ user.users_id }}" tabindex="-1" aria-labelledby="bb-profile-pop{{ user.users_id }}" aria-hidden="true">
-        <div class="modal-dialog">
-        <div style="background-color: #141414 !important;" class="modal-content">
-            <div class="modal-header">
-            <h1 class="modal-title fs-5" id="bb-profile-pop{{ user.users_id }}">Profile</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                
-                <div class="row">
-                    <div class="col bb-modal-profile-img">
-                        <img src="{{url_for('static', filename='Images/BB-logo.png')}}" alt="">
-
-                        <div class="name">
-                            <h4>
-                                {{user.users_fname}}<br>
-                                <span style="font-size: 0.5em;">{{user.users_email}}</span>
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col">
-                        <div class="head">
-                            
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-sm bb-btn-plum" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-        </div>
-    </div>
-    {% endfor %}
-
-
     <!-- ReadMoreModal -->
     {% for post, user in posts_with_writer_names %}
     <div class="modal fade" id="readMoreModal{{ post.posts_id }}" tabindex="-1" aria-labelledby="readMoreModalLabel{{ post.posts_id }}" aria-hidden="true">
@@ -185,10 +141,10 @@
                                 </form>
                             </div>
 
-                            {% for comment in post.comments %}
+                            {% for comment in post.comments | reverse %}
                                 <div class="mt-3 comments-already-posted">
                                     <div class="poster-dp">
-                                        <img src="{{url_for('static', filename='Images/BB-logo.png')}}" class="img-fluid" alt="">
+                                        <img src="{{url_for('static', filename='icons/user-profile.png')}}" class="img-fluid" alt="">
                                     </div>
                                     
                                     <span style="font-size: 0.7em; position: relative; left: 0;">
@@ -254,23 +210,29 @@
 
         });
 
-        // $(".btnlike").click(function(){
-        //     var $likeNum = $(this).find('.likenum');
-        //     var currentLikes = Number($likeNum.text());
-        //     var newLikes = currentLikes + 1;
+        $('.btn.bb-btn-plum.btn-sm').click(function() {
+        var btn = $(this);
+        var postId = btn.data('post-id');
 
-        //     if (newLikes == 1) {
-        //         $(this).removeClass("btn-secondary").addClass("btn-primary").html('Liked');
-        //         $likeNum.text('Liked once');
-        //     } 
+        $.ajax({
+            type: 'POST',
+            url: '/like_post/' + postId,
+            success: function(response) {
+                if (response.success) {
+                    // Update the like count on the page
+                    var likeCountSpan = btn.find('.like-count');
+                    likeCountSpan.text(response.likes);
 
-        //     if (newLikes > 1) {
-        //         $(this).removeClass("btn-secondary").addClass("btn-primary").html('Liked');
-        //         $(this).text('Liked ' + newLikes + ' times');
-        //     }
-
-        //     $likeNum.text(newLikes);
-        // });
+                    // Optionally, update the button style or tooltip here
+                } else {
+                    console.error(response.error);
+                }
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    });
 
         //Bootstrap tooltip starts
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

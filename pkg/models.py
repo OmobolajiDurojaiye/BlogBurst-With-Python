@@ -12,7 +12,7 @@ class User(db.Model):
     users_password = db.Column(db.String(255), nullable=False)
     users_date_of_birth = db.Column(db.Date, nullable=False)
     user_gender = db.Column(db.String(10))
-    users_profile_pic = db.Column(db.String(225))
+    users_profile_pic = db.Column(db.String(225), nullable=True)
 
     posts = db.relationship('Post', backref='author')
     comments = db.relationship('Comment', backref='commenter')
@@ -52,7 +52,7 @@ class Comment(db.Model):
     comments_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     post_commented_on = db.Column(db.Integer, db.ForeignKey('posts.posts_id'), nullable=False)
     user_commented = db.Column(db.Integer, db.ForeignKey('users.users_id'), nullable=False)
-    comment_content = db.Column(db.Text, nullable=False)
+    comment_content = db.Column(db.Text, nullable=True)
     comment_made_on = db.Column(db.DateTime(), default=datetime.utcnow)
     user = db.relationship('User', foreign_keys='Comment.user_commented')
 

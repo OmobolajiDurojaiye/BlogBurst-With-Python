@@ -3,9 +3,41 @@
 {% block content %}
     <div id="content">
         <div class="content-head">
-            <h2 style="font-weight: bold;">
-                WELCOME ADMIN
-            </h2>
+            <h2 style="font-weight: bold;">WELCOME ADMIN</h2>
+        </div>
+        
+        <!-- Container with flex display -->
+        <div class="admin-container">
+            <!-- Users Section -->
+            <div class="user-section">
+                <h3 style="font-weight: bold; color: plum;">Users</h3>
+                <p>There are currently <i style="color: plum;">{{ user_count }}</i> users</p>
+                <div class="user-scroll" style="border-top: 1px solid plum;">
+                    <!-- Display each user -->
+                    {% for user in users %}
+                        <div class="user-item mt-3">
+                            <p>User ID: {{ user.users_id }}</p>
+                            <p>Name: <span style="color: plum;">{{ user.users_fname }} {{ user.users_lname }}</span></p>
+                            <!-- Add more user details as needed -->
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Posts Section -->
+            <div class="post-section">
+                <h3 style="font-weight: bold; color: plum;">Posts</h3>
+                <p>There are {{ post_count }} posts</p>
+                <div class="post-list" style="border-top: 1px solid plum;">
+                    <!-- Display each post -->
+                    {% for post in posts %}
+                        <div class="post-item mt-3">
+                            <p>User {{ post.author.users_id }}: {{ post.author.users_fname }}, has {{ post.author.posts|length }} post(s)</p>
+                            <!-- Add more post details as needed -->
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>            
         </div>
     </div>
 {% endblock %}

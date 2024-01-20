@@ -1,0 +1,108 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #1d1b1b !important;
+}
+
+.profile-head {
+    height: 50vh;
+    width: 100% !important;
+    border-bottom: 2px solid plum;
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
+}
+
+.profile-pic {
+    width: 40% !important;
+    height: inherit;
+    border-right: 2px solid plum;
+}
+
+.image-cont {
+    height: 45vh;
+    width: 50%;
+    /* border: 1px solid red; */
+    border-radius: 20px;
+    position: relative;
+    left: 25%;
+    top: 2.5vh;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.image-cont img {
+    width: 100%;
+    height: inherit;
+}
+
+.additional-info {
+    width: 60%;
+    border: 1px solid red;
+    height: inherit;
+    display: flex;
+}
+
+.profile-name {
+    width: 50%;
+    height: inherit;
+    border-right: 1px solid yellow;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.user-name {
+    width: 90%;
+    position: relative;
+    left: 5%;
+    top: 2vh;
+    padding: 10px;
+    border-radius: 20px;
+    height: 10vh;
+    /* border: 1px solid white; */
+    background-color: rgb(114, 114, 103);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.user-bio {
+    width: 90%;
+    height: 25vh;
+    position: relative;
+    left: 5%;
+    border: 1px solid white;
+    border-radius: 20px;
+}
+
+.all-posts {
+    height: max-content;
+    padding-left: 10%;
+    /* border: 2px solid green; */
+    position: relative;
+}
+
+.posts {
+    width: 100%;
+    position: relative;
+    /* left: 2%; */
+    margin: 10px 0;
+}
+
+.posts li {
+    color: #fff !important;
+    padding: 20px;
+    width: 50%;
+    border: 2px solid black;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 10px;
+    margin: 2% 0;
+}
+
+.posts li:hover {
+    background-color: #fff;
+    color: black !important;
+    padding: 20px; 
+    transition: .5s;
+}

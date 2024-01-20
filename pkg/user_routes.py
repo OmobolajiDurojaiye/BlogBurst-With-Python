@@ -1,9 +1,10 @@
+from datetime import datetime
 import os, random, string
 from functools import wraps
-from flask import Flask, render_template, url_for, redirect, request, session, flash
+from flask import Flask, render_template, url_for, redirect, request, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from pkg import app
-from pkg.models import db, Post, User, Comment
+from pkg.models import db, Post, User, Comment, Like
 from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, EditProfileForm, UpdatePostForm, CommentForm
 
 #custom errors
@@ -67,7 +68,7 @@ def feed():
 
     if form.validate_on_submit():
         content = form.comment_content.data
-        post_id = request.form.get('post_id')  # Get post_id from the form directly
+        post_id = request.form.get('post_id')
 
         comment = Comment(comment_content=content, post_commented_on=post_id, user_commented=user_id)
         db.session.add(comment)
@@ -223,7 +224,7 @@ def logout():
     session.pop('useronline', None)
     
     flash('You have been successfully logged out. Get back soon', 'danger')
-    return redirect('/index/')
+    return redirect('/login/')
     
 #add new post
 @app.route('/newpost/', methods=['GET', 'POST'])
@@ -251,7 +252,7 @@ def create_post():
         return render_template('user/newpost.html', form=form)
 
 
-@app.route('/All Posts/')
+@app.route('/all_posts/')
 def all_post():
     user_id = session.get('useronline')
     user = User.query.get(user_id)
@@ -266,6 +267,9 @@ def delete_post(post_id):
     post = Post.query.filter_by(posts_id=post_id, post_writer=user_id).first()
 
     if post:
+        # Delete comments associated with the post
+        Comment.query.filter_by(post_commented_on=post.posts_id).delete()
+
         db.session.delete(post)
         db.session.commit()
         flash('Post deleted successfully', 'success')
@@ -284,12 +288,11 @@ def update_post(post_id):
         form = UpdatePostForm()
 
         if request.method == 'POST' and form.validate_on_submit():
-            # Update the post with form data
+
             post.posts_title = form.updated_title.data
             post.posts_content = form.updated_content.data
             post.posts_description = form.updated_description.data
 
-            # Commit the changes to the database
             db.session.commit()
 
             flash('Post updated successfully', 'success')
@@ -308,3 +311,47 @@ def update_post(post_id):
 # @app.route('/cat/')
 # def cat():
 #     return render_template('blogcategoriesbase.html')
+
+
+@app.route('/terms-and-conditions/')
+def terms_conditions():
+    return render_template('user/terms_condition.html')
+
+@app.route('/like_post/<int:post_id>', methods=['POST'])
+def like_post(post_id):
+    # Assume you have the Like model imported and db instance available
+
+    # Retrieve the post and user_id from the session
+    user_id = session.get('useronline')
+    post = Post.query.get(post_id)
+
+    if not user_id:
+        return jsonify({'success': False, 'error': 'User not logged in'})
+
+    if not post:
+        return jsonify({'success': False, 'error': 'Post not found'})
+
+    # Check if the user has already liked the post
+    existing_like = Like.query.filter_by(post_liked=post_id, user_id=user_id).first()
+
+    if existing_like:
+        # User has already liked the post, return current like count
+        return jsonify({'success': True, 'likes': post.posts_likes})
+
+    # Create a new like
+    new_like = Like(post_liked=post_id, like_date=datetime.utcnow(), user_id=user_id)
+    db.session.add(new_like)
+    db.session.commit()
+
+    # Update the post like count
+    post.posts_likes += 1
+    db.session.commit()
+
+    return jsonify({'success': True, 'likes': post.posts_likes})
+
+@app.route('/user_profile/<int:user_id>')
+def user_profile(user_id):
+    user = User.query.get(user_id)
+    posts = Post.query.filter_by(post_writer=user_id).all()
+
+    return render_template('user/profile_page.html', user=user, posts=posts)

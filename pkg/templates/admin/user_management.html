@@ -4,8 +4,77 @@
     <div id="content">
         <div class="content-head">
             <h2 style="font-weight: bold;">
-                USER MANAGEMENT
+                USER & CONTENT MANAGEMENT
             </h2>
+        </div>
+
+        <div class="content-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}" role="alert" style="background-color: plum;">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <table class="table table-bordered table-striped rounded rounded-table" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;">
+                <thead style="background-color: plum !important;">
+                    <tr>
+                        <th style="font-weight: bold;">User ID</th>
+                        <th style="font-weight: bold;">First Name</th>
+                        <th style="font-weight: bold;">Last Name</th>
+                        <th style="font-weight: bold;">Email</th>
+                        <th style="font-weight: bold;">Posts</th>
+                        <th style="font-weight: bold;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user_data_item in user_data %}
+                        <tr>
+                            <td>{{ user_data_item['user'].users_id }}</td>
+                            <td>{{ user_data_item['user'].users_fname }}</td>
+                            <td>{{ user_data_item['user'].users_lname }}</td>
+                            <td>{{ user_data_item['user'].users_email }}</td>
+                            <td>
+                                {% if user_data_item['posts'] %}
+                                    <ul>
+                                        {% for post in user_data_item['posts'] %}
+                                            <li>
+                                                {{ post.posts_title }}
+                                                <form method="post" class="d-inline" action="{{ url_for('admin_delete_post', post_id=post.posts_id) }}" id="delete_post_{{ post.posts_id }}">
+                                                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        Disable Post: {{ post.posts_title }}
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    User doesn't have a post
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="post" class="d-inline" action="{{ url_for('admin_delete_user', user_id=user_data_item['user'].users_id) }}">
+                                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                                    <button type="submit" class="btn btn-sm btn-danger m-2">
+                                        Disable User
+                                    </button>
+                                </form>
+                                <form method="post" class="d-inline" action="{{ url_for('delete_all_posts', user_id=user_data_item['user'].users_id) }}">
+                                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                                    <button type="submit" class="btn btn-sm btn-danger m-2">
+                                        Delete All Posts
+                                    </button>
+                                </form>                                
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}

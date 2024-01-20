@@ -57,3 +57,19 @@
 .right p {
     font-size: 15px;
 }
+
+.bkhm {
+    width: max-content;
+    border: 2px solid plum;
+    padding: 10px;
+    background: plum;
+    border-radius: 10px;
+    text-decoration: none !important;
+    color: #141414 !important;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+}
+
+.bkhm:hover {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    transition: .5s;
+}

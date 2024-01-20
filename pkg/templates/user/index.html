@@ -167,7 +167,7 @@
         <div class="featured">
             {% for post in posts %}
             <div class="top-stories">
-                <img src="{{url_for('static', filename='Images/dessert-pizza-recipes.png')}}" alt="">
+                <img src="{{url_for('static', filename='Images/index-post-cover.png')}}" alt="">
                 <div class="title">
                     <p>
                         <!--TAG GOES IN HERE-->
@@ -265,11 +265,11 @@
         </div>
     </section>
 
-    <!-- <footer>
+    <footer>
         <p>
-            &copy; 2023. Made with &#128156; by B
+            &copy; 2024. Made with &#128156; by B
         </p>
-    </footer> -->
+    </footer>
 
 
 
@@ -332,7 +332,8 @@
                     <!--agreement-->
                     <div class="mb-3 form-check">
                         {{ form.agree(class="form-check-input", id="agree") }}
-                        {{ form.agree.label(class="form-check-label", for="agree") }}
+                        {{ form.agree.label(class="form-check-label", for="agree") }} <br>
+                        <a style="font-size: .7em; color: plum; text-decoration: none; margin: 0; padding: 0;" href="/terms-and-conditions/" target="_blank">Check out the terms and conditions</a>
                     </div>
                     <!--agreement-->
                     

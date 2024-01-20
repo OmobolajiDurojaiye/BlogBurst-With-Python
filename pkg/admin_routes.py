@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request, session, flash
 from pkg import app
-from pkg.models import db,User
+from pkg.models import db, Admin, User, Post, Comment
 from pkg.forms import AdminLoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
 #custom errors
@@ -9,27 +9,30 @@ def not_found_error(error):
     return render_template('page404.html')
 
 
-#adminlogin
+# admin login
 @app.route('/admin/login/', methods=['GET', 'POST'])
 def admin_login():
     form = AdminLoginForm()
 
     if request.method == 'GET':
-        if session.get('adminonline') == None:
+        if session.get('adminonline') is None:
             return render_template('admin/adminlogin.html', form=form)
     else:
-        admin_username =form.username.data.title()
-        admin_password = form.password.data 
-        admin = db.session.query(User).filter(User.users_fname == admin_username).first()
-        if admin != None and admin.users_fname.lower() == "blogburst":
-            saved_pwd = admin.users_password
-            check =  check_password_hash(saved_pwd, admin_password)
-            if check:
-                session['adminonline'] = admin.users_id
-                return redirect('/admin/')
+        admin_username = form.username.data.casefold()
+        admin_password = form.password.data
+        admin = db.session.query(Admin).filter(Admin.admin_username == admin_username).first()
+        if admin is not None:
+            if 'adminonline' not in session:
+                # Password is not hashed in the database, check it without hashing
+                if admin_password == admin.admin_password:
+                    session['adminonline'] = admin.admin_id
+                    return redirect('/admin/')
+                else:
+                    flash("Invalid credentials", category="error")
+                    return redirect('/admin/login/')
             else:
-                flash("Invalid credentials", category="error")
-                return redirect('/admin/login/')
+                flash("Already logged in", category="info")
+                return redirect('/admin/')
         else:
             flash("Invalid credentials", category="error")
             return redirect('/admin/login/')
@@ -40,7 +43,10 @@ def admin_login():
 #admin
 @app.route('/admin/')
 def admin():
-    return render_template('admin/admin.html')
+    users = User.query.all()
+    posts = Post.query.all()
+
+    return render_template('admin/admin.html', users=users, user_count=len(users), posts=posts, post_count=len(posts))
 
 #adminlogout
 @app.route('/adminlogout/')
@@ -49,6 +55,83 @@ def adminlogout():
     return redirect('/admin/login/')
 
 
-@app.route('/admin/user management/')
+@app.route('/admin/user_management/')
 def user_management():
-    return render_template('admin/user_management.html')
+    users = User.query.all()
+
+    # Create a list to store user data with associated posts
+    user_data = []
+
+    for user in users:
+        # Fetch posts for each user
+        posts = Post.query.filter_by(post_writer=user.users_id).all()
+
+        # Append user data with posts to the user_data list
+        user_data.append({'user': user, 'posts': posts})
+
+    return render_template('admin/user_management.html', user_data=user_data)
+
+
+
+@app.route('/admin/delete_user/<int:user_id>', methods=['POST', 'GET'])
+def admin_delete_user(user_id):
+    if request.method == 'GET':
+        flash('Invalid method. Use POST to delete a user.', 'error')
+        return redirect(url_for('user_management'))
+
+    user = User.query.get(user_id)
+    if user:
+        # Delete associated comments first
+        comments = Comment.query.filter_by(user_commented=user_id).all()
+        for comment in comments:
+            db.session.delete(comment)
+
+        db.session.delete(user)
+        db.session.commit()
+        flash('User and associated comments deleted successfully!', 'success')
+    else:
+        flash('User not found!', 'error')
+    return redirect(url_for('user_management'))
+
+
+@app.route('/admin/delete_post/<int:post_id>', methods=['POST', 'GET'])
+def admin_delete_post(post_id):
+    if request.method == 'GET':
+        flash('Invalid method. Use POST to delete a post.', 'error')
+        return redirect(url_for('user_management'))
+
+    post = Post.query.get(post_id)
+    if post:
+        # Delete associated comments first
+        comments = Comment.query.filter_by(post_commented_on=post_id).all()
+        for comment in comments:
+            db.session.delete(comment)
+
+        db.session.delete(post)
+        db.session.commit()
+        flash('Post and associated comments deleted successfully!', 'success')
+    else:
+        flash('Post not found!', 'error')
+    
+    return redirect(url_for('user_management'))
+
+
+@app.route('/admin/delete_all_posts/<int:user_id>', methods=['POST', 'GET'])
+def delete_all_posts(user_id):
+    if request.method == 'GET':
+        flash('Invalid method. Use POST to delete all posts for a user.', 'error')
+        return redirect(url_for('user_management'))
+
+    # Delete all posts for the given user_id
+    posts = Post.query.filter_by(post_writer=user_id).all()
+    for post in posts:
+        # Delete associated comments first
+        comments = Comment.query.filter_by(post_commented_on=post.posts_id).all()
+        for comment in comments:
+            db.session.delete(comment)
+
+        db.session.delete(post)
+
+    db.session.commit()
+    flash('All posts for the user and associated comments deleted successfully!', 'success')
+    return redirect(url_for('user_management'))

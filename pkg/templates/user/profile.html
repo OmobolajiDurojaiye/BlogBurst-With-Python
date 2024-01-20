@@ -33,7 +33,7 @@
                             </svg>
                         </button>
                     </div>
-                    <img src="Images/BB-logo.png" alt="">
+                    <img src="{{url_for('static', filename='icons/user-profile.png')}}" alt="">
                     <p style="color: plum !important;">
                         {{ user.users_fname }} {{ user.user_lname }}
                          <br>
@@ -145,60 +145,60 @@
 
             </div>
 
+        </div>
 
-            <div class="row bb-profile-blogger-additional">
+        <div class="row bb-profile-blogger-additional">
                 
-                <div class="col bb-blogger-panel">
+            <div class="col bb-blogger-panel">
 
-                    <a href="/newpost" title="Add New Post">
-                        <img src="{{url_for('static', filename='icons/bb-add-post.png')}}" height="40" width="40" class="img-fluid">
-                        <p style="color: white; font-size: 0.8em;">
-                            Add New Post
-                        </p>
-                    </a>
-
-                </div>
-
-                <div class="col bb-blogger-panel">
-
-                    <a href="/connect" title="Collaborate">
-                        <img src="{{url_for('static', filename='icons/bb-collaboration.png')}}" height="40" width="40" class="img-fluid">
-                        <p style="color: white; font-size: 0.8em;">
-                            Collaborate
-                        </p>
-                    </a>
-
-                </div>
-
-                <div class="col bb-blogger-panel">
-
-                    <a href="/All Posts/" title="View All Post">
-                        <img src="{{url_for('static', filename='icons/bb-all-posts.png')}}" height="40" width="40" class="img-fluid">
-                        <p style="color: white; font-size: 0.8em;">
-                            All Post
-                        </p>
-                    </a>
-
-                </div>
-
-                <div class="col bb-blogger-panel">
-
-                    <a href="" title="Support & Donate">
-                        <img src="{{url_for('static', filename='icons/bb-donation.png')}}" height="40" width="40" class="img-fluid">
-                        <p style="color: white; font-size: 0.8em;">
-                            Donate
-                        </p>
-                    </a>
-
-                </div>
-
-                <div class="col bb-blogger-panel">
-
-                    <img src="{{url_for('static', filename='Images/BB-logo.png')}}"  height="40" width="40" class="img-fluid">
-
-                </div>
+                <a href="/newpost" title="Add New Post">
+                    <img src="{{url_for('static', filename='icons/bb-add-post.png')}}" height="40" width="40" class="img-fluid">
+                    <p style="color: white; font-size: 0.8em;">
+                        Add New Post
+                    </p>
+                </a>
 
             </div>
+
+            <div class="col bb-blogger-panel">
+
+                <a href="/connect" title="Collaborate">
+                    <img src="{{url_for('static', filename='icons/bb-collaboration.png')}}" height="40" width="40" class="img-fluid">
+                    <p style="color: white; font-size: 0.8em;">
+                        Collaborate
+                    </p>
+                </a>
+
+            </div>
+
+            <div class="col bb-blogger-panel">
+
+                <a href="/all_posts/" title="View All Post">
+                    <img src="{{url_for('static', filename='icons/bb-all-posts.png')}}" height="40" width="40" class="img-fluid">
+                    <p style="color: white; font-size: 0.8em;">
+                        All Post
+                    </p>
+                </a>
+
+            </div>
+
+            <div class="col bb-blogger-panel">
+
+                <a href="" title="Support & Donate">
+                    <img src="{{url_for('static', filename='icons/bb-donation.png')}}" height="40" width="40" class="img-fluid">
+                    <p style="color: white; font-size: 0.8em;">
+                        Donate
+                    </p>
+                </a>
+
+            </div>
+
+            <div class="col bb-blogger-panel">
+
+                <img src="{{url_for('static', filename='Images/BB-logo.png')}}"  height="40" width="40" class="img-fluid">
+
+            </div>
+
         </div>
 
     </div>
