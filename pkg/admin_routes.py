@@ -81,17 +81,23 @@ def admin_delete_user(user_id):
 
     user = User.query.get(user_id)
     if user:
-        # Delete associated comments first
-        comments = Comment.query.filter_by(user_commented=user_id).all()
-        for comment in comments:
-            db.session.delete(comment)
+        # Delete associated posts first
+        posts = Post.query.filter_by(post_writer=user_id).all()
+        for post in posts:
+            # Delete associated comments first
+            comments = Comment.query.filter_by(post_commented_on=post.posts_id).all()
+            for comment in comments:
+                db.session.delete(comment)
+
+            db.session.delete(post)
 
         db.session.delete(user)
         db.session.commit()
-        flash('User and associated comments deleted successfully!', 'success')
+        flash('User and associated posts/comments deleted successfully!', 'success')
     else:
         flash('User not found!', 'error')
     return redirect(url_for('user_management'))
+
 
 
 @app.route('/admin/delete_post/<int:post_id>', methods=['POST', 'GET'])
