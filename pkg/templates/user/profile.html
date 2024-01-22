@@ -52,34 +52,34 @@
                         Bio
                     </h4>
                     <p>
-                        {{bio}}
+                        {{ user.users_bio }}
                     </p>
                 </div>
 
-                <div class="social"> <!-- animate__animated  animate__swing animate__repeat-3 animate__delay-2s-->
+                <div class="social">
                     <div class="icons">
-                        <a href="">
-                            <img src="{{url_for('static', filename='icons/bb-facebook.png')}}" height="20" width="30" class="img-fluid">
+                        <a href="{{ user.facebook_url }}">
+                            <img src="{{ url_for('static', filename='icons/bb-facebook.png') }}" height="20" width="30" class="img-fluid">
                         </a>
                     </div>
                     <div class="icons">
-                        <a href="">
-                            <img src="{{url_for('static', filename='icons/bb-instagram.png')}}" height="20" width="30" class="img-fluid">
+                        <a href="{{ user.instagram_url }}">
+                            <img src="{{ url_for('static', filename='icons/bb-instagram.png') }}" height="20" width="30" class="img-fluid">
                         </a>
                     </div>
                     <div class="icons">
-                        <a href="">
-                            <img src="{{url_for('static', filename='icons/bb-x.png')}}" height="20" width="30" class="img-fluid">
+                        <a href="{{ user.x_url }}">
+                            <img src="{{ url_for('static', filename='icons/bb-x.png') }}" height="20" width="30" class="img-fluid">
                         </a>
                     </div>
                     <div class="icons">
-                        <a href="">
-                            <img src="{{url_for('static', filename='icons/bb-email.png')}}" height="20" width="30" class="img-fluid">
+                        <a href="mailto:{{ user.gmail_url }}">
+                            <img src="{{ url_for('static', filename='icons/bb-email.png') }}" height="20" width="30" class="img-fluid">
                         </a>
                     </div>
                     <div class="icons">
-                        <a href="">
-                            <img src="{{url_for('static', filename='icons/bb-github.png')}}" height="20" width="30" class="img-fluid">
+                        <a href="{{ user.github_url }}">
+                            <img src="{{ url_for('static', filename='icons/bb-github.png') }}" height="20" width="30" class="img-fluid">
                         </a>
                     </div>
                 </div>
@@ -286,7 +286,7 @@
                         {{ form.github.label(class="input-group-text") }}
                     </div>
 
-                    <button type="submit" class="btn bb-btn-plum mt-3">Save Changes</button>
+                    {{ form.submit(class="btn bb-btn-plum mt-3 mb-4") }}
 
                 </form>
 

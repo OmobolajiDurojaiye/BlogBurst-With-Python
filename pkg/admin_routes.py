@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request, session, flash
 from pkg import app
-from pkg.models import db, Admin, User, Post, Comment
+from pkg.models import db, Admin, User, Post, Comment, Like
 from pkg.forms import AdminLoginForm
 from werkzeug.security import generate_password_hash, check_password_hash
 #custom errors
@@ -136,8 +136,47 @@ def delete_all_posts(user_id):
         for comment in comments:
             db.session.delete(comment)
 
+        # Delete associated likes
+        likes = Like.query.filter_by(post_liked=post.posts_id).all()
+        for like in likes:
+            db.session.delete(like)
+
         db.session.delete(post)
 
+    # Commit changes to the database
     db.session.commit()
-    flash('All posts for the user and associated comments deleted successfully!', 'success')
+
+    flash('All posts and associated comments and likes have been deleted.', 'success')
     return redirect(url_for('user_management'))
+
+@app.route('/admin/disable_post/<int:post_id>', methods=['POST'])
+def admin_disable_post(post_id):
+    post = Post.query.get(post_id)
+    if post:
+        # Update the post status to "Disabled"
+        post.posts_status = 'Disabled'
+        post.re_enable_allowed = False  # Disallow re-enabling
+        db.session.commit()
+        flash('Post disabled successfully!', 'success')
+    else:
+        flash('Post not found!', 'error')
+
+    return redirect(url_for('user_management'))
+
+# Example route for enabling a post
+@app.route('/enable_post/<int:post_id>', methods=['POST'])
+def enable_post(post_id):
+    post = Post.query.get(post_id)
+    if post:
+        if post.re_enable_allowed == False:
+            post.posts_status = 'Approved' 
+            db.session.commit()
+            flash('Post re-enabled successfully!', 'success')
+        else:
+            flash('Re-enabling this post is not allowed.', 'error')
+    else:
+        flash('Post not found!', 'error')
+
+    return redirect(url_for('user_management'))
+
+

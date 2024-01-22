@@ -13,6 +13,12 @@ class User(db.Model):
     users_date_of_birth = db.Column(db.Date, nullable=False)
     user_gender = db.Column(db.String(10))
     users_profile_pic = db.Column(db.String(225), nullable=True)
+    users_bio = db.Column(db.String(225), nullable=True)
+    facebook_url = db.Column(db.String(255), nullable=True)
+    instagram_url = db.Column(db.String(255), nullable=True)
+    x_url = db.Column(db.String(255), nullable=True)
+    github_url = db.Column(db.String(255), nullable=True)
+    gmail_url = db.Column(db.String(255), nullable=True)
 
     posts = db.relationship('Post', backref='author')
     comments = db.relationship('Comment', backref='commenter')
@@ -35,11 +41,12 @@ class Post(db.Model):
     posts_title = db.Column(db.String(120), nullable=False)
     posts_content = db.Column(db.Text, nullable=False)
     posts_likes = db.Column(db.Integer, nullable=False, default=0)
-    posts_status = db.Column(db.Enum('Approved', 'Deleted', 'Drafted')) #, nullable=False
+    posts_status = db.Column(db.Enum('Approved', 'Drafted')) #, nullable=False
     posts_pic = db.Column(db.String(255)) #, nullable=False
     post_created_on = db.Column(db.DateTime(), default=datetime.utcnow)
     post_updated_on = db.Column(db.DateTime(), default=datetime.utcnow)
     posts_description = db.Column(db.String(150), nullable=False)
+    re_enable_allowed = db.Column(db.Boolean, default=True, nullable=False)
 
     comments = db.relationship('Comment', backref='post')
     collaborations = db.relationship('Collaboration', backref='collaborated_post')

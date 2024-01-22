@@ -44,6 +44,18 @@
                     </div>
                 {% endif %}
             </div>
+
+            <div class="post_status">
+                <div class="rad mt-3">
+                    <label for="status">Publish</label>
+                    <input type="radio" name="status" value="1" required>
+                </div>
+
+                <div class="rad">
+                    <label for="status">Draft</label>
+                    <input type="radio" name="status" value="0" required>
+                </div>
+            </div>
         
             <div>
                 {{ form.submit(class="btn bb-btn-plum mt-3 mb-4") }}

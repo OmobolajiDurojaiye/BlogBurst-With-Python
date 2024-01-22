@@ -15,7 +15,11 @@
     <div class="profile-pic">
 
         <div class="image-cont">
-            <img class="img-fluid rounded" src="/static/uploads/{{user.users_profile_pic}}" alt="">
+            {% if user.users_profile_pic %}
+            <img class="rounded" src="/static/uploads/{{user.users_profile_pic}}" alt="">
+            {% else %}
+            <img src="{{url_for('static', filename='icons/user-profile.png')}}" alt="">
+            {% endif %}
         </div>
 
     </div>
@@ -32,7 +36,7 @@
 
             <div class="user-bio">
                 <p>
-                    User's bio will be here
+                    {{ user.users_bio }}
                 </p>
             </div>
 

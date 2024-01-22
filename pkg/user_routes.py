@@ -136,7 +136,80 @@ def humor_category():
 #connect
 @app.route('/connect/')
 def connect():
-    return render_template("user/connect.html")
+    user_id = session.get('useronline')
+    all_users = User.query.all()
+    if user_id == None:
+        flash('Please log in first', category='error')
+        return redirect('/login')
+    return render_template("user/connect.html", users=all_users)
+
+
+# @app.route('/profile/', methods=['GET', 'POST'])
+# def profile():
+#     user_id = session.get('useronline')
+#     user = User.query.get(user_id)
+
+#     if user_id == None:
+#         flash('Please log in first', category='error')
+#         return redirect('/login')
+
+#     if user == None:
+#         flash('User not found', category='error')
+#         return redirect('/')
+
+#     form = EditProfileForm()
+
+#     if request.method == 'POST':
+#         if form.validate_on_submit():
+#             first_name = form.first_name.data
+#             last_name = form.last_name.data
+#             bio = form.bio.data
+#             facebook = form.facebook.data
+#             instagram = form.instagram.data
+#             x = form.x.data
+#             github = form.github.data 
+#             gmail = form.email.data
+
+#             user.users_fname = first_name
+#             user.users_lname = last_name
+#             user.users_bio = bio
+#             user.facebook_url = facebook
+#             user.instagram_url = instagram
+#             user.x_url = x
+#             user.github_url = github  
+#             user.gmail_url = gmail
+
+#             db.session.add(user)
+#             db.session.commit()
+#             flash('Profile updated successfully', category='success')
+#             return redirect('/profile/')
+        
+#         db.session.commit()
+#         flash('Profile updated successfully', category='success')
+#             # return redirect('/profile/')
+
+#         dp = request.files.get("dp")
+
+#         if dp and dp.filename != "":
+
+#             filename = dp.filename 
+#             name, ext = os.path.splitext(filename)
+#             allowed = ['.jpg', '.png', '.jpeg']
+            
+#             if ext.lower() in allowed:
+#                 final_name = str(int(random.random() * 100000)) + ext
+#                 dp.save(f"pkg/static/uploads/{final_name}")
+
+#                 user.users_profile_pic = final_name
+#                 db.session.commit()
+#                 flash("Profile picture added", category='success')
+#             else:
+#                 flash("Invalid file type. Please upload a valid image.", category="error")
+
+
+#     user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()
+
+#     return render_template('user/profile.html', form=form, user=user, user_posts=user_posts)  
 
 
 @app.route('/profile/', methods=['GET', 'POST'])
@@ -144,28 +217,52 @@ def profile():
     user_id = session.get('useronline')
     user = User.query.get(user_id)
 
-    if user_id == None:
+    if user_id is None:
         flash('Please log in first', category='error')
         return redirect('/login')
 
-    if user == None:
+    if user is None:
         flash('User not found', category='error')
         return redirect('/')
 
     form = EditProfileForm()
 
     if request.method == 'POST':
+
+        if form.validate_on_submit():
+            first_name = form.first_name.data
+            last_name = form.last_name.data
+            bio = form.bio.data
+            facebook = form.facebook.data
+            instagram = form.instagram.data
+            x = form.x.data
+            github = form.github.data 
+            gmail = form.email.data
+            user = db.session.query(User).get(user_id)
+
+            user.users_fname = first_name
+            user.users_lname = last_name
+            user.users_bio = bio
+            user.facebook_url = facebook
+            user.instagram_url = instagram
+            user.x_url = x
+            user.github_url = github  
+            user.gmail_url = gmail
+
+            db.session.commit()
+            flash('Profile updated successfully', category='success')
+            return redirect('/feed/')
+
         dp = request.files.get("dp")
 
         if dp and dp.filename != "":
-
             filename = dp.filename 
             name, ext = os.path.splitext(filename)
             allowed = ['.jpg', '.png', '.jpeg']
             
             if ext.lower() in allowed:
                 final_name = str(int(random.random() * 100000)) + ext
-                dp.save(f"pkg/static/uploads/{final_name}")
+                dp.save(os.path.join("pkg/static/uploads/", final_name))
 
                 user.users_profile_pic = final_name
                 db.session.commit()
@@ -173,29 +270,9 @@ def profile():
             else:
                 flash("Invalid file type. Please upload a valid image.", category="error")
 
-        if form.validate_on_submit():
-
-            first_name = form.first_name.data
-            last_name = form.last_name.data
-            bio = form.bio.data
-
-            user.users_fname = first_name
-            user.users_lname = last_name
-            user.users_bio = bio
-            user.users_profile_pic = final_name
-
-            db.session.commit()
-            flash('Profile updated successfully', category='success')
-
-            return redirect('/profile/')
-
     user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()
 
     return render_template('user/profile.html', form=form, user=user, user_posts=user_posts)
-
-
-
-
 
 
 
@@ -246,6 +323,7 @@ def create_post():
         post_image = form.post_image.data
         post_content = form.post_content.data
         post_description = form.post_description.data
+        post_status = request.form.get('status')
 
         user_id = session.get('useronline')
 
@@ -253,7 +331,7 @@ def create_post():
             flash('Please log in first', category='error')
             return redirect('/login')
         else:
-            new_post = Post(posts_title=post_title, posts_pic=post_image, posts_content=post_content, posts_description=post_description, post_writer=user_id)
+            new_post = Post(posts_title=post_title, posts_pic=post_image, posts_content=post_content, posts_description=post_description, post_writer=user_id, posts_status=post_status)
             db.session.add(new_post)
             db.session.commit()
 
@@ -301,6 +379,7 @@ def update_post(post_id):
         post.posts_title = form.updated_title.data
         post.posts_description = form.updated_description.data
         post.posts_content = form.updated_content.data
+        post.posts_status = request.form.get('status')
 
         db.session.commit()
 

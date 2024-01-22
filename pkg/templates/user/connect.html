@@ -14,196 +14,32 @@
     <div class="container">
 
         <div class="row bb-connections-wrapper">
+            {% for user in users %}
+                <div class="col-sm-3 connects">
 
-            <div class="col-sm-3 connects">
-
-                <div class="connects-head">
-                    <img src="" alt="Profile-image" class="img-fluid">
-                </div>
-
-                <div class="bb-connect-btns">
-                    <div class="name">
-                        <h5 class="mt-2">
-                            Omobolaji Durojaiye
-                        </h5>
-
-                        <button class="btn bb-btn-plum col-12 mt-2">
-                            Connect
-                        </button>
+                    <div class="connects-head">
+                        <img src="/static/uploads/{{user.users_profile_pic}}" alt="Profile-image" class="img-fluid">
                     </div>
-                </div>
 
-            </div>
+                    <div class="bb-connect-btns">
+                        <div class="name">
+                            <h5 class="mt-2">
+                                <a href="{{ url_for('user_profile', user_id=user.users_id) }}">
+                                    {{ user.users_fname }} {{ user.users_lname }}
+                                </a>
+                            </h5>
 
-            <div class="col-sm-3 connects">
-
-                <div class="connects-head">
-                    <img src="" alt="Profile-image">
-                </div>
-
-                <div class="bb-connect-btns">
-                    <div class="name">
-                        <h5 class="mt-2">
-                            Moat Academy
-                        </h5>
-
-                        <button class="btn bb-btn-plum col-12 mt-2">
-                            Connect
-                        </button>
+                            <button class="btn bb-btn-plum col-12 mt-2">
+                                Connect
+                            </button>
+                        </div>
                     </div>
+
                 </div>
-
-            </div>
-
-            <div class="col-sm-3 connects">
-
-                <div class="connects-head">
-                    <img src="" alt="Profile-image">
-                </div>
-
-                <div class="bb-connect-btns">
-                    <div class="name">
-                        <h5 class="mt-2">
-                            Jonstance Dev Journal
-                        </h5>
-
-                        <button class="btn bb-btn-plum col-12 mt-2">
-                            Connect
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-sm-3 connects">
-
-                <div class="connects-head">
-                    <img src="" alt="Profile-image">
-                </div>
-
-                <div class="bb-connect-btns">
-                    <div class="name">
-                        <h5 class="mt-2">
-                            ConservationsNG
-                        </h5>
-
-                        <button class="btn bb-btn-plum col-12 mt-2">
-                            Connect
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-            
-            <div class="col-sm-3 connects">
-
-                <div class="connects-head">
-                    <img src="" alt="Profile-image">
-                </div>
-
-                <div class="bb-connect-btns">
-                    <div class="name">
-                        <h5 class="mt-2">
-                            DN TV
-                        </h5>
-
-                        <button class="btn bb-btn-plum col-12 mt-2">
-                            Connect
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-sm-3 connects">
-
-                <div class="connects-head">
-                    <img src="" alt="Profile-image">
-                </div>
-
-                <div class="bb-connect-btns">
-                    <div class="name">
-                        <h5 class="mt-2">
-                            Food And Recipe
-                        </h5>
-
-                        <button class="btn bb-btn-plum col-12 mt-2">
-                            Connect
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-sm-3 connects">
-
-                <div class="connects-head">
-                    <img src="" alt="Profile-image">
-                </div>
-
-                <div class="bb-connect-btns">
-                    <div class="name">
-                        <h5 class="mt-2">
-                            Mother Nature
-                        </h5>
-
-                        <button class="btn bb-btn-plum col-12 mt-2">
-                            Connect
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-sm-3 connects">
-
-                <div class="connects-head">
-                    <img src="" alt="Profile-image">
-                </div>
-
-                <div class="bb-connect-btns">
-                    <div class="name">
-                        <h5 class="mt-2">
-                            Web Dev For Rookies
-                        </h5>
-
-                        <button class="btn bb-btn-plum col-12 mt-2">
-                            Connect
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="col-sm-3 connects">
-
-                <div class="connects-head">
-                    <img src="" alt="Profile-image">
-                </div>
-
-                <div class="bb-connect-btns">
-                    <div class="name">
-                        <h5 class="mt-2">
-                            Photography
-                        </h5>
-
-                        <button class="btn bb-btn-plum col-12 mt-2">
-                            Connect
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
+            {% endfor %}
         </div>
 
     </div>
-
-
-
-
-
-
-
-    
 
 {% endblock content %}
     <script src="script/jquery.js"></script>

@@ -40,9 +40,10 @@ class EditProfileForm(FlaskForm):
     facebook = StringField('Facebook @', validators=[URL('Enter a Valid URL')])
     instagram = StringField('Instagram @', validators=[URL('Enter a Valid URL')])
     x = StringField('X @', validators=[URL('Enter a Valid URL')])
-    email = StringField('E-Mail @', validators=[Email()])
     github = StringField('GitHub @', validators=[URL('Enter a Valid URL')])
+    email = StringField('Email @', validators=[Email(message="Enter a Valid Gmail address")])
     image = FileField('Upload Cover', validators=[FileAllowed(['jpg', 'jpeg', 'png'], "we only allow images")])
+    submit = SubmitField('Update Profile')
 
 class UpdateBlogPostForm(FlaskForm):
     updated_title = StringField('Title', validators=[DataRequired()])

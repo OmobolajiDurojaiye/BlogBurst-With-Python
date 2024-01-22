@@ -29,6 +29,7 @@
 
         <div class="row bb-feed-content">
             {% for post, user in posts_with_writer_names %}
+                {% if post.posts_status %}
                 <div class="row bb-posts">
                     <!-- Contains profile pic and profile name -->
                     <div class="col bb-post-head">
@@ -48,6 +49,7 @@
                     <!-- Contains profile pic and profile name -->
 
                     <!-- Contains post content -->
+                    
                     <div class="row bb-post-content">
                         <h2>{{ post.posts_title }}</h2>
                         <p style="color: plum !important;" class="post-time">Posted this day | {{ post.post_created_on }}</p>
@@ -60,6 +62,7 @@
                             {% endif %}
                         </p>
                     </div>
+                    
                     <!-- Contains post content -->
 
                     <!-- Post actions -->
@@ -98,6 +101,7 @@
                     </div>
                     <!-- Post actions ends -->
                 </div>
+                {%endif%}
             {% endfor %}
 
             {% if posts_with_writer_names|length == 0 %}
