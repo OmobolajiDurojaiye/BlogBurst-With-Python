@@ -33,7 +33,11 @@
                             </svg>
                         </button>
                     </div>
+                    {% if user.users_profile_pic %}
+                    <img src="/static/uploads/{{user.users_profile_pic}}" alt="">
+                    {% else %}
                     <img src="{{url_for('static', filename='icons/user-profile.png')}}" alt="">
+                    {% endif %}
                     <p style="color: plum !important;">
                         {{ user.users_fname }} {{ user.user_lname }}
                          <br>
@@ -227,7 +231,7 @@
                             Change Your Profile Picture
                         </p>
                         <div class="img-cont">
-                            <img src="{{user.users_profile_pic}}" alt="">
+                            <img src="/static/uploads/{{user.users_profile_pic}}" alt="">
                         </div>
                         <div class="mb-3 edit-img">
                             <!-- <label for="dp">Upload a Profile Picture</label> -->

@@ -76,7 +76,7 @@ def user_management():
 @app.route('/admin/delete_user/<int:user_id>', methods=['POST', 'GET'])
 def admin_delete_user(user_id):
     if request.method == 'GET':
-        flash('Invalid method. Use POST to delete a user.', 'error')
+        flash("Can't delete!", 'error')
         return redirect(url_for('user_management'))
 
     user = User.query.get(user_id)

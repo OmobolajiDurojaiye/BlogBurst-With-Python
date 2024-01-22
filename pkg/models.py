@@ -74,7 +74,7 @@ class Like(db.Model):
 
     like_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     post_liked = db.Column(db.Integer, db.ForeignKey('posts.posts_id'), nullable=False)
-    like_date = db.Column(db.Date, nullable=False)
+    like_date = db.Column(db.DateTime(), default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.users_id'), nullable=False)
 
 

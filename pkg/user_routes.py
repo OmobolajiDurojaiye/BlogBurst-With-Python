@@ -1,6 +1,7 @@
 from datetime import datetime
 import os, random, string
 from functools import wraps
+from sqlalchemy import func
 from flask import Flask, render_template, url_for, redirect, request, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from pkg import app
@@ -79,6 +80,8 @@ def feed():
 
     return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names, form=form, user=user)
 
+
+
 #categories
 @app.route('/categories/')
 def categories():
@@ -151,11 +154,7 @@ def profile():
 
     form = EditProfileForm()
 
-    if request.method == 'POST' and form.validate_on_submit():
-
-        first_name = form.first_name.data
-        last_name = form.last_name.data
-        bio = form.bio.data
+    if request.method == 'POST':
         dp = request.files.get("dp")
 
         if dp and dp.filename != "":
@@ -169,23 +168,34 @@ def profile():
                 dp.save(f"pkg/static/uploads/{final_name}")
 
                 user.users_profile_pic = final_name
+                db.session.commit()
                 flash("Profile picture added", category='success')
             else:
                 flash("Invalid file type. Please upload a valid image.", category="error")
 
-        user.users_fname = first_name
-        user.users_lname = last_name
-        user.users_bio = bio
-        user.users_profile_pic = final_name
+        if form.validate_on_submit():
 
-        db.session.commit()
-        flash('Profile updated successfully', category='success')
+            first_name = form.first_name.data
+            last_name = form.last_name.data
+            bio = form.bio.data
 
-        return redirect('/profile/')
+            user.users_fname = first_name
+            user.users_lname = last_name
+            user.users_bio = bio
+            user.users_profile_pic = final_name
+
+            db.session.commit()
+            flash('Profile updated successfully', category='success')
+
+            return redirect('/profile/')
 
     user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()
 
     return render_template('user/profile.html', form=form, user=user, user_posts=user_posts)
+
+
+
+
 
 
 
@@ -319,37 +329,37 @@ def update_post(post_id):
 def terms_conditions():
     return render_template('user/terms_condition.html')
 
-@app.route('/like_post/<int:post_id>', methods=['POST'])
-def like_post(post_id):
-    # Assume you have the Like model imported and db instance available
+# @app.route('/like_post/<int:post_id>', methods=['POST'])
+# def like_post(post_id):
+#     # Assume you have the Like model imported and db instance available
 
-    # Retrieve the post and user_id from the session
-    user_id = session.get('useronline')
-    post = Post.query.get(post_id)
+#     # Retrieve the post and user_id from the session
+#     user_id = session.get('useronline')
+#     post = Post.query.get(post_id)
 
-    if not user_id:
-        return jsonify({'success': False, 'error': 'User not logged in'})
+#     if not user_id:
+#         return jsonify({'success': False, 'error': 'User not logged in'})
 
-    if not post:
-        return jsonify({'success': False, 'error': 'Post not found'})
+#     if not post:
+#         return jsonify({'success': False, 'error': 'Post not found'})
 
-    # Check if the user has already liked the post
-    existing_like = Like.query.filter_by(post_liked=post_id, user_id=user_id).first()
+#     # Check if the user has already liked the post
+#     existing_like = Like.query.filter_by(post_liked=post_id, user_id=user_id).first()
 
-    if existing_like:
-        # User has already liked the post, return current like count
-        return jsonify({'success': True, 'likes': post.posts_likes})
+#     if existing_like:
+#         # User has already liked the post, return current like count
+#         return jsonify({'success': True, 'likes': post.posts_likes})
 
-    # Create a new like
-    new_like = Like(post_liked=post_id, like_date=datetime.utcnow(), user_id=user_id)
-    db.session.add(new_like)
-    db.session.commit()
+#     # Create a new like
+#     new_like = Like(post_liked=post_id, like_date=datetime.utcnow(), user_id=user_id)
+#     db.session.add(new_like)
+#     db.session.commit()
 
-    # Update the post like count
-    post.posts_likes += 1
-    db.session.commit()
+#     # Update the post like count
+#     post.posts_likes += 1
+#     db.session.commit()
 
-    return jsonify({'success': True, 'likes': post.posts_likes})
+#     return jsonify({'success': True, 'likes': post.posts_likes})
 
 @app.route('/user_profile/<int:user_id>')
 def user_profile(user_id):
@@ -357,3 +367,39 @@ def user_profile(user_id):
     posts = Post.query.filter_by(post_writer=user_id).all()
 
     return render_template('user/profile_page.html', user=user, posts=posts)
+
+
+@app.route('/like', methods=['POST'])
+def like_post():
+    try:
+        user_id = session.get('useronline')
+        if user_id is None:
+            return jsonify({'error': 'User not logged in'}), 401
+
+        data = request.get_json()
+        # print(f"Received data: {data}")
+        post_id = data.get('post_id')
+
+        if post_id is None:
+            return jsonify({'error': 'Post ID not provided'}), 400
+
+        post = Post.query.get(post_id)
+        if post is None:
+            return jsonify({'error': 'Post not found'}), 404
+
+        existing_like = Like.query.filter_by(user_id=user_id, post_liked=post_id).first()
+        if existing_like:
+            return jsonify({'error': 'User already liked this post'}), 400
+
+        like = Like(user_id=user_id, post_liked=post_id)
+        db.session.add(like)
+        db.session.commit()
+
+        likes_count = Like.query.filter_by(post_liked=post_id).count()
+        return jsonify({'likes_count': likes_count})
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'error': 'An error occurred'}), 500
+
+
