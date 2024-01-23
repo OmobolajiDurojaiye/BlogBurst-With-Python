@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, RadioField, BooleanField, DateField, TextAreaField, FileField
+from wtforms import StringField, PasswordField, SubmitField, RadioField, BooleanField, DateField, TextAreaField, FileField, SelectField
 from wtforms.validators import DataRequired, Email, URL, Length
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 
@@ -27,6 +27,18 @@ class BlogPostForm(FlaskForm):
     post_content = TextAreaField('Post Content', validators=[DataRequired()])
     submit = SubmitField('Post')
     post_description = TextAreaField('Post Description', validators=[DataRequired(), Length(max=100)] )
+    status = RadioField('Status', choices=[('1', 'Publish'), ('0', 'Draft')], validators=[DataRequired()])
+    categories = SelectField('Category', choices=[
+        ('Academic', 'Academic'),
+        ('Technical', 'Technical'),
+        ('Creative', 'Creative'),
+        ('Poetry', 'Poetry'),
+        ('Journalistic', 'Journalistic'),
+        ('Business', 'Business'),
+        ('Food and Recipe', 'Food and Recipe'),
+        ('Nature', 'Nature'),
+        ('Humor', 'Humor'),
+    ], validators=[DataRequired()])
 
 class AdminLoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

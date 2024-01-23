@@ -47,6 +47,7 @@ class Post(db.Model):
     post_updated_on = db.Column(db.DateTime(), default=datetime.utcnow)
     posts_description = db.Column(db.String(150), nullable=False)
     re_enable_allowed = db.Column(db.Boolean, default=True, nullable=False)
+    posts_category = db.Column(db.String(50), nullable=False)
 
     comments = db.relationship('Comment', backref='post')
     collaborations = db.relationship('Collaboration', backref='collaborated_post')

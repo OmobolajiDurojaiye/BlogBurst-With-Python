@@ -87,51 +87,60 @@ def feed():
 def categories():
     return render_template("user/explore.html")
 
-#academic blogs
-@app.route('/categories/Academic Blogs/')
+# academic blogs
+@app.route('/categories/Academic-Blogs')
 def academic_category():
-    posts = Post.query.all()
+    posts = Post.query.filter_by(posts_category='Academic').all()
     return render_template('user/academic_blogs.html', posts=posts)
+
 
 #technical blogs
 @app.route('/categories/Technical Blogs/')
 def technical_category():
-    return render_template('user/technical_blogs.html')
+    posts = Post.query.filter_by(posts_category='Technical').all()
+    return render_template('user/technical_blogs.html', posts=posts)
 
 #creative blogs
 @app.route('/categories/Creative Blogs/')
 def creative_category():
-    return render_template('user/creative_blogs.html')
+    posts = Post.query.filter_by(posts_category='Creative').all()
+    return render_template('user/creative_blogs.html', posts=posts)
 
 #poetry blogs
 @app.route('/categories/Poetic Blogs/')
 def poetry_category():
-    return render_template('user/poetic_blogs.html')
+    posts = Post.query.filter_by(posts_category='Poetry').all()
+    return render_template('user/poetic_blogs.html',posts=posts)
 
 #journalistic blogs
 @app.route('/categories/Journalistic Blogs/')
 def journalistic_category():
-    return render_template('user/journalistic_blogs.html')
+    posts = Post.query.filter_by(posts_category='Journalistic').all()
+    return render_template('user/journalistic_blogs.html', posts=posts)
 
 #business blogs
 @app.route('/categories/Business Blogs/')
 def business_category():
-    return render_template('user/business_blogs.html')
+    posts = Post.query.filter_by(posts_category='Business').all()
+    return render_template('user/business_blogs.html', posts=posts)
 
 #Food and Recipe blogs
 @app.route('/categories/Food-and-recipe Blogs/')
 def Food_category():
-    return render_template('user/Food-and-recipe_blogs.html')
+    posts = Post.query.filter_by(posts_category='Food and Recipe').all()
+    return render_template('user/Food-and-recipe_blogs.html',posts=posts)
 
 #nature blogs
 @app.route('/categories/Nature Blogs/')
 def nature_category():
-    return render_template('user/nature_blogs.html')
+    posts = Post.query.filter_by(posts_category='Nature').all()
+    return render_template('user/nature_blogs.html', posts=posts)
 
 #humor blogs
 @app.route('/categories/Humor Blogs/')
 def humor_category():
-    return render_template('user/humor_blogs.html')
+    posts = Post.query.filter_by(posts_category='Humor').all()
+    return render_template('user/humor_blogs.html', posts=posts)
 
 #connect
 @app.route('/connect/')
@@ -178,7 +187,6 @@ def connect():
 #             user.x_url = x
 #             user.github_url = github  
 #             user.gmail_url = gmail
-
 #             db.session.add(user)
 #             db.session.commit()
 #             flash('Profile updated successfully', category='success')
@@ -238,7 +246,7 @@ def profile():
             x = form.x.data
             github = form.github.data 
             gmail = form.email.data
-            user = db.session.query(User).get(user_id)
+            # user = db.session.query(User).get(user_id)
 
             user.users_fname = first_name
             user.users_lname = last_name
@@ -249,26 +257,25 @@ def profile():
             user.github_url = github  
             user.gmail_url = gmail
 
+            dp = request.files.get("dp")
+
+            if dp and dp.filename != "":
+                filename = dp.filename 
+                name, ext = os.path.splitext(filename)
+                allowed = ['.jpg', '.png', '.jpeg']
+                
+                if ext.lower() in allowed:
+                    final_name = str(int(random.random() * 100000)) + ext
+                    dp.save(os.path.join("pkg/static/uploads/", final_name))
+
+                    user.users_profile_pic = final_name
+                    flash("Profile picture added", category='success')
+                else:
+                    flash("Invalid file type. Please upload a valid image.", category="error")
+
             db.session.commit()
             flash('Profile updated successfully', category='success')
             return redirect('/feed/')
-
-        dp = request.files.get("dp")
-
-        if dp and dp.filename != "":
-            filename = dp.filename 
-            name, ext = os.path.splitext(filename)
-            allowed = ['.jpg', '.png', '.jpeg']
-            
-            if ext.lower() in allowed:
-                final_name = str(int(random.random() * 100000)) + ext
-                dp.save(os.path.join("pkg/static/uploads/", final_name))
-
-                user.users_profile_pic = final_name
-                db.session.commit()
-                flash("Profile picture added", category='success')
-            else:
-                flash("Invalid file type. Please upload a valid image.", category="error")
 
     user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()
 
@@ -323,7 +330,8 @@ def create_post():
         post_image = form.post_image.data
         post_content = form.post_content.data
         post_description = form.post_description.data
-        post_status = request.form.get('status')
+        post_status = form.status.data
+        post_category = form.categories.data
 
         user_id = session.get('useronline')
 
@@ -331,7 +339,15 @@ def create_post():
             flash('Please log in first', category='error')
             return redirect('/login')
         else:
-            new_post = Post(posts_title=post_title, posts_pic=post_image, posts_content=post_content, posts_description=post_description, post_writer=user_id, posts_status=post_status)
+            new_post = Post(
+                posts_title=post_title,
+                posts_pic=post_image,
+                posts_content=post_content,
+                posts_description=post_description,
+                post_writer=user_id,
+                posts_status=post_status,
+                posts_category=post_category
+            )
             db.session.add(new_post)
             db.session.commit()
 
@@ -482,3 +498,4 @@ def like_post():
         return jsonify({'error': 'An error occurred'}), 500
 
 
+#Category

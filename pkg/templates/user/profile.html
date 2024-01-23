@@ -231,7 +231,11 @@
                             Change Your Profile Picture
                         </p>
                         <div class="img-cont">
+                            {% if user.users_profile_pic %}
                             <img src="/static/uploads/{{user.users_profile_pic}}" alt="">
+                            {% else %}
+                            <img src="{{url_for('static', filename='icons/user-profile.png')}}" alt="">
+                            {% endif %}
                         </div>
                         <div class="mb-3 edit-img">
                             <!-- <label for="dp">Upload a Profile Picture</label> -->

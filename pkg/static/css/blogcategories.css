@@ -21,3 +21,9 @@ body {
     border: 2px solid black !important;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+
+.main {
+    position: relative;
+    left: 50% !important;
+    border: 2px solid red;
+}

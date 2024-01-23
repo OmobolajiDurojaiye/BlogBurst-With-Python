@@ -41,8 +41,9 @@ body {
 .connects {
     padding: 20px;
     /* width: 25% !important; */
-    /* height: 50vh !important; */
-    margin: 5px !important;
+    /* height: 70vh !important; */
+    margin: 2px !important;
+    height: max-content;
     border: 2px solid black;
     border-radius: 10px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -59,16 +60,21 @@ body {
 } */
 
 .connects-head {
-    height: 30vh;
-    border-bottom: 1px solid plum;
+    height: max-content;
+    /* border: 3px solid red; */
+    /* border-bottom: 1px solid plum; */
 }
 
 .connects-head img {
     width: 100%;
-    height: inherit;
+    height: max-content;
+    /* padding: 20px; */
 }
 
 .bb-connect-btns {
+    position: relative;
+    /* top: 2vh; */
+    height: max-content;
     display: flex;
     flex-direction: column;
     justify-content: center;
