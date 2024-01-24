@@ -95,6 +95,19 @@ class Admin(db.Model):
     admin_last_login = db.Column(db.DateTime(), default=datetime.utcnow)
 
 
+    announcements = db.relationship('Announcement', backref='admin', foreign_keys='Announcement.admin_id')
+
+
+class Announcement(db.Model):
+    __tablename__ = 'announcements'
+
+    announcement_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    admin_id = db.Column(db.Integer, db.ForeignKey('admin.admin_id'), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    announcement_date = db.Column(db.DateTime(), default=datetime.utcnow)
+
+
+
 class Connection(db.Model):
 
     __tablename__ = 'connections'

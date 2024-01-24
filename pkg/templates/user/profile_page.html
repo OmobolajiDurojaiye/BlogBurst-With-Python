@@ -60,7 +60,7 @@
                 <li style="display: flex; justify-content: space-between;">
                     {{ post.posts_title }}
                     <span>
-                        <a href="{#{{ url_for('read_post', post_id=post.posts_id) }}#}">
+                        <a href="{{ url_for('post_detail', post_id=post.posts_id) }}">
                             <button class="btn btn-success btn-sm" data-bs-toggle="tooltip" title="Read">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-book-fill" viewBox="0 0 16 16">

@@ -17,7 +17,7 @@
     </div>
 
     <div class="container bb-addpost-section mt-3">
-        <form action="/newpost" method="post">
+        <form action="/newpost" method="post" enctype="multipart/form-data">
 
             {{ form.csrf_token }}
 
@@ -27,13 +27,13 @@
             </div>
 
             <div class="mt-4">
-                {{ form.post_image.label(class="form-label") }}
+                {#{{ form.post_image.label(class="form-label") }}
                 {{ form.post_image(class="form-control", style="color: black !important; font-weight: light; width: 40%;") }}
                 {% if form.post_image.errors %}
                 <div class="alert alert-danger">
                     {{ form.post_image.errors[0] }}
                 </div>
-                {% endif %}
+                {% endif %}#}
             </div>
 
             <div class="postdescription mt-4">
@@ -100,7 +100,7 @@
                 {{ form.categories.label(class="form-label", style="color: plum !important; font-weight: bold;") }}
                 <select name="categories" class="form-control" style="color: plum !important; font-weight: bold;">
                     {% for category in form.categories.choices %}
-                        <option style="color: black; font-weight: bolder;" value="{{ category[0] }}">{{ category[1] }}</option>
+                        <option style="color: black !important; font-weight: bolder;" value="{{ category[0] }}">{{ category[1] }}</option>
                     {% endfor %}
                 </select>
             </div>

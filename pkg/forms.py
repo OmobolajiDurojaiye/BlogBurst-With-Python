@@ -66,3 +66,6 @@ class UpdateBlogPostForm(FlaskForm):
 class CommentForm(FlaskForm):
     comment_content = StringField('What Do You Think', validators=[DataRequired()])
     submit = SubmitField('Comment')
+
+class AnnouncementForm(FlaskForm):
+    message = TextAreaField('Message', validators=[DataRequired()])

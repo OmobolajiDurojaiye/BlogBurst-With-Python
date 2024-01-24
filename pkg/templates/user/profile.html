@@ -95,12 +95,16 @@
                 </div>
 
                 <div class="inbox">
-
-                    <p style="position: relative; top: 5vh;">
-                        No notification at the moment, Check Later
-                    </p>
-
-                </div>
+                    {% if announcements %}
+                        {% for announcement in announcements %}
+                            <p style="position: relative; top: 2vh; background-color: plum; padding: 10px; border-radius: 10px;">
+                                <span style="color: #141414 !important;">{{ announcement.message }}</span> <br><span style="color: rgb(170, 49, 49) !important;">sent-</span> <i>{{ announcement.announcement_date }}</i>
+                            </p>
+                        {% endfor %}
+                    {% else %}
+                        <p style="position: relative; top: 2vh;">No notifications at the moment. Check later.</p>
+                    {% endif %}
+                </div>                
 
             </div>
 
@@ -169,7 +173,7 @@
                 <a href="/connect" title="Collaborate">
                     <img src="{{url_for('static', filename='icons/bb-collaboration.png')}}" height="40" width="40" class="img-fluid">
                     <p style="color: white; font-size: 0.8em;">
-                        Collaborate
+                        Connect
                     </p>
                 </a>
 

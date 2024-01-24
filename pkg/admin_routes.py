@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, redirect, request, session, flash
 from pkg import app
-from pkg.models import db, Admin, User, Post, Comment, Like
-from pkg.forms import AdminLoginForm
+from pkg.models import db, Admin, User, Post, Comment, Like, Announcement
+from pkg.forms import AdminLoginForm, AnnouncementForm
 from werkzeug.security import generate_password_hash, check_password_hash
 #custom errors
 @app.errorhandler(404)
@@ -15,24 +15,15 @@ def admin_login():
     form = AdminLoginForm()
 
     if request.method == 'GET':
-        if session.get('adminonline') is None:
-            return render_template('admin/adminlogin.html', form=form)
+        return render_template('admin/adminlogin.html', form=form)
     else:
-        admin_username = form.username.data.casefold()
+        admin_username = form.username.data
         admin_password = form.password.data
         admin = db.session.query(Admin).filter(Admin.admin_username == admin_username).first()
-        if admin is not None:
-            if 'adminonline' not in session:
-                # Password is not hashed in the database, check it without hashing
-                if admin_password == admin.admin_password:
-                    session['adminonline'] = admin.admin_id
-                    return redirect('/admin/')
-                else:
-                    flash("Invalid credentials", category="error")
-                    return redirect('/admin/login/')
-            else:
-                flash("Already logged in", category="info")
-                return redirect('/admin/')
+        if admin != None  and admin_password == admin.admin_password:
+            session['adminonline'] = admin.admin_id
+            flash("Welcome", category="success")
+            return redirect('/admin/')
         else:
             flash("Invalid credentials", category="error")
             return redirect('/admin/login/')
@@ -45,8 +36,15 @@ def admin_login():
 def admin():
     users = User.query.all()
     posts = Post.query.all()
+    id = session.get('adminonline')
 
-    return render_template('admin/admin.html', users=users, user_count=len(users), posts=posts, post_count=len(posts))
+    if id == None:
+        return render_template('admin/admin.html', users=users, user_count=len(users), posts=posts, post_count=len(posts))
+
+    if request.method == 'GET':
+       return render_template('admin/admin.html', users=users, user_count=len(users), posts=posts, post_count=len(posts))
+    else:
+        return redirect('/admin/')
 
 #adminlogout
 @app.route('/adminlogout/')
@@ -57,6 +55,7 @@ def adminlogout():
 
 @app.route('/admin/user_management/')
 def user_management():
+    
     users = User.query.all()
 
     # Create a list to store user data with associated posts
@@ -180,3 +179,27 @@ def enable_post(post_id):
     return redirect(url_for('user_management'))
 
 
+@app.route('/admin/announcements/', methods=['GET', 'POST'])
+def admin_announcements():
+    form = AnnouncementForm()
+
+    if form.validate_on_submit():
+        new_announcement = Announcement(
+            admin_id=session.get('adminonline'),
+            message=form.message.data
+        )
+        db.session.add(new_announcement)
+        db.session.commit()
+        # flash('Announcement created successfully', 'success')
+        return redirect(url_for('admin_announcements'))
+
+    announcements = Announcement.query.all()
+    return render_template('admin/announcement.html', form=form, announcements=announcements)
+
+@app.route('/admin/announcements/delete/<int:id>', methods=['POST'])
+def delete_announcement(id):
+    announcement = Announcement.query.get_or_404(id)
+    db.session.delete(announcement)
+    db.session.commit()
+    # flash('Announcement deleted successfully', 'success')
+    return redirect(url_for('admin_announcements'))

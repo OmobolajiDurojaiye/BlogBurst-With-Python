@@ -5,7 +5,7 @@ from sqlalchemy import func
 from flask import Flask, render_template, url_for, redirect, request, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from pkg import app
-from pkg.models import db, Post, User, Comment, Like
+from pkg.models import db, Post, User, Comment, Like, Announcement
 from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, EditProfileForm, UpdateBlogPostForm, CommentForm
 
 #custom errors
@@ -43,7 +43,7 @@ def index():
         db.session.commit()
 
         session["useronline"] = user.users_id  
-        return redirect('/index/')
+        return redirect('/login/')
 
     return render_template('user/index.html', form=form, posts=posts)    
 
@@ -129,6 +129,12 @@ def business_category():
 def Food_category():
     posts = Post.query.filter_by(posts_category='Food and Recipe').all()
     return render_template('user/Food-and-recipe_blogs.html',posts=posts)
+
+@app.route('/post/<int:post_id>')
+def post_detail(post_id):  # Change parameter name to post_id
+    post = Post.query.get_or_404(post_id)
+    return render_template('user/post_detail.html', post=post)
+
 
 #nature blogs
 @app.route('/categories/Nature Blogs/')
@@ -235,7 +241,30 @@ def profile():
 
     form = EditProfileForm()
 
+    announcements = Announcement.query.all()
+
     if request.method == 'POST':
+        oldpix = user.users_profile_pic
+        dp = request.files.get("dp")
+
+        if dp and dp.filename != "":
+            filename = dp.filename 
+            name, ext = os.path.splitext(filename)
+            allowed = ['.jpg', '.png', '.jpeg']
+            
+            if ext.lower() in allowed:
+                final_name = str(int(random.random() * 100000)) + ext
+                dp.save(os.path.join("pkg/static/uploads/", final_name))
+
+                user.users_profile_pic = final_name
+                db.session.commit()
+                try:
+                    os.remove(f"pkg/static/uploads/{oldpix}")
+                except:
+                    pass
+                flash("Profile picture added", category='success')
+            else:
+                flash("Invalid file type. Please upload a valid image.", category="error")
 
         if form.validate_on_submit():
             first_name = form.first_name.data
@@ -256,22 +285,7 @@ def profile():
             user.x_url = x
             user.github_url = github  
             user.gmail_url = gmail
-
-            dp = request.files.get("dp")
-
-            if dp and dp.filename != "":
-                filename = dp.filename 
-                name, ext = os.path.splitext(filename)
-                allowed = ['.jpg', '.png', '.jpeg']
-                
-                if ext.lower() in allowed:
-                    final_name = str(int(random.random() * 100000)) + ext
-                    dp.save(os.path.join("pkg/static/uploads/", final_name))
-
-                    user.users_profile_pic = final_name
-                    flash("Profile picture added", category='success')
-                else:
-                    flash("Invalid file type. Please upload a valid image.", category="error")
+                    
 
             db.session.commit()
             flash('Profile updated successfully', category='success')
@@ -279,7 +293,7 @@ def profile():
 
     user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()
 
-    return render_template('user/profile.html', form=form, user=user, user_posts=user_posts)
+    return render_template('user/profile.html', form=form, user=user, user_posts=user_posts, announcements=announcements)
 
 
 
@@ -462,40 +476,5 @@ def user_profile(user_id):
     posts = Post.query.filter_by(post_writer=user_id).all()
 
     return render_template('user/profile_page.html', user=user, posts=posts)
-
-
-@app.route('/like', methods=['POST'])
-def like_post():
-    try:
-        user_id = session.get('useronline')
-        if user_id is None:
-            return jsonify({'error': 'User not logged in'}), 401
-
-        data = request.get_json()
-        # print(f"Received data: {data}")
-        post_id = data.get('post_id')
-
-        if post_id is None:
-            return jsonify({'error': 'Post ID not provided'}), 400
-
-        post = Post.query.get(post_id)
-        if post is None:
-            return jsonify({'error': 'Post not found'}), 404
-
-        existing_like = Like.query.filter_by(user_id=user_id, post_liked=post_id).first()
-        if existing_like:
-            return jsonify({'error': 'User already liked this post'}), 400
-
-        like = Like(user_id=user_id, post_liked=post_id)
-        db.session.add(like)
-        db.session.commit()
-
-        likes_count = Like.query.filter_by(post_liked=post_id).count()
-        return jsonify({'likes_count': likes_count})
-
-    except Exception as e:
-        print(f"Error: {e}")
-        return jsonify({'error': 'An error occurred'}), 500
-
 
 #Category

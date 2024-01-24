@@ -2,6 +2,17 @@
 
 {% block content %}
     <div id="content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}" role="alert" style="background-color: plum;">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+        {% endwith %}
         <div class="content-head">
             <h2 style="font-weight: bold;">WELCOME ADMIN</h2>
         </div>

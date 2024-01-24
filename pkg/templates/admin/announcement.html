@@ -1,0 +1,32 @@
+{% extends "admin/admin_layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2 class="mb-4">Announcements</h2>
+
+        {% for announcement in announcements %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p class="card-text" style="color: #141414 !important;">{{ announcement.message }}</p>
+                    <p class="card-text" style="color: #141414 !important;"><small class="text-muted">{{ announcement.announcement_date }}</small></p>
+                    <form method="post" action="{{ url_for('delete_announcement', id=announcement.announcement_id) }}">
+                        {{ form.hidden_tag() }}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+
+        <form method="post" action="{{ url_for('admin_announcements') }}" class="mb-4">
+            {{ form.hidden_tag() }}
+            <div class="mb-4">
+                {{ form.message.label(class="form-control-label", style="font-weight: bolder; color: white !important;") }}
+                {{ form.message(class="form-control", style="font-weight: bolder;") }}
+                {% if form.message.errors %}
+                    <div class="alert alert-danger mt-2">{{ form.message.errors[0] }}</div>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn" style="background: plum !important; font-weight: bolder;">Send Announcement</button>
+        </form>
+    </div>
+{% endblock %}
