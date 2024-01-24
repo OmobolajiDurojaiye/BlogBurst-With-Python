@@ -3,6 +3,7 @@ import os, random, string
 from functools import wraps
 from sqlalchemy import func
 from flask import Flask, render_template, url_for, redirect, request, session, flash, jsonify
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from pkg import app
 from pkg.models import db, Post, User, Comment, Like, Announcement
@@ -12,6 +13,13 @@ from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, EditProfileForm
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('page404.html')
+
+
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 
 # homepage
@@ -225,6 +233,50 @@ def connect():
 
 #     return render_template('user/profile.html', form=form, user=user, user_posts=user_posts)  
 
+from flask import render_template, redirect, url_for
+
+@app.route('/changedp/', methods=['GET', 'POST'])
+def change_dp():
+    user_id = session.get('useronline')
+    user = User.query.get(user_id)
+
+    if user_id is None:
+        flash('Please log in first', category='error')
+        return redirect('/login')
+
+    if user is None:
+        flash('User not found', category='error')
+        return redirect('/')
+
+    if request.method == 'POST':
+        oldpix = user.users_profile_pic
+        dp = request.files.get("dp")
+
+        if dp and dp.filename != "":
+            filename = dp.filename 
+            name, ext = os.path.splitext(filename)
+            allowed = ['.jpg', '.png', '.jpeg']
+            
+            if ext.lower() in allowed:
+                final_name = str(int(random.random() * 100000)) + ext
+                dp.save(os.path.join("pkg/static/uploads/", final_name))
+
+                user.users_profile_pic = final_name
+                db.session.commit()
+
+                try:
+                    os.remove(f"pkg/static/uploads/{oldpix}")
+                except:
+                    pass
+
+                flash("Profile picture added", category='success')
+                return redirect(url_for('profile'))  # Redirect to the user's profile page
+            else:
+                flash("Invalid file type. Please upload a valid image.", category="error")
+
+    return render_template('user/profile.html')
+
+
 
 @app.route('/profile/', methods=['GET', 'POST'])
 def profile():
@@ -244,47 +296,16 @@ def profile():
     announcements = Announcement.query.all()
 
     if request.method == 'POST':
-        oldpix = user.users_profile_pic
-        dp = request.files.get("dp")
-
-        if dp and dp.filename != "":
-            filename = dp.filename 
-            name, ext = os.path.splitext(filename)
-            allowed = ['.jpg', '.png', '.jpeg']
-            
-            if ext.lower() in allowed:
-                final_name = str(int(random.random() * 100000)) + ext
-                dp.save(os.path.join("pkg/static/uploads/", final_name))
-
-                user.users_profile_pic = final_name
-                db.session.commit()
-                try:
-                    os.remove(f"pkg/static/uploads/{oldpix}")
-                except:
-                    pass
-                flash("Profile picture added", category='success')
-            else:
-                flash("Invalid file type. Please upload a valid image.", category="error")
 
         if form.validate_on_submit():
-            first_name = form.first_name.data
-            last_name = form.last_name.data
-            bio = form.bio.data
-            facebook = form.facebook.data
-            instagram = form.instagram.data
-            x = form.x.data
-            github = form.github.data 
-            gmail = form.email.data
-            # user = db.session.query(User).get(user_id)
-
-            user.users_fname = first_name
-            user.users_lname = last_name
-            user.users_bio = bio
-            user.facebook_url = facebook
-            user.instagram_url = instagram
-            user.x_url = x
-            user.github_url = github  
-            user.gmail_url = gmail
+            user.users_fname = form.first_name.data
+            user.users_lname = form.last_name.data
+            user.users_bio = form.bio.data
+            user.facebook_url = form.facebook.data
+            user.instagram_url = form.instagram.data
+            user.x_url = form.x.data
+            user.github_url = form.github.data
+            user.gmail_url = form.email.data
                     
 
             db.session.commit()
@@ -334,14 +355,49 @@ def logout():
     flash('You have been successfully logged out. Get back soon', 'danger')
     return redirect('/login/')
     
-#add new post
+# #add new post
+# @app.route('/newpost/', methods=['GET', 'POST'])
+# def create_post():
+#     form = BlogPostForm()
+
+#     if form.validate_on_submit():
+#         post_title = form.post_title.data
+#         post_image = form.post_image.data
+#         post_content = form.post_content.data
+#         post_description = form.post_description.data
+#         post_status = form.status.data
+#         post_category = form.categories.data
+
+#         user_id = session.get('useronline')
+
+#         if user_id is None:
+#             flash('Please log in first', category='error')
+#             return redirect('/login')
+#         else:
+#             new_post = Post(
+#                 posts_title=post_title,
+#                 posts_pic=post_image,
+#                 posts_content=post_content,
+#                 posts_description=post_description,
+#                 post_writer=user_id,
+#                 posts_status=post_status,
+#                 posts_category=post_category
+#             )
+#             db.session.add(new_post)
+#             db.session.commit()
+
+#         return redirect("/feed/")
+#     else:
+#         return render_template('user/newpost.html', form=form)
+
+
+
 @app.route('/newpost/', methods=['GET', 'POST'])
 def create_post():
     form = BlogPostForm()
 
     if form.validate_on_submit():
         post_title = form.post_title.data
-        post_image = form.post_image.data
         post_content = form.post_content.data
         post_description = form.post_description.data
         post_status = form.status.data
@@ -352,22 +408,42 @@ def create_post():
         if user_id is None:
             flash('Please log in first', category='error')
             return redirect('/login')
-        else:
-            new_post = Post(
-                posts_title=post_title,
-                posts_pic=post_image,
-                posts_content=post_content,
-                posts_description=post_description,
-                post_writer=user_id,
-                posts_status=post_status,
-                posts_category=post_category
-            )
-            db.session.add(new_post)
-            db.session.commit()
 
-        return redirect("/feed/")
-    else:
-        return render_template('user/newpost.html', form=form)
+        # Check if a file is provided
+        if 'post_image' in request.files:
+            post_image = request.files['post_image']
+            
+            # Validate file type
+            if post_image and allowed_file(post_image.filename):
+                # Securely save the filename
+                filename = secure_filename(post_image.filename)
+                
+                # Save the file to the specified directory
+                final_name = os.path.join("pkg/static/postsimgs/", filename)
+                post_image.save(final_name)
+
+                new_post = Post(
+                    posts_title=post_title,
+                    posts_pic=filename,  # Store only the filename in the database
+                    posts_content=post_content,
+                    posts_description=post_description,
+                    post_writer=user_id,
+                    posts_status=post_status,
+                    posts_category=post_category
+                )
+
+                db.session.add(new_post)
+                db.session.commit()
+
+                return redirect("/feed/")
+            else:
+                flash('Invalid file type. Please upload a valid image (jpg, jpeg, or png).', category='error')
+                return redirect(request.url)
+
+    return render_template('user/newpost.html', form=form)
+
+
+
 
 
 @app.route('/all_posts/')

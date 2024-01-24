@@ -22,8 +22,8 @@ class RegistrationForm(FlaskForm):
 
 
 class BlogPostForm(FlaskForm):
-    post_title = StringField('Blog Title', validators=[DataRequired()])
-    post_image = FileField('Add Image')
+    post_title = StringField('Blog Title', validators=[DataRequired(), Length(max=200)])
+    post_image = FileField('Add Image', validators=[FileAllowed(['jpg', 'jpeg', 'png'], "we only allow images")])
     post_content = TextAreaField('Post Content', validators=[DataRequired()])
     submit = SubmitField('Post')
     post_description = TextAreaField('Post Description', validators=[DataRequired(), Length(max=100)] )
@@ -54,7 +54,7 @@ class EditProfileForm(FlaskForm):
     x = StringField('X @', validators=[URL('Enter a Valid URL')])
     github = StringField('GitHub @', validators=[URL('Enter a Valid URL')])
     email = StringField('Email @', validators=[Email(message="Enter a Valid Gmail address")])
-    image = FileField('Upload Cover', validators=[FileAllowed(['jpg', 'jpeg', 'png'], "we only allow images")])
+    # image = FileField('Upload Cover', validators=[FileAllowed(['jpg', 'jpeg', 'png'], "we only allow images")])
     submit = SubmitField('Update Profile')
 
 class UpdateBlogPostForm(FlaskForm):

@@ -33,11 +33,20 @@
                             </svg>
                         </button>
                     </div>
+
                     {% if user.users_profile_pic %}
                     <img src="/static/uploads/{{user.users_profile_pic}}" alt="">
                     {% else %}
                     <img src="{{url_for('static', filename='icons/user-profile.png')}}" alt="">
                     {% endif %}
+                    <div class="changedp">
+                        <button type="button" class="btn btn-small bb-btn-plum" data-bs-toggle="modal" data-bs-target="#changedpModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-image" viewBox="0 0 16 16">
+                                <path d="M8.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8l-2.083-2.083a.5.5 0 0 0-.76.063L8 11 5.835 9.7a.5.5 0 0 0-.611.076L3 12z"/>
+                            </svg>
+                        </button>
+                    </div>
                     <p style="color: plum !important;">
                         {{ user.users_fname }} {{ user.user_lname }}
                          <br>
@@ -211,6 +220,45 @@
 
     </div>
 
+    <!-- Change DP Modal -->
+    <div class="modal fade" id="changedpModal" tabindex="-1" aria-labelledby="changedpModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background-color: #141414 !important;">
+                <form method="post" action="{{ url_for('change_dp') }}" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="changedpModalLabel">Change Profile Picture</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+                        <div class="profile-edit-img m-5">
+                            <p class="mt-4" style="text-align: center; color: white;">
+                                Change Your Profile Picture
+                            </p>
+                            <div class="img-cont">
+                                {% if user.users_profile_pic %}
+                                    <img src="/static/uploads/{{ user.users_profile_pic }}" alt="">
+                                {% else %}
+                                    <img src="{{ url_for('static', filename='icons/user-profile.png') }}" alt="">
+                                {% endif %}
+                            </div>
+                            <div class="mb-3 edit-img">
+                                <input id="profile-pic" name="dp" required type="file">
+                            </div>
+                            <button type="submit" class="mt-4 btn bb-btn-plum">Update Picture</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>    
+    
+    <!--Change DP Modal Ends Here-->
+
+
     <!-- Modal -->
     <div class="modal fade" id="editprofileModal" tabindex="-1" aria-labelledby="editprofileModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -230,7 +278,7 @@
 
                     {{ form.csrf_token }}
 
-                    <div class="profile-edit-img m-5">
+                    {#<div class="profile-edit-img m-5">
                         <p class="mt-4" style="text-align: center; color: white;">
                             Change Your Profile Picture
                         </p>
@@ -245,7 +293,7 @@
                             <!-- <label for="dp">Upload a Profile Picture</label> -->
                             <input id="profile-pic" name="dp" required type="file">
                         </div>
-                    </div>
+                    </div>#}
 
                     <div class="input-group mb-3 bb-settings-modal">
                         {{ form.first_name.label(class="input-group-text") }}

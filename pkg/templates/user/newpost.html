@@ -27,13 +27,13 @@
             </div>
 
             <div class="mt-4">
-                {#{{ form.post_image.label(class="form-label") }}
+                {{ form.post_image.label(class="form-label") }}
                 {{ form.post_image(class="form-control", style="color: black !important; font-weight: light; width: 40%;") }}
                 {% if form.post_image.errors %}
                 <div class="alert alert-danger">
                     {{ form.post_image.errors[0] }}
                 </div>
-                {% endif %}#}
+                {% endif %}
             </div>
 
             <div class="postdescription mt-4">

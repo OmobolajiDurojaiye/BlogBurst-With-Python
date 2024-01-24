@@ -167,11 +167,14 @@
         <div class="featured">
             {% for post in posts %}
             <div class="top-stories">
-                <img src="{{url_for('static', filename='Images/index-post-cover.png')}}" alt="">
+                <div class="img">
+                    {% if post.posts_pic %}
+                    <img src="{{ url_for('static', filename='postsimgs/' + post.posts_pic) }}" alt="Post Image" style="width: 100%; height: 30vh !important;">
+                    {% else %}
+                        <img src="{{url_for('static', filename='Images/index-post-cover.png')}}" alt="">    
+                    {% endif %}
+                </div>
                 <div class="title">
-                    <p>
-                        <!--TAG GOES IN HERE-->
-                    </p>
                     <a href="{{ url_for('post_detail', post_id=post.posts_id) }}">
                         {{post.posts_title}}
                     </a>

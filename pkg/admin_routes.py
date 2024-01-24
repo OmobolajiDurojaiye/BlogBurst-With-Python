@@ -190,7 +190,7 @@ def admin_announcements():
         )
         db.session.add(new_announcement)
         db.session.commit()
-        # flash('Announcement created successfully', 'success')
+        flash('Announcement created successfully', 'success')
         return redirect(url_for('admin_announcements'))
 
     announcements = Announcement.query.all()
@@ -201,5 +201,5 @@ def delete_announcement(id):
     announcement = Announcement.query.get_or_404(id)
     db.session.delete(announcement)
     db.session.commit()
-    # flash('Announcement deleted successfully', 'success')
+    flash('Announcement deleted successfully', 'success')
     return redirect(url_for('admin_announcements'))

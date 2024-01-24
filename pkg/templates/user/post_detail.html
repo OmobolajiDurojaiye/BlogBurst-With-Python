@@ -2,8 +2,11 @@
 
 {% block content %}
     <div class="post" style="border: 1px solid #000; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; border-radius: 20px; padding: 15px; margin: 20px; width: 80%; position: relative; left: 10%; background-color: #141414; color: #000;">
-        <div class="post-head" style="padding: 10px; background-color: #8E4585; border-radius: 10px; color: #fff;">
+        <div class="post-head" style="padding: 10px; background-color: #8E4585; border-radius: 10px 10px 0 0; color: #fff;">
             <h2 style="margin: 0;">{{ post.posts_title }}</h2>
+        </div>
+        <div class="post-pic">
+            <img src="{{ url_for('static', filename='postsimgs/' + post.posts_pic) }}" alt="Post Image" style="width: 100%; height: auto;">
         </div>
         <div class="post-content" style="margin-top: 20px; word-spacing: 2px; padding: 20px;">
             <p style="color: #000;">{{ post.posts_content }}</p>

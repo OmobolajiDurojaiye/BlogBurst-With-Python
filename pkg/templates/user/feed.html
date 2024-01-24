@@ -124,6 +124,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
                 </div>
                 <div class="modal-body">
+                    <div class="img">
+                        {% if post.posts_pic %}
+                            <img class="mb-3 img-fluid" style="height: max-content; border-radius: 20px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; width: 100%;" src="{{ url_for('static', filename='postsimgs/' + post.posts_pic) }}" alt="Post Image">
+                        {% endif %}
+                    </div>
                     <div class="post-content" style="border-bottom: 2px solid #fff !important;">
                         {% set words = post.posts_content.split() %}
                         <p style="text-align: left !important; line-height: 2;">

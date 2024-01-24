@@ -2,6 +2,17 @@
 
 {% block content %}
     <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}" role="alert" style="background-color: plum;">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+        {% endwith %}
         <h2 class="mb-4">Announcements</h2>
 
         {% for announcement in announcements %}
