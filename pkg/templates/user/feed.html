@@ -224,27 +224,23 @@
             });
 
 
-            let likeCounts = {};
+            let likeCounts = 0;
 
-            $(".like-btn").click(function () {
-                var postId = $(this).data("post-id");
+            $("#likeButton").click(function () {
+                var postId = $(this).attr("data-post-id");
+                console.log(postId);
 
-                let likeCount = likeCounts[postId] || 0;
-                likeCount++;
+                likeCounts++;
 
-                $(this).find(".like-count").text(likeCount);
+                // $(this).find(".like-count").text(likeCount);
+                console.log(likeCounts);
 
                 var csrf = "{{ csrf_token() }}";
 
                 $.ajax({
                     url: "/json/like/",
                     type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        'post_id': postId,
-                        'likeCount': likeCount,
-                        "csrf_token": csrf
-                    }),
+                    data: {"postId":postId, "likeCounts":likeCounts, "csrf_token":csrf},
                     success: function (resp) {
                         console.log(resp);
                     },

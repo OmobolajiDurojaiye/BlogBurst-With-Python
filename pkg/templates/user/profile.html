@@ -93,7 +93,7 @@
                         </a>
                     </div>
                     <div class="icons">
-                        <a href="mailto:{{ user.gmail_url }}" target="_blank">
+                        <a href="mailto:{{ user.users_email }}" target="_blank">
                             <img src="{{ url_for('static', filename='icons/bb-email.png') }}" height="20" width="30" class="img-fluid">
                         </a>
                     </div>
@@ -324,10 +324,10 @@
                         {{ form.x(class="form-control", placeholder="Paste URL here") }}
                     </div>
                 
-                    <div class="input-group mb-3 bb-settings-modal">
+                    {#<div class="input-group mb-3 bb-settings-modal">
                         {{ form.email.label(class="input-group-text") }}
                         {{ form.email(class="form-control", placeholder="Enter E-mail Address here") }}
-                    </div>
+                    </div>#}
                 
                     <div class="input-group mb-3 bb-settings-modal">
                         {{ form.github.label(class="input-group-text") }}

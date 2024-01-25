@@ -609,26 +609,21 @@ def like():
         if user_id is None:
             return jsonify({'error': 'User not logged in'}), 401 
         
-        post_id = request.json.get('post_id')
-        like_count = request.json.get('likeCount')
+        if request.method == 'POST':
+            postId = request.form.get("postId")
+            likeCounts = request.form.get("likeCounts")
 
-        if post_id is None:
-            return jsonify({'error': 'Missing post_id in the request'}), 400
+            existing_like = Like.query.filter_by(post_liked=postId, user_id=user_id).first()
+            
+            post = Post.query.get(postId)
+            post.posts_likes = likeCounts
 
-        existing_like = Like.query.filter_by(post_liked=post_id, user_id=user_id).first()
+            new_like = Like(post_liked=postId, user_id=user_id)  
+            db.session.add(new_like)
 
-        if existing_like:
-            return jsonify({'success': True, 'updatedLikeCount': like_count})
-        
-        post = Post.query.get(post_id)
-        post.posts_likes = like_count
+            db.session.commit()
 
-        new_like = Like(post_liked=post_id, user_id=user_id)  
-        db.session.add(new_like)
-        
-        db.session.commit()
-
-        return jsonify({'success': True, 'updatedLikeCount': post.posts_likes})
+            return ""
 
     except Exception as e:
         print(f"Error: {str(e)}")
