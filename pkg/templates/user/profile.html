@@ -20,6 +20,17 @@
             {% endfor %}
         {% endwith %}
 
+        {% if form.errors %}
+        <ul>
+            {% for field, errors in form.errors.items() %}
+            {% for error in errors %}
+                <li>{{ field }}: {{ error }}</li>
+            {% endfor %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+
         <div class="row bb-profile-basicinfo">
             
             <div class="col user-info">
@@ -275,76 +286,56 @@
             <div class="modal-body">
              
                 <form action="{{ url_for('profile') }}" method="post" enctype="multipart/form-data">
-
                     {{ form.csrf_token }}
-
-                    {#<div class="profile-edit-img m-5">
-                        <p class="mt-4" style="text-align: center; color: white;">
-                            Change Your Profile Picture
-                        </p>
-                        <div class="img-cont">
-                            {% if user.users_profile_pic %}
-                            <img src="/static/uploads/{{user.users_profile_pic}}" alt="">
-                            {% else %}
-                            <img src="{{url_for('static', filename='icons/user-profile.png')}}" alt="">
-                            {% endif %}
-                        </div>
-                        <div class="mb-3 edit-img">
-                            <!-- <label for="dp">Upload a Profile Picture</label> -->
-                            <input id="profile-pic" name="dp" required type="file">
-                        </div>
-                    </div>#}
-
+                
                     <div class="input-group mb-3 bb-settings-modal">
                         {{ form.first_name.label(class="input-group-text") }}
                         {{ form.first_name(class="form-control", placeholder="First Name") }}
                     </div>
-    
+                
                     <div class="input-group mb-3 bb-settings-modal">
                         {{ form.last_name.label(class="input-group-text") }}
                         {{ form.last_name(class="form-control", placeholder="Last Name") }}
                     </div>
-                      
-                      
+                
                     <div class="input-group bb-settings-modal">
                         {{ form.bio.label(class="input-group-text") }}
                         {{ form.bio(class="form-control", placeholder="Say Something About You") }}
                     </div>
-    
+                
                     <div class="mt-3">
                         <h3>
                             Social Media
                         </h3>
                     </div>
-    
+                
                     <div class="input-group mb-3 bb-settings-modal">
-                        {{ form.facebook(class="form-control", placeholder="Paste URL here") }}
                         {{ form.facebook.label(class="input-group-text") }}
+                        {{ form.facebook(class="form-control", placeholder="Paste URL here") }}
                     </div>
-    
+                
                     <div class="input-group mb-3 bb-settings-modal">
-                        {{ form.instagram(class="form-control", placeholder="Paste URL here") }}
                         {{ form.instagram.label(class="input-group-text") }}
+                        {{ form.instagram(class="form-control", placeholder="Paste URL here") }}
                     </div>
-    
+                
                     <div class="input-group mb-3 bb-settings-modal">
-                        {{ form.x(class="form-control", placeholder="Paste URL here") }}
                         {{ form.x.label(class="input-group-text") }}
+                        {{ form.x(class="form-control", placeholder="Paste URL here") }}
                     </div>
-    
+                
                     <div class="input-group mb-3 bb-settings-modal">
-                        {{ form.email(class="form-control", placeholder="Enter E-mail Address here") }}
                         {{ form.email.label(class="input-group-text") }}
+                        {{ form.email(class="form-control", placeholder="Enter E-mail Address here") }}
                     </div>
-    
+                
                     <div class="input-group mb-3 bb-settings-modal">
-                        {{ form.github(class="form-control", placeholder="Paste URL here") }}
                         {{ form.github.label(class="input-group-text") }}
+                        {{ form.github(class="form-control", placeholder="Paste URL here") }}
                     </div>
-
+                
                     {{ form.submit(class="btn bb-btn-plum mt-3 mb-4") }}
-
-                </form>
+                </form>                
 
             </div>
             <div class="modal-footer">

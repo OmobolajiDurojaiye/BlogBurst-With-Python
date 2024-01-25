@@ -49,12 +49,11 @@ class EditProfileForm(FlaskForm):
     first_name = StringField('First Name')
     last_name = StringField('Last Name')
     bio = TextAreaField('Bio')
-    facebook = StringField('Facebook @', validators=[URL('Enter a Valid URL')])
-    instagram = StringField('Instagram @', validators=[URL('Enter a Valid URL')])
-    x = StringField('X @', validators=[URL('Enter a Valid URL')])
-    github = StringField('GitHub @', validators=[URL('Enter a Valid URL')])
-    email = StringField('Email @', validators=[Email(message="Enter a Valid Gmail address")])
-    # image = FileField('Upload Cover', validators=[FileAllowed(['jpg', 'jpeg', 'png'], "we only allow images")])
+    facebook = StringField('Facebook @')
+    instagram = StringField('Instagram @')
+    x = StringField('X @')
+    github = StringField('GitHub @')
+    email = StringField('Email @')
     submit = SubmitField('Update Profile')
 
 class UpdateBlogPostForm(FlaskForm):

@@ -86,6 +86,7 @@ class Like(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.users_id'), nullable=False)
 
 
+
 class Admin(db.Model):
     __tablename__ = 'admin'
 

@@ -277,7 +277,6 @@ def change_dp():
     return render_template('user/profile.html')
 
 
-
 @app.route('/profile/', methods=['GET', 'POST'])
 def profile():
     user_id = session.get('useronline')
@@ -294,9 +293,17 @@ def profile():
     form = EditProfileForm()
 
     announcements = Announcement.query.all()
+    # # Prepopulate form fields with existing data
+    # form.first_name.data = user.users_fname
+    # form.last_name.data = user.users_lname
+    # form.bio.data = user.users_bio
+    # form.facebook.data = user.facebook_url
+    # form.instagram.data = user.instagram_url
+    # form.x.data = user.x_url
+    # form.github.data = user.github_url
+    # form.email.data = user.gmail_url
 
     if request.method == 'POST':
-
         if form.validate_on_submit():
             user.users_fname = form.first_name.data
             user.users_lname = form.last_name.data
@@ -306,15 +313,20 @@ def profile():
             user.x_url = form.x.data
             user.github_url = form.github.data
             user.gmail_url = form.email.data
-                    
 
             db.session.commit()
-            flash('Profile updated successfully', category='success')
-            return redirect('/feed/')
+            flash('Profile updated successfully', category='error')
+            return redirect('/profile/')
+            
+        else:
+            flash("Invalid", category='error')
+            return redirect('/profile/')
+    else:
 
-    user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()
+        user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()
 
-    return render_template('user/profile.html', form=form, user=user, user_posts=user_posts, announcements=announcements)
+        return render_template('user/profile.html', form=form, user=user, user_posts=user_posts, announcements=announcements)
+
 
 
 
@@ -554,3 +566,72 @@ def user_profile(user_id):
     return render_template('user/profile_page.html', user=user, posts=posts)
 
 #Category
+
+
+# @app.route('/json/like/', methods=['POST'])
+# def like():
+#     try:
+#         user_id = session.get('useronline')
+
+#         if user_id is None:
+#             return jsonify({'error': 'User not logged in'}), 401 
+        
+#         post_id = request.json.get('post_id')
+#         like_count = request.json.get('likeCount')
+
+#         if post_id is None:
+#             return jsonify({'error': 'Missing post_id in the request'}), 400
+
+#         existing_like = Like.query.filter_by(post_liked=post_id, user_id=user_id).first()
+
+#         if existing_like:
+#             return jsonify({'success': True, 'updatedLikeCount': like_count})
+
+#         new_like = Like(post_liked=post_id, user_id=user_id)  
+#         db.session.add(new_like)
+#         db.session.commit()
+
+#         post = Post.query.get(post_id)
+#         post.posts_likes += 1
+#         db.session.commit()
+
+#         return jsonify({'success': True, 'updatedLikeCount': post.posts_likes})
+
+#     except Exception as e:
+#         print(f"Error: {str(e)}")
+        
+#         return jsonify({'error': 'An error occurred during the like process', 'details': str(e)}), 500
+
+
+@app.route('/json/like/', methods=['POST'])
+def like():
+    try:
+        user_id = session.get('useronline')
+
+        if user_id is None:
+            return jsonify({'error': 'User not logged in'}), 401 
+        
+        post_id = request.json.get('post_id')
+        like_count = request.json.get('likeCount')
+
+        if post_id is None:
+            return jsonify({'error': 'Missing post_id in the request'}), 400
+
+        existing_like = Like.query.filter_by(post_liked=post_id, user_id=user_id).first()
+
+        if existing_like:
+            return jsonify({'success': True, 'updatedLikeCount': like_count})
+
+        new_like = Like(post_liked=post_id, user_id=user_id)  
+        db.session.add(new_like)
+        db.session.commit()
+
+        post = Post.query.get(post_id)
+        post.posts_likes += 1
+        db.session.commit()
+
+        return jsonify({'success': True, 'updatedLikeCount': post.posts_likes})
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({'error': 'An error occurred during the like process', 'details': str(e)}), 500
