@@ -293,15 +293,6 @@ def profile():
     form = EditProfileForm()
 
     announcements = Announcement.query.all()
-    # # Prepopulate form fields with existing data
-    # form.first_name.data = user.users_fname
-    # form.last_name.data = user.users_lname
-    # form.bio.data = user.users_bio
-    # form.facebook.data = user.facebook_url
-    # form.instagram.data = user.instagram_url
-    # form.x.data = user.x_url
-    # form.github.data = user.github_url
-    # form.email.data = user.gmail_url
 
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -322,7 +313,14 @@ def profile():
             flash("Invalid", category='error')
             return redirect('/profile/')
     else:
-
+        form.first_name.data = user.users_fname
+        form.last_name.data = user.users_lname
+        form.bio.data = user.users_bio
+        form.facebook.data = user.facebook_url
+        form.instagram.data = user.instagram_url
+        form.x.data = user.x_url
+        form.github.data = user.github_url
+        form.email.data = user.gmail_url
         user_posts = Post.query.filter_by(post_writer=user_id).order_by(Post.post_created_on.desc()).all()
 
         return render_template('user/profile.html', form=form, user=user, user_posts=user_posts, announcements=announcements)
