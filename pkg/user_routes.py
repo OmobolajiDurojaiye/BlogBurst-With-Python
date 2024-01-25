@@ -619,13 +619,13 @@ def like():
 
         if existing_like:
             return jsonify({'success': True, 'updatedLikeCount': like_count})
+        
+        post = Post.query.get(post_id)
+        post.posts_likes = like_count
 
         new_like = Like(post_liked=post_id, user_id=user_id)  
         db.session.add(new_like)
-        db.session.commit()
-
-        post = Post.query.get(post_id)
-        post.posts_likes += 1
+        
         db.session.commit()
 
         return jsonify({'success': True, 'updatedLikeCount': post.posts_likes})
