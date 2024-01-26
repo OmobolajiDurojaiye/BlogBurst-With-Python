@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request, session, flash
 from pkg import app
-from pkg.models import db, Admin, User, Post, Comment, Like, Announcement
+from pkg.models import db, Admin, User, Post, Comment, Like, Announcement, Connection
 from pkg.forms import AdminLoginForm, AnnouncementForm
 from werkzeug.security import generate_password_hash, check_password_hash
 #custom errors
@@ -72,6 +72,32 @@ def user_management():
 
 
 
+# @app.route('/admin/delete_user/<int:user_id>', methods=['POST', 'GET'])
+# def admin_delete_user(user_id):
+#     if request.method == 'GET':
+#         flash("Can't delete!", 'error')
+#         return redirect(url_for('user_management'))
+
+#     user = User.query.get(user_id)
+#     if user:
+#         # Delete associated posts first
+#         posts = Post.query.filter_by(post_writer=user_id).all()
+#         for post in posts:
+#             # Delete associated comments first
+#             comments = Comment.query.filter_by(post_commented_on=post.posts_id).all()
+#             for comment in comments:
+#                 db.session.delete(comment)
+
+#             db.session.delete(post)
+
+#         db.session.delete(user)
+#         db.session.commit()
+#         flash('User and associated posts/comments deleted successfully!', 'success')
+#     else:
+#         flash('User not found!', 'error')
+#     return redirect(url_for('user_management'))
+
+
 @app.route('/admin/delete_user/<int:user_id>', methods=['POST', 'GET'])
 def admin_delete_user(user_id):
     if request.method == 'GET':
@@ -80,6 +106,11 @@ def admin_delete_user(user_id):
 
     user = User.query.get(user_id)
     if user:
+        # Manually delete associated connections
+        connections_to_delete = Connection.query.filter((Connection.user_one == user_id) | (Connection.user_two == user_id)).all()
+        for connection in connections_to_delete:
+            db.session.delete(connection)
+
         # Delete associated posts first
         posts = Post.query.filter_by(post_writer=user_id).all()
         for post in posts:
@@ -92,10 +123,12 @@ def admin_delete_user(user_id):
 
         db.session.delete(user)
         db.session.commit()
-        flash('User and associated posts/comments deleted successfully!', 'success')
+        flash('User and associated posts/comments/connections deleted successfully!', 'success')
     else:
-        flash('User not found!', 'error')
+        flash('User account does not exist or has been deleted!', 'error')
+
     return redirect(url_for('user_management'))
+
 
 
 
@@ -112,9 +145,14 @@ def admin_delete_post(post_id):
         for comment in comments:
             db.session.delete(comment)
 
+        # Delete associated likes
+        likes = Like.query.filter_by(post_liked=post_id).all()
+        for like in likes:
+            db.session.delete(like)
+
         db.session.delete(post)
         db.session.commit()
-        flash('Post and associated comments deleted successfully!', 'success')
+        flash('Post and associated comments/likes deleted successfully!', 'success')
     else:
         flash('Post not found!', 'error')
     

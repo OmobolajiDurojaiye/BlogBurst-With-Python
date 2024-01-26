@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="category-header">
-        <h1 style="text-align: center; border-bottom: 1px solid plum; padding-bottom: 20px;">Food and Recipe Blogs</h1>
+        <h1 style="text-align: center; border-bottom: 1px solid plum; padding-bottom: 20px;">Business Blogs</h1>
     </div>
     
     {% if posts %}
@@ -21,10 +21,10 @@
                         {% endif %}
                     </div>
                     <div class="post-head">
-                        <h5>{{ post.posts_title }}</h5>
+                        <h5 style="background-color: black !important;">{{ post.posts_title }}</h5>
                     </div>
                     <div class="post-content">
-                        <p>{{ post.posts_description }}</p>
+                        <p style="background-color: black !important;">{{ post.posts_description }}</p>
                     </div>
                     <div class="post-btn">
                         <a href="{{ url_for('post_detail', post_id=post.posts_id) }}" class="btn btn-success btn-sm">

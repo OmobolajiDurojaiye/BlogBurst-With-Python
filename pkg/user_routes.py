@@ -6,7 +6,7 @@ from flask import Flask, render_template, url_for, redirect, request, session, f
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from pkg import app
-from pkg.models import db, Post, User, Comment, Like, Announcement
+from pkg.models import db, Post, User, Comment, Like, Announcement, Connection
 from pkg.forms import LoginForm, RegistrationForm, BlogPostForm, EditProfileForm, UpdateBlogPostForm, CommentForm
 
 #custom errors
@@ -19,6 +19,19 @@ ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def user_already_connected(target_user_id):
+    user_id = session.get('useronline')
+    if user_id is None:
+        return False
+
+    connection = Connection.query.filter(
+        ((Connection.user_one == user_id) & (Connection.user_two == target_user_id)) |
+        ((Connection.user_one == target_user_id) & (Connection.user_two == user_id))
+    ).first()
+
+    return connection is not None
+
 
 
 
@@ -70,6 +83,8 @@ def feed():
         return redirect('/login')
 
     user = User.query.get(user_id)
+
+    like = Like.query.count()
     
     posts_with_writer_names = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
 
@@ -86,7 +101,7 @@ def feed():
         flash('Your comment has been added successfully', 'success')
         return redirect(url_for('feed'))
 
-    return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names, form=form, user=user)
+    return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names, form=form, user=user, like=like)
 
 
 
@@ -156,15 +171,62 @@ def humor_category():
     posts = Post.query.filter_by(posts_category='Humor').all()
     return render_template('user/humor_blogs.html', posts=posts)
 
-#connect
+# connect
+# @app.route('/connect/')
+# def connect():
+#     user_id = session.get('useronline')
+#     all_users = User.query.all()
+#     if user_id == None:
+#         flash('Please log in first', category='error')
+#         return redirect('/login')
+#     return render_template("user/connect.html", users=all_users)
+
 @app.route('/connect/')
 def connect():
     user_id = session.get('useronline')
     all_users = User.query.all()
-    if user_id == None:
+    
+    if user_id is None:
         flash('Please log in first', category='error')
         return redirect('/login')
-    return render_template("user/connect.html", users=all_users)
+    
+    return render_template("user/connect.html", users=all_users, user_already_connected=user_already_connected)
+
+
+# Modify the connect_user route in your Flask application
+@app.route('/connect/<int:target_user_id>', methods=['POST', 'GET'])
+def connect_user(target_user_id):
+    user_id = session.get('useronline')
+    all_users = User.query.all()
+
+    if user_id is None:
+        flash('Please log in first', category='error')
+        return redirect('/login')
+
+    if request.method == 'GET':
+        flash('Invalid access method', category='error')
+        return redirect('/connect')
+
+    # Check if a connection already exists
+    existing_connection = Connection.query.filter(
+        ((Connection.user_one == user_id) & (Connection.user_two == target_user_id)) |
+        ((Connection.user_one == target_user_id) & (Connection.user_two == user_id))
+    ).first()
+
+    if existing_connection:
+        flash('You are already connected with this user', category='info')
+    else:
+        # Create a new connection
+        new_connection = Connection(user_one=user_id, user_two=target_user_id, date=datetime.utcnow())
+        db.session.add(new_connection)
+        db.session.commit()
+        flash('Connection request sent successfully', category='success')
+
+    all_users = User.query.all()
+
+    return render_template("user/connect.html", users=all_users, user_already_connected=user_already_connected)
+
+
 
 
 # @app.route('/profile/', methods=['GET', 'POST'])
@@ -471,7 +533,7 @@ def delete_post(post_id):
     post = Post.query.filter_by(posts_id=post_id, post_writer=user_id).first()
 
     if post:
-        # Delete comments associated with the post
+        Like.query.filter_by(post_liked=post.posts_id).delete()
         Comment.query.filter_by(post_commented_on=post.posts_id).delete()
 
         db.session.delete(post)
@@ -512,58 +574,41 @@ def update_post(post_id):
 
 
 
-
-
-#This's for testing 
-# @app.route('/cat/')
-# def cat():
-#     return render_template('blogcategoriesbase.html')
-
-
 @app.route('/terms-and-conditions/')
 def terms_conditions():
     return render_template('user/terms_condition.html')
 
-# @app.route('/like_post/<int:post_id>', methods=['POST'])
-# def like_post(post_id):
-#     # Assume you have the Like model imported and db instance available
 
-#     # Retrieve the post and user_id from the session
-#     user_id = session.get('useronline')
-#     post = Post.query.get(post_id)
 
-#     if not user_id:
-#         return jsonify({'success': False, 'error': 'User not logged in'})
+# @app.route('/user_profile/<int:user_id>')
+# def user_profile(user_id):
+#     user = User.query.get(user_id)
+#     posts = Post.query.filter_by(post_writer=user_id).all()
 
-#     if not post:
-#         return jsonify({'success': False, 'error': 'Post not found'})
+    return render_template('user/profile_page.html', user=user, posts=posts)
 
-#     # Check if the user has already liked the post
-#     existing_like = Like.query.filter_by(post_liked=post_id, user_id=user_id).first()
-
-#     if existing_like:
-#         # User has already liked the post, return current like count
-#         return jsonify({'success': True, 'likes': post.posts_likes})
-
-#     # Create a new like
-#     new_like = Like(post_liked=post_id, like_date=datetime.utcnow(), user_id=user_id)
-#     db.session.add(new_like)
-#     db.session.commit()
-
-#     # Update the post like count
-#     post.posts_likes += 1
-#     db.session.commit()
-
-#     return jsonify({'success': True, 'likes': post.posts_likes})
-
+# Modify the user_profile route in your Flask application
 @app.route('/user_profile/<int:user_id>')
 def user_profile(user_id):
     user = User.query.get(user_id)
     posts = Post.query.filter_by(post_writer=user_id).all()
 
-    return render_template('user/profile_page.html', user=user, posts=posts)
+    # Get the connections of the user
+    connections = Connection.query.filter(
+        (Connection.user_one == user_id) | (Connection.user_two == user_id)
+    ).all()
 
-#Category
+    # Get the connected users
+    connected_users = []
+    for connection in connections:
+        connected_user_id = connection.user_one if connection.user_one != user_id else connection.user_two
+        connected_user = User.query.get(connected_user_id)
+        connected_users.append(connected_user)
+
+    return render_template('user/profile_page.html', user=user, posts=posts, connected_users=connected_users)
+
+
+
 
 
 # @app.route('/json/like/', methods=['POST'])
@@ -574,31 +619,27 @@ def user_profile(user_id):
 #         if user_id is None:
 #             return jsonify({'error': 'User not logged in'}), 401 
         
-#         post_id = request.json.get('post_id')
-#         like_count = request.json.get('likeCount')
+#         if request.method == 'POST':
+#             postId = request.form.get("postId")
+#             likeCounts = request.form.get("likeCounts")
 
-#         if post_id is None:
-#             return jsonify({'error': 'Missing post_id in the request'}), 400
+#             existing_like = Like.query.filter_by(post_liked=postId, user_id=user_id).first()
+            
+#             post = Post.query.get(postId)
+#             post.posts_likes = likeCounts
 
-#         existing_like = Like.query.filter_by(post_liked=post_id, user_id=user_id).first()
+#             new_like = Like(post_liked=postId, user_id=user_id)  
+#             db.session.add(new_like)
 
-#         if existing_like:
-#             return jsonify({'success': True, 'updatedLikeCount': like_count})
+#             db.session.commit()
 
-#         new_like = Like(post_liked=post_id, user_id=user_id)  
-#         db.session.add(new_like)
-#         db.session.commit()
-
-#         post = Post.query.get(post_id)
-#         post.posts_likes += 1
-#         db.session.commit()
-
-#         return jsonify({'success': True, 'updatedLikeCount': post.posts_likes})
+#             return ""
 
 #     except Exception as e:
 #         print(f"Error: {str(e)}")
-        
 #         return jsonify({'error': 'An error occurred during the like process', 'details': str(e)}), 500
+
+
 
 
 @app.route('/json/like/', methods=['POST'])
@@ -607,18 +648,18 @@ def like():
         user_id = session.get('useronline')
 
         if user_id is None:
-            return jsonify({'error': 'User not logged in'}), 401 
-        
+            return jsonify({'error': 'User not logged in'}), 401
+
         if request.method == 'POST':
             postId = request.form.get("postId")
-            likeCounts = request.form.get("likeCounts")
+            likeCount = request.form.get("likeCount")
 
             existing_like = Like.query.filter_by(post_liked=postId, user_id=user_id).first()
-            
-            post = Post.query.get(postId)
-            post.posts_likes = likeCounts
 
-            new_like = Like(post_liked=postId, user_id=user_id)  
+            post = Post.query.get(postId)
+            post.posts_likes = likeCount
+
+            new_like = Like(post_liked=postId, user_id=user_id)
             db.session.add(new_like)
 
             db.session.commit()

@@ -40,7 +40,7 @@ body {
 
 .additional-info {
     width: 60%;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     height: inherit;
     display: flex;
 }
@@ -48,10 +48,11 @@ body {
 .profile-name {
     width: 50%;
     height: inherit;
-    border-right: 1px solid yellow;
+    /* border-right: 1px solid yellow; */
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    border-right: 2px solid plum;
 }
 
 .user-name {
@@ -74,6 +75,12 @@ body {
     left: 5%;
     border: 1px solid white;
     border-radius: 20px;
+}
+
+.user-bio p {
+    position: relative;
+    top: 5vh;
+    font-size: 1.2em;
 }
 
 .all-posts {
@@ -105,4 +112,48 @@ body {
     color: black !important;
     padding: 20px; 
     transition: .5s;
+}
+
+.social-links {
+    padding: 0 20px 0 20px;
+    width: 50%;
+    margin-top: 20px;
+    overflow-y: scroll;
+}
+
+.connected-users {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.connected-user {
+    margin-right: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid plum;
+    /* width: ; */
+    border-radius: 10px;
+    padding: 3px;
+}
+
+.user-profile-pic img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-name {
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+.social {
+    display: flex;
+    padding: 20px;
+    justify-content: space-around;
+    align-items: center;
+    /* border: 2px solid black; */
+    position: relative;
+    top: 5vh;
 }
