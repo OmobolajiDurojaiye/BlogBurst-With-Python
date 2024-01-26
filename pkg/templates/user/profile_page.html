@@ -36,7 +36,12 @@
 
             <div class="user-bio">
                 <p>
-                    {{ user.users_bio }}
+                    {% if user.users_bio %}
+                    Bio <br>
+                    <p>{{ user.users_bio }}</p>
+                    {% else %}
+                        <p>No Bio</p>
+                    {% endif %}
                 </p>
                 <div class="social">
                     <div class="icons">

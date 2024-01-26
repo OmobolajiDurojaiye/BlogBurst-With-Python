@@ -9,7 +9,6 @@ def not_found_error(error):
     return render_template('page404.html')
 
 
-# admin login
 @app.route('/admin/login/', methods=['GET', 'POST'])
 def admin_login():
     form = AdminLoginForm()
@@ -20,7 +19,7 @@ def admin_login():
         admin_username = form.username.data
         admin_password = form.password.data
         admin = db.session.query(Admin).filter(Admin.admin_username == admin_username).first()
-        if admin != None  and admin_password == admin.admin_password:
+        if admin and admin_password == admin.admin_password:
             session['adminonline'] = admin.admin_id
             flash("Welcome", category="success")
             return redirect('/admin/')
@@ -28,29 +27,68 @@ def admin_login():
             flash("Invalid credentials", category="error")
             return redirect('/admin/login/')
 
-
-
-
-#admin
+# admin
 @app.route('/admin/')
 def admin():
     users = User.query.all()
     posts = Post.query.all()
     id = session.get('adminonline')
 
-    if id == None:
-        return render_template('admin/admin.html', users=users, user_count=len(users), posts=posts, post_count=len(posts))
+    if id is None: 
+        return redirect('/admin/login/')  
 
-    if request.method == 'GET':
-       return render_template('admin/admin.html', users=users, user_count=len(users), posts=posts, post_count=len(posts))
-    else:
-        return redirect('/admin/')
+    return render_template('admin/admin.html', users=users, user_count=len(users), posts=posts, post_count=len(posts))
 
-#adminlogout
+# adminlogout
 @app.route('/adminlogout/')
 def adminlogout():
     session.pop('adminonline', None)
     return redirect('/admin/login/')
+
+
+
+# # admin login
+# @app.route('/admin/login/', methods=['GET', 'POST'])
+# def admin_login():
+#     form = AdminLoginForm()
+
+#     if request.method == 'GET':
+#         return render_template('admin/adminlogin.html', form=form)
+#     else:
+#         admin_username = form.username.data
+#         admin_password = form.password.data
+#         admin = db.session.query(Admin).filter(Admin.admin_username == admin_username).first()
+#         if admin != None  and admin_password == admin.admin_password:
+#             session['adminonline'] = admin.admin_id
+#             flash("Welcome", category="success")
+#             return redirect('/admin/')
+#         else:
+#             flash("Invalid credentials", category="error")
+#             return redirect('/admin/login/')
+
+
+
+
+# #admin
+# @app.route('/admin/')
+# def admin():
+#     users = User.query.all()
+#     posts = Post.query.all()
+#     id = session.get('adminonline')
+
+#     if id == None:
+#         return render_template('admin/admin.html', users=users, user_count=len(users), posts=posts, post_count=len(posts))
+
+#     if request.method == 'GET':
+#        return render_template('admin/admin.html', users=users, user_count=len(users), posts=posts, post_count=len(posts))
+#     else:
+#         return redirect('/admin/')
+
+# #adminlogout
+# @app.route('/adminlogout/')
+# def adminlogout():
+#     session.pop('adminonline', None)
+#     return redirect('/admin/login/')
 
 
 @app.route('/admin/user_management/')

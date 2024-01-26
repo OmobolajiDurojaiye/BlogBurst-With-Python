@@ -110,7 +110,7 @@
 
         </div>
         <!--top icons to navigate feed ends-->
-
+        {% if session.get('useronline') != None %}
         <div class="bb-side-bottom">
             <!--profile icons to navigate feed-->
             <div class="bb-sideicons">
@@ -134,6 +134,7 @@
             </div>
             <!--logout icons to navigate feed ends-->
         </div>
+        {% endif %}
     </div>
     <!--sidebar ends here-->
 

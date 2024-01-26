@@ -27,7 +27,6 @@
                     <!-- Display each user -->
                     {% for user in users %}
                         <div class="user-item mt-3">
-                            <p>User ID: {{ user.users_id }}</p>
                             <p>Name: <span style="color: plum;">{{ user.users_fname }} {{ user.users_lname }}</span></p>
                             <!-- Add more user details as needed -->
                         </div>
@@ -43,7 +42,7 @@
                     <!-- Display each post -->
                     {% for post in posts %}
                         <div class="post-item mt-3">
-                            <p>User {{ post.author.users_id }}: {{ post.author.users_fname }}, has {{ post.author.posts|length }} post(s)</p>
+                            <p>User: {{ post.author.users_fname }}, has {{ post.author.posts|length }} post(s)</p>
                             <!-- Add more post details as needed -->
                         </div>
                     {% endfor %}

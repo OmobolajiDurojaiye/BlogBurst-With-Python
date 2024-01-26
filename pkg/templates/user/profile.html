@@ -20,16 +20,6 @@
             {% endfor %}
         {% endwith %}
 
-        {% if form.errors %}
-        <ul>
-            {% for field, errors in form.errors.items() %}
-            {% for error in errors %}
-                <li>{{ field }}: {{ error }}</li>
-            {% endfor %}
-            {% endfor %}
-        </ul>
-        {% endif %}
-
 
         <div class="row bb-profile-basicinfo">
             
@@ -72,7 +62,12 @@
                         Bio
                     </h4>
                     <p>
-                        {{ user.users_bio }}
+                        {% if user.users_bio %}
+                    Bio 
+                    {{ user.users_bio }}
+                    {% else %}
+                        Add Bio
+                    {% endif %}
                     </p>
                 </div>
 

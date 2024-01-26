@@ -21,12 +21,13 @@ class User(db.Model):
     gmail_url = db.Column(db.String(255), nullable=True)
 
     posts = db.relationship('Post', backref='author')
-    comments = db.relationship('Comment', backref='commenter')
+    
+    # Add back_populates to the 'comments' relationship
+    comments = db.relationship('Comment', back_populates='commenter')
     
     connections_as_user_one = db.relationship('Connection', backref='user_one_connection', foreign_keys='Connection.user_one')
     connections_as_user_two = db.relationship('Connection', backref='user_two_connection', foreign_keys='Connection.user_two')
 
-    
     collaborations_as_writer_one = db.relationship('Collaboration', backref='writer_one_relationship', foreign_keys='Collaboration.writer_one')
     collaborations_as_writer_two = db.relationship('Collaboration', backref='writer_two_relationship', foreign_keys='Collaboration.writer_two')
     
@@ -62,7 +63,8 @@ class Comment(db.Model):
     user_commented = db.Column(db.Integer, db.ForeignKey('users.users_id'), nullable=False)
     comment_content = db.Column(db.Text, nullable=True)
     comment_made_on = db.Column(db.DateTime(), default=datetime.utcnow)
-    user = db.relationship('User', foreign_keys='Comment.user_commented')
+    # user = db.relationship('User', foreign_keys='Comment.user_commented')
+    commenter = db.relationship('User', foreign_keys='Comment.user_commented', back_populates='comments')
 
 
 class Collaboration(db.Model):
