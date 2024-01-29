@@ -2,87 +2,90 @@
 
 {% block title %}
     Connect ||
-    {{super()}}
+    {{ super() }}
 {% endblock title %}
 
 {% block maincss %}
-    <link rel="stylesheet" href="{{url_for('static', filename='css/connect.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/connect.css') }}">
 {% endblock maincss %}
 
-{% block content %}   
-    
-    <div class="container">
-        {% with messages = get_flashed_messages()%}
-            {% for message in messages %}
-                <div style="color: #fff !important; background-color: plum !important;" class="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endwith %}
+{% block content %}
 
-        <div class="row bb-connections-wrapper">
-            {% for user in users %}
-                <div class="col-sm-3 connects">
-                    <form method="post" action="{{ url_for('connect_user', target_user_id=user.users_id) }}">
-                        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-                        <div class="connects-head">
-                            {% if user.users_profile_pic %}
-                                <img class="rounded" src="/static/uploads/{{user.users_profile_pic}}" alt="">
-                            {% else %}
-                                <img src="{{url_for('static', filename='icons/user-profile.png')}}" alt="">
-                            {% endif %}
-                        </div>
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div style="color: #fff !important; background-color: plum !important;" class="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
 
-                        <div class="bb-connect-btns">
-                            <div class="name">
-                                <h5 class="mt-2">
-                                    <a style="background-color: black; border-radius: 10px; padding: 2px;" href="{{ url_for('user_profile', user_id=user.users_id) }}">
-                                        {{ user.users_fname }} {{ user.users_lname }}
-                                    </a>
-                                </h5>
+    <div class="row bb-connections-wrapper">
+        {% for user in users %}
+            <div class="col-sm-3 connects">
+                <form method="post" action="{{ url_for('connect', user_id=user.users_id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="connects-head">
+                        {% if user.users_profile_pic %}
+                            <img class="rounded" src="/static/uploads/{{ user.users_profile_pic }}" alt="">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='icons/user-profile.png') }}" alt="">
+                        {% endif %}
+                    </div>
 
-                                <button class="btn bb-btn-plum col-12 mt-2" type="submit">
-                                    {% if user_already_connected(user.users_id) %}
-                                    <svg xmlns="http://www.w3.org/2000/svg" style="color: plum !important;" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    <div class="bb-connect-btns">
+                        <div class="name">
+                            <h5 class="mt-2">
+                                <a style="background-color: black; border-radius: 10px; padding: 2px;" href="{{ url_for('user_profile', user_id=user.users_id) }}">
+                                    {{ user.users_fname }} {{ user.users_lname }}
+                                </a>
+                            </h5>
+
+                            <button class="btn bb-btn-plum col-12 mt-2" type="submit">
+                                {% if connection_status[user.users_id] %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/>
                                     </svg>
-                                    {% else %}
-                                        Connect
-                                    {% endif %}
-                                </button>
-                            </div>
+                                {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                                    </svg>
+                                {% endif %}
+                            </button>
                         </div>
-                    </form>
-                </div>
-            {% endfor %}
-        </div>
-
+                    </div>
+                </form>
+            </div>
+        {% endfor %}
     </div>
 
+</div>
+
 {% endblock content %}
-    <script src="script/jquery.js"></script>
-    <script src="bootstrap/js/bootstrap.bundle.js"></script>
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    {% block script %}
-    <script>
 
-        $(document).ready(function() {
+<script src="script/jquery.js"></script>
+<script src="bootstrap/js/bootstrap.bundle.js"></script>
+<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+{% block script %}
+<script>
 
-            $(".bb-hamburger").click(function(){
-                $(".bb-sidebar").toggleClass("open");
-            });
+    $(document).ready(function() {
 
-            //Bootstrap tooltip starts
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl)
-            });
-            //Bootstrap tooltip ends
-
+        $(".bb-hamburger").click(function(){
+            $(".bb-sidebar").toggleClass("open");
         });
 
-    </script>
-    {% endblock script %}
+        // Bootstrap tooltip starts
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        // Bootstrap tooltip ends
+
+    });
+
+</script>
+{% endblock script %}
 
 </body>
 </html>

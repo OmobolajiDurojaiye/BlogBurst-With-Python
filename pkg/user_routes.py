@@ -20,20 +20,14 @@ ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def user_already_connected(target_user_id):
-    user_id = session.get('useronline')
-    if user_id is None:
-        return False
 
-    connection = Connection.query.filter(
-        ((Connection.user_one == user_id) & (Connection.user_two == target_user_id)) |
-        ((Connection.user_one == target_user_id) & (Connection.user_two == user_id))
-    ).first()
+def deactivate_user_post(user_id):
+    user = User.query.get(user_id)
 
-    return connection is not None
-
-
-
+    if user.is_active == False:
+        posts = Post.query.filter_by(Post.posts_status)
+        posts = 'Drafted'
+        return redirect('/')
 
 # homepage
 @app.route('/', methods=['GET', 'POST'])
@@ -70,45 +64,96 @@ def index():
 
 
 #about
-@app.route('/Who we are/')
+@app.route('/Who-we-are/')
 def about():
     return render_template('user/about.html')
+
+# @app.route('/feed/', methods=['GET', 'POST'])
+# def feed():
+#     user_id = session.get('useronline')
+
+#     if user_id is None:
+#         flash('Please log in first', category='error')
+#         return redirect('/login')
+
+#     user = User.query.get(user_id)
+
+#     if user.is_active is False:
+#         flash("You've been disabled", category='error')
+#         return redirect('/')
+
+#     like = Like.query.count()
+    
+#     posts_with_writer_names = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
+
+#     form = CommentForm()
+
+#     if form.validate_on_submit():
+#         content = form.comment_content.data
+#         post_id = request.form.get('post_id')
+
+#         comment = Comment(comment_content=content, post_commented_on=post_id, user_commented=user_id)
+#         db.session.add(comment)
+#         db.session.commit()
+
+#         flash('Your comment has been added successfully', 'success')
+#         return redirect(url_for('feed'))
+
+#     return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names, form=form, user=user, like=like)
+
 
 @app.route('/feed/', methods=['GET', 'POST'])
 def feed():
     user_id = session.get('useronline')
+    user = User.query.get(user_id)
 
     if user_id is None:
         flash('Please log in first', category='error')
         return redirect('/login')
 
-    user = User.query.get(user_id)
 
-    like = Like.query.count()
+    if request.method == 'GET':
+        # like = Like.query.count()
+        like = db.session.query(Post.posts_id, func.count(Like.like_id).label('like_count')).\
+        outerjoin(Like).group_by(Post.posts_id).order_by(Post.post_created_on.desc()).all()
+        posts_with_writer_names = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
+        form = CommentForm()
+        return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names, form=form, user=user, like=like)
+
+    else:
+        if user.is_active == False:
+            flash("You've been disabled", category='error')
+            return redirect('/')
     
-    posts_with_writer_names = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
+        form = CommentForm()
 
-    form = CommentForm()
+        if form.validate_on_submit():
+            content = form.comment_content.data
+            post_id = request.form.get('post_id')
 
-    if form.validate_on_submit():
-        content = form.comment_content.data
-        post_id = request.form.get('post_id')
+            comment = Comment(comment_content=content, post_commented_on=post_id, user_commented=user_id)
+            db.session.add(comment)
+            db.session.commit()
 
-        comment = Comment(comment_content=content, post_commented_on=post_id, user_commented=user_id)
-        db.session.add(comment)
-        db.session.commit()
+            flash('Your comment has been added successfully', 'success')
+            return redirect(url_for('feed'))
 
-        flash('Your comment has been added successfully', 'success')
+        flash('Form validation failed', 'error')
         return redirect(url_for('feed'))
-
-    return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names, form=form, user=user, like=like)
 
 
 
 #categories
 @app.route('/categories/')
 def categories():
-    return render_template("user/explore.html")
+    user_id = session.get('useronline')
+    user = User.query.get(user_id)
+
+    if user.is_active is False:
+        flash("You've been disabled", category='error')
+        return redirect('/')
+    else:
+        return render_template("user/explore.html")
 
 # academic blogs
 @app.route('/categories/Academic-Blogs')
@@ -171,7 +216,7 @@ def humor_category():
     posts = Post.query.filter_by(posts_category='Humor').all()
     return render_template('user/humor_blogs.html', posts=posts)
 
-# connect
+# # connect
 # @app.route('/connect/')
 # def connect():
 #     user_id = session.get('useronline')
@@ -181,50 +226,141 @@ def humor_category():
 #         return redirect('/login')
 #     return render_template("user/connect.html", users=all_users)
 
+
+# Placeholder function for determining connection status
+def is_user_connected(user_one_id, user_two_id):
+    # Implement your logic to check if the users are connected
+    connection = Connection.query.filter(
+        ((Connection.user_one == user_one_id) & (Connection.user_two == user_two_id)) |
+        ((Connection.user_one == user_two_id) & (Connection.user_two == user_one_id))
+    ).first()
+
+    return connection is not None
+
+
 @app.route('/connect/')
-def connect():
-    user_id = session.get('useronline')
-    all_users = User.query.all()
-    
-    if user_id is None:
-        flash('Please log in first', category='error')
-        return redirect('/login')
-    
-    return render_template("user/connect.html", users=all_users, user_already_connected=user_already_connected)
+def connect_all_users():
+    current_user_id = session.get('useronline')
 
-
-# Modify the connect_user route in your Flask application
-@app.route('/connect/<int:target_user_id>', methods=['POST', 'GET'])
-def connect_user(target_user_id):
-    user_id = session.get('useronline')
-    all_users = User.query.all()
-
-    if user_id is None:
+    if current_user_id is None:
         flash('Please log in first', category='error')
         return redirect('/login')
 
-    if request.method == 'GET':
-        flash('Invalid access method', category='error')
-        return redirect('/connect')
+    all_users = User.query.filter(User.users_id != current_user_id, User.is_active == True).all()
 
-    # Check if a connection already exists
+    # Create a dictionary to store connection status for each user
+    connection_status = {}
+
+    # Check connection status for each user
+    for user in all_users:
+        connection_status[user.users_id] = is_user_connected(current_user_id, user.users_id)
+
+    return render_template("user/connect.html", users=all_users, current_user_id=current_user_id, connection_status=connection_status)
+
+
+
+
+# # ...
+
+# # New route to handle connection or disconnection actions
+# @app.route('/connect/<int:user_id>/action', methods=['POST'])
+# def handle_connection_action(user_id):
+#     current_user_id = session.get('useronline')
+
+#     # Check if the user is logged in
+#     if current_user_id is None:
+#         flash('Please log in first', category='error')
+#         return redirect('/login')
+
+#     # Check the action parameter to determine whether to connect or disconnect
+#     action = request.form.get('action')
+
+#     if action == 'connect':
+#         # Connect the users
+#         new_connection = Connection(user_one=current_user_id, user_two=user_id, date=datetime.utcnow())
+#         db.session.add(new_connection)
+#         db.session.commit()
+#         flash('Connection successful', category='success')
+#     elif action == 'disconnect':
+#         # Disconnect the users
+#         existing_connection = Connection.query.filter(
+#             ((Connection.user_one == current_user_id) & (Connection.user_two == user_id)) |
+#             ((Connection.user_one == user_id) & (Connection.user_two == current_user_id))
+#         ).first()
+
+#         if existing_connection:
+#             db.session.delete(existing_connection)
+#             db.session.commit()
+#             flash('Disconnection successful', category='success')
+#         else:
+#             flash('No existing connection to disconnect', category='error')
+#     else:
+#         flash('Invalid action', category='error')
+
+#     return redirect(url_for('connect_all_users'))
+
+
+
+@app.route('/connect/<int:user_id>', methods=['POST'])
+def connect(user_id):
+    current_user_id = session.get('useronline')
+    current_user = User.query.get(current_user_id)
+    other_user = User.query.get(user_id)
+
+    # Check if users are already connected
     existing_connection = Connection.query.filter(
-        ((Connection.user_one == user_id) & (Connection.user_two == target_user_id)) |
-        ((Connection.user_one == target_user_id) & (Connection.user_two == user_id))
+        ((Connection.user_one == current_user.users_id) & (Connection.user_two == other_user.users_id)) |
+        ((Connection.user_one == other_user.users_id) & (Connection.user_two == current_user.users_id))
     ).first()
 
     if existing_connection:
-        flash('You are already connected with this user', category='info')
+        # Disconnect users
+        db.session.delete(existing_connection)
+        flash(f"You have disconnected with {other_user.users_fname}.", "success")
     else:
-        # Create a new connection
-        new_connection = Connection(user_one=user_id, user_two=target_user_id, date=datetime.utcnow())
+        # Connect users
+        new_connection = Connection(user_one=current_user.users_id, user_two=other_user.users_id, date=datetime.utcnow().date())
         db.session.add(new_connection)
-        db.session.commit()
-        flash('Connection request sent successfully', category='success')
+        flash(f"You are now connected with {other_user.users_fname}.", "success")
 
-    all_users = User.query.all()
+    db.session.commit()
 
-    return render_template("user/connect.html", users=all_users, user_already_connected=user_already_connected)
+    return redirect(url_for('connect_all_users'))
+
+
+
+
+@app.route('/connections')
+def connections():
+    # Get the user ID from the session
+    user_id = session.get('useronline')
+
+    # Check if the user is logged in
+    if user_id is None:
+        flash('Please log in first', category='error')
+        return redirect('/login')
+
+    # Get the connections for the current logged-in user
+    connections = Connection.query.filter(
+        (Connection.user_one == user_id) | (Connection.user_two == user_id)
+    ).all()
+
+    connected_users = []
+    for connection in connections:
+        if connection.user_one != user_id:
+            connected_users.append(User.query.get(connection.user_one))
+        else:
+            connected_users.append(User.query.get(connection.user_two))
+
+    return render_template('user/connections.html', connected_users=connected_users)
+
+
+
+
+
+
+
+
 
 
 
@@ -344,13 +480,17 @@ def profile():
     user_id = session.get('useronline')
     user = User.query.get(user_id)
 
-    if user_id is None:
-        flash('Please log in first', category='error')
-        return redirect('/login')
-
     if user is None:
         flash('User not found', category='error')
         return redirect('/')
+
+    if user.is_active is False:
+        flash("You've been disabled", category='error')
+        return redirect('/')
+
+    if user_id is None:
+        flash('Please log in first', category='error')
+        return redirect('/login')
 
     form = EditProfileForm()
 
@@ -402,20 +542,25 @@ def login():
 
             user = db.session.query(User).filter(User.users_email == email).first()
             if user:
-                saved_pwd = user.users_password
-                check = check_password_hash(saved_pwd, pwd)
-                if check:
-                    session['useronline'] = user.users_id
-                    flash('Log in successful', category='success')
-                    return redirect('/profile')
+                if user.is_active is False:
+                    flash("You've been disabled", category='error')
+                    return redirect('/')
                 else:
-                    flash("Invalid credentials", category="error")
-                    return redirect('/login/')
+                    saved_pwd = user.users_password
+                    check = check_password_hash(saved_pwd, pwd)
+                    if check:
+                        session['useronline'] = user.users_id
+                        flash('Log in successful', category='success')
+                        return redirect('/profile')
+                    else:
+                        flash("Invalid credentials", category="error")
+                        return redirect('/login/')
             else:
                 flash("Invalid credentials", category="error")
                 return redirect('/login/')
         else:
             return render_template('user/login.html', form=form)
+
 
 
 
@@ -593,6 +738,11 @@ def user_profile(user_id):
     user = User.query.get(user_id)
     posts = Post.query.filter_by(post_writer=user_id).all()
 
+    if user.is_active is False:
+        flash("User has been disabled", category='error')
+        return redirect('/profile')
+    
+
     # Get the connections of the user
     connections = Connection.query.filter(
         (Connection.user_one == user_id) | (Connection.user_two == user_id)
@@ -648,24 +798,33 @@ def like():
         user_id = session.get('useronline')
 
         if user_id is None:
-            return jsonify({'error': 'User not logged in'}), 401
+            return 'User not logged in', 401
 
         if request.method == 'POST':
-            postId = request.form.get("postId")
-            likeCount = request.form.get("likeCount")
+            post_id = request.form.get("postId")
+            like_count = int(request.form.get("likeCount"))
 
-            existing_like = Like.query.filter_by(post_liked=postId, user_id=user_id).first()
+            # Check if the user has already liked the post
+            existing_like = Like.query.filter_by(post_liked=post_id, user_id=user_id).first()
 
-            post = Post.query.get(postId)
-            post.posts_likes = likeCount
+            if existing_like:
+                # User is unliking the post
+                db.session.delete(existing_like)
+                like_count -= 1
+            else:
+                # User is liking the post
+                new_like = Like(post_liked=post_id, user_id=user_id)
+                db.session.add(new_like)
+                like_count += 1
 
-            new_like = Like(post_liked=postId, user_id=user_id)
-            db.session.add(new_like)
+            # Update the post's like count
+            post = Post.query.get(post_id)
+            post.posts_likes = like_count
 
             db.session.commit()
 
-            return ""
+            return f'Like updated successfully, new like count: {like_count}'
 
     except Exception as e:
         print(f"Error: {str(e)}")
-        return jsonify({'error': 'An error occurred during the like process', 'details': str(e)}), 500
+        return f'An error occurred during the like process: {str(e)}', 500

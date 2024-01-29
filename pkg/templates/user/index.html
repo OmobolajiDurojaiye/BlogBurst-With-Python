@@ -35,7 +35,7 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% for category, message in messages %}
             <div style="margin-bottom: 0 !important;" class="alert alert-{{ category }}">
-                Hi! , {{ message }}
+                {{ message }}
             </div>
         {% endfor %}
     {% endwith %}
@@ -51,7 +51,7 @@
         <nav class="bb-nav-links">
             <ul>
                 <li>
-                    <a href="/Who we are">
+                    <a href="/Who-we-are/">
                         Who We Are
                     </a>
                 </li>
@@ -166,21 +166,24 @@
 
         <div class="featured">
             {% for post in posts %}
-            <div class="top-stories">
-                <div class="img">
-                    {% if post.posts_pic %}
-                    <img src="{{ url_for('static', filename='postsimgs/' + post.posts_pic) }}" alt="Post Image" style="width: 100%; height: 30vh !important;">
-                    {% else %}
-                        <img src="{{url_for('static', filename='Images/index-post-cover.png')}}" alt="">    
-                    {% endif %}
-                </div>
-                <div class="title">
-                    <a href="{{ url_for('post_detail', post_id=post.posts_id) }}">
-                        {{post.posts_title}}
-                    </a>
-                </div>
-            </div>
+                {% if post.posts_status == 'Approved' %}
+                    <div class="top-stories">
+                        <div class="img">
+                            {% if post.posts_pic %}
+                                <img src="{{ url_for('static', filename='postsimgs/' + post.posts_pic) }}" alt="Post Image" style="width: 100%; height: 30vh !important;">
+                            {% else %}
+                                <img src="{{url_for('static', filename='Images/index-post-cover.png')}}" alt="">    
+                            {% endif %}
+                        </div>
+                        <div class="title">
+                            <a href="{{ url_for('post_detail', post_id=post.posts_id) }}">
+                                {{post.posts_title}}
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
             {% endfor %}
+
 
             <!-- <div class="top-stories">
                 <img src="{{url_for('static', filename='Images/flower.png')}}" alt="">

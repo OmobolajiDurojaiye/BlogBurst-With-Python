@@ -19,6 +19,7 @@ class User(db.Model):
     x_url = db.Column(db.String(255), nullable=True)
     github_url = db.Column(db.String(255), nullable=True)
     gmail_url = db.Column(db.String(255), nullable=True)
+    is_active = db.Column(db.Boolean, default=True)
 
     posts = db.relationship('Post', backref='author')
     

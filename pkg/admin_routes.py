@@ -8,6 +8,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 def not_found_error(error):
     return render_template('page404.html')
 
+def enable_user_posts(user):
+    # Enable the user's posts
+    user_posts = Post.query.filter_by(post_writer=user.users_id, posts_status='Drafted').all()
+    for post in user_posts:
+        post.posts_status = 'Approved'
+    db.session.commit()
+
+
 
 @app.route('/admin/login/', methods=['GET', 'POST'])
 def admin_login():
@@ -144,28 +152,76 @@ def admin_delete_user(user_id):
 
     user = User.query.get(user_id)
     if user:
-        # Manually delete associated connections
-        connections_to_delete = Connection.query.filter((Connection.user_one == user_id) | (Connection.user_two == user_id)).all()
-        for connection in connections_to_delete:
-            db.session.delete(connection)
+        if user.is_active:
+            # Manually delete associated connections
+            connections_to_delete = Connection.query.filter((Connection.user_one == user_id) | (Connection.user_two == user_id)).all()
+            for connection in connections_to_delete:
+                db.session.delete(connection)
 
-        # Delete associated posts first
-        posts = Post.query.filter_by(post_writer=user_id).all()
-        for post in posts:
-            # Delete associated comments first
-            comments = Comment.query.filter_by(post_commented_on=post.posts_id).all()
-            for comment in comments:
-                db.session.delete(comment)
+            # Delete associated posts first
+            posts = Post.query.filter_by(post_writer=user_id).all()
+            for post in posts:
+                # Delete associated comments first
+                comments = Comment.query.filter_by(post_commented_on=post.posts_id).all()
+                for comment in comments:
+                    db.session.delete(comment)
 
-            db.session.delete(post)
+                db.session.delete(post)
 
-        db.session.delete(user)
-        db.session.commit()
-        flash('User and associated posts/comments/connections deleted successfully!', 'success')
+            db.session.delete(user)
+            db.session.commit()
+            flash('User and associated posts/comments/connections deleted successfully!', 'success')
+        else:
+            flash('User account is already disabled!', 'error')
     else:
         flash('User account does not exist or has been deleted!', 'error')
 
     return redirect(url_for('user_management'))
+
+
+@app.route('/admin/disable_user/<int:user_id>', methods=['POST'])
+def admin_disable_user(user_id):
+    user = User.query.get(user_id)
+    if request.method == 'POST':
+        if user:
+            # Disable the user
+            user.is_active = False
+            db.session.commit()
+            flash('User disabled successfully!', 'success')
+
+            # Draft the user's posts
+            user_posts = Post.query.filter_by(post_writer=user.users_id, posts_status='Approved').all()
+            for post in user_posts:
+                post.posts_status = 'Disabled'
+            db.session.commit()
+
+        else:
+            flash('User account does not exist or has been deleted!', 'error')
+
+        return redirect(url_for('user_management'))
+    else:
+        return render_template('admin/user_management.html', user=user)
+    
+    
+
+@app.route('/admin/enable_user/<int:user_id>', methods=['POST', 'GET'])
+def admin_enable_user(user_id):
+    user = User.query.get(user_id)
+
+    if request.method == 'POST':
+
+        if user:
+            user.is_active = True
+            db.session.commit()
+            flash('User enabled successfully!', 'success')
+
+            enable_user_posts(user)
+        else:
+            flash('User account does not exist or has been deleted!', 'error')
+        
+        return redirect(url_for('user_management'))
+    else:
+        return render_template('admin/user_management.html', user=user)
 
 
 
@@ -228,9 +284,8 @@ def delete_all_posts(user_id):
 def admin_disable_post(post_id):
     post = Post.query.get(post_id)
     if post:
-        # Update the post status to "Disabled"
         post.posts_status = 'Disabled'
-        post.re_enable_allowed = False  # Disallow re-enabling
+        # post.re_enable_allowed = False  # Disallow re-enabling
         db.session.commit()
         flash('Post disabled successfully!', 'success')
     else:
@@ -238,21 +293,32 @@ def admin_disable_post(post_id):
 
     return redirect(url_for('user_management'))
 
-# Example route for enabling a post
+# # Example route for enabling a post
+# @app.route('/enable_post/<int:post_id>', methods=['POST'])
+# def enable_post(post_id):
+#     post = Post.query.get(post_id)
+#     if post:
+#         # Remove the condition to check re_enable_allowed
+#         post.posts_status = 'Approved' 
+#         db.session.commit()
+#         flash('Post re-enabled successfully!', 'success')
+#     else:
+#         flash('Post not found!', 'error')
+
+#     return redirect(url_for('user_management'))
+
 @app.route('/enable_post/<int:post_id>', methods=['POST'])
 def enable_post(post_id):
     post = Post.query.get(post_id)
     if post:
-        if post.re_enable_allowed == False:
-            post.posts_status = 'Approved' 
-            db.session.commit()
-            flash('Post re-enabled successfully!', 'success')
-        else:
-            flash('Re-enabling this post is not allowed.', 'error')
+        post.posts_status = 'Approved'
+        db.session.commit()
+        flash('Post re-enabled successfully!', 'success')
     else:
         flash('Post not found!', 'error')
 
     return redirect(url_for('user_management'))
+
 
 
 @app.route('/admin/announcements/', methods=['GET', 'POST'])

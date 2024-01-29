@@ -9,7 +9,11 @@
             <img src="{{ url_for('static', filename='postsimgs/' + post.posts_pic) }}" alt="Post Image" style="width: 100%; height: auto;">
         </div>
         <div class="post-content" style="margin-top: 20px; word-spacing: 2px; padding: 20px;">
-            <p style="color: #000;">{{ post.posts_content }}</p>
+            <div class="auth" style="display: flex !important; flex-direction: column !important; justify-content: flex-start !important; align-items: flex-start !important;">
+                <p style="font-weight: bold; margin: 10px 0; color: #fff;">Author: {{ post.author.users_fname }} {{ post.author.users_lname }}</p>
+                <p style="color: #fff;">Posted on: {{ post.post_created_on.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            </div>
+            <p style="color: #000;  text-align: left !important;">{{ post.posts_content }}</p>
         </div>
         
         <!-- Display comments below the post content -->

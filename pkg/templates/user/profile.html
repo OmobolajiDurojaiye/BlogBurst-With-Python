@@ -15,7 +15,7 @@
         {% with messages = get_flashed_messages()%}
             {% for message in messages %}
                 <div style="color: #fff !important; background-color: plum !important;" class="alert">
-                    Hey {{ user.users_fname }} {{ user.users_lname }} , {{ message }}
+                    {{ user.users_fname }} {{ user.users_lname }} , {{ message }}
                 </div>
             {% endfor %}
         {% endwith %}
@@ -62,8 +62,7 @@
                         Bio
                     </h4>
                     <p>
-                        {% if user.users_bio %}
-                    Bio 
+                    {% if user.users_bio %}
                     {{ user.users_bio }}
                     {% else %}
                         Add Bio
@@ -207,10 +206,10 @@
 
             <div class="col bb-blogger-panel">
 
-                <a href="" title="Support & Donate">
-                    <img src="{{url_for('static', filename='icons/bb-donation.png')}}" height="40" width="40" class="img-fluid">
+                <a href="/connections" title="My connection list">
+                    <img src="{{url_for('static', filename='icons/connection.png')}}" height="40" width="40" class="img-fluid">
                     <p style="color: white; font-size: 0.8em;">
-                        Donate
+                        Connections
                     </p>
                 </a>
 

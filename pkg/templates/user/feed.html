@@ -75,7 +75,7 @@
                                     </svg>
                                     <span class="like-count" id="likeCount">{{like}}</span>
                                 </span>
-                            </button>                                                 
+                            </button>                                                
                         </div>
                         <div class="col">
                             <button class="btn btn-danger btn-sm not-interested-button" data-bs-toggle="tooltip"
@@ -155,11 +155,18 @@
                             {% for comment in post.comments | reverse %}
                                 <div class="mt-3 comments-already-posted">
                                     <div class="poster-dp">
-                                        <img src="{{url_for('static', filename='icons/user-profile.png')}}" class="img-fluid" alt="">
+                                        {#<img src="{{url_for('static', filename='icons/user-profile.png')}}" class="img-fluid" alt="">#}
+                                        {% if comment.user_commented.users_profile_pic %}
+                                            <img class="rounded" src="{{ url_for('static', filename='uploads/' + user.users_profile_pic) }}" alt="">
+                                        {% else %}
+                                            <img src="{{ url_for('static', filename='icons/user-profile.png') }}" alt="">
+                                        {% endif %}
+
+
                                     </div>
                                     
-                                    <span style="font-size: 0.7em; position: relative; left: 0;">
-                                        {{ comment.user_commented.users_fname }} <br> {{ comment.user_commented.users_lname }}
+                                    <span style="font-size: 0.7em; position: relative; left: 2% !important;">
+                                        {{ comment.commenter.users_fname }} {{ comment.commenter.users_lname }}
                                     </span>
                                 
                                     <div class="poster-comment">
@@ -251,21 +258,54 @@
             //     likeCounts[postId] = likeCount;
             // });
 
-            $(".like-btn").click(function () {
-            var postId = $(this).attr("data-post-id");
-            var likeCount = parseInt($(this).find(".like-count").text(), 10) || 0;
+        //     $(".like-btn").click(function () {
+        //     var postId = $(this).attr("data-post-id");
+        //     var likeCount = parseInt($(this).find(".like-count").text(), 10) || 0;
 
-            likeCount++;
+        //     likeCount++;
 
-            console.log("Post ID:", postId);
-            console.log("New Like Count:", likeCount);
+        //     console.log("Post ID:", postId);
+        //     console.log("New Like Count:", likeCount);
 
-            var csrf = "{{ csrf_token() }}";
+        //     var csrf = "{{ csrf_token() }}";
+
+        //     $.ajax({
+        //         url: "/json/like/",
+        //         type: 'POST',
+        //         data: {"postId": postId, "likeCount": likeCount, "csrf_token": csrf},
+        //         success: function (resp) {
+        //             console.log(resp);
+        //         },
+        //         error: function (error) {
+        //             console.error('Error occurred during the AJAX request:', error);
+        //         }
+        //     });
+
+        //     $(this).find(".like-count").text(likeCount);
+        // });
+
+
+        $(".like-btn").click(function () {
+            var post_id = $(this).attr("data-post-id");
+            var like_count = parseInt($(this).find(".like-count").text(), 10) || 0;
+
+            if ($(this).hasClass("liked")) {
+                // User is unliking the post
+                like_count--;
+            } else {
+                // User is liking the post
+                like_count++;
+            }
+
+            console.log("Post ID:", post_id);
+            console.log("New Like Count:", like_count);
+
+            var csrf_token = "{{ csrf_token() }}";
 
             $.ajax({
                 url: "/json/like/",
                 type: 'POST',
-                data: {"postId": postId, "likeCount": likeCount, "csrf_token": csrf},
+                data: {"postId": post_id, "likeCount": like_count, "csrf_token": csrf_token},
                 success: function (resp) {
                     console.log(resp);
                 },
@@ -274,7 +314,8 @@
                 }
             });
 
-            $(this).find(".like-count").text(likeCount);
+            $(this).toggleClass("liked");
+            $(this).find(".like-count").text(like_count);
         });
 
 
