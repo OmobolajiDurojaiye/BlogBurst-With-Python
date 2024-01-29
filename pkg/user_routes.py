@@ -111,11 +111,12 @@ def feed():
         flash('Please log in first', category='error')
         return redirect('/login')
 
-
     if request.method == 'GET':
         # like = Like.query.count()
-        like = db.session.query(Post.posts_id, func.count(Like.like_id).label('like_count')).\
-        outerjoin(Like).group_by(Post.posts_id).order_by(Post.post_created_on.desc()).all()
+        posts = Post.query.all()
+
+        like = sum(Like.query.filter_by(post_liked=post.posts_id).count() for post in posts)
+
         posts_with_writer_names = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
         form = CommentForm()
         return render_template("user/feed.html", posts_with_writer_names=posts_with_writer_names, form=form, user=user, like=like)
@@ -140,6 +141,7 @@ def feed():
 
         flash('Form validation failed', 'error')
         return redirect(url_for('feed'))
+
 
 
 
