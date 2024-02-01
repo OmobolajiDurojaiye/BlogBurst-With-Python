@@ -112,10 +112,7 @@ def feed():
         return redirect('/login')
 
     if request.method == 'GET':
-        # like = Like.query.count()
-        posts = Post.query.all()
-
-        like = sum(Like.query.filter_by(post_liked=post.posts_id).count() for post in posts)
+        like = Like.query.count()
 
         posts_with_writer_names = db.session.query(Post, User).join(User).order_by(Post.post_created_on.desc()).all()
         form = CommentForm()
@@ -151,51 +148,51 @@ def categories():
     user_id = session.get('useronline')
     user = User.query.get(user_id)
 
-    if user.is_active is False:
+    if user.is_active == False:
         flash("You've been disabled", category='error')
         return redirect('/')
     else:
         return render_template("user/explore.html")
 
 # academic blogs
-@app.route('/categories/Academic-Blogs')
+@app.route('/categories/Academic/Blogs')
 def academic_category():
     posts = Post.query.filter_by(posts_category='Academic').all()
     return render_template('user/academic_blogs.html', posts=posts)
 
 
 #technical blogs
-@app.route('/categories/Technical Blogs/')
+@app.route('/categories/Technical/Blogs/')
 def technical_category():
     posts = Post.query.filter_by(posts_category='Technical').all()
     return render_template('user/technical_blogs.html', posts=posts)
 
 #creative blogs
-@app.route('/categories/Creative Blogs/')
+@app.route('/categories/Creative/Blogs/')
 def creative_category():
     posts = Post.query.filter_by(posts_category='Creative').all()
     return render_template('user/creative_blogs.html', posts=posts)
 
 #poetry blogs
-@app.route('/categories/Poetic Blogs/')
+@app.route('/categories/Poetic/Blogs/')
 def poetry_category():
     posts = Post.query.filter_by(posts_category='Poetry').all()
     return render_template('user/poetic_blogs.html',posts=posts)
 
 #journalistic blogs
-@app.route('/categories/Journalistic Blogs/')
+@app.route('/categories/Journalistic/Blogs/')
 def journalistic_category():
     posts = Post.query.filter_by(posts_category='Journalistic').all()
     return render_template('user/journalistic_blogs.html', posts=posts)
 
 #business blogs
-@app.route('/categories/Business Blogs/')
+@app.route('/categories/Business/Blogs/')
 def business_category():
     posts = Post.query.filter_by(posts_category='Business').all()
     return render_template('user/business_blogs.html', posts=posts)
 
 #Food and Recipe blogs
-@app.route('/categories/Food-and-recipe Blogs/')
+@app.route('/categories/Food-and-recipe/Blogs/')
 def Food_category():
     posts = Post.query.filter_by(posts_category='Food and Recipe').all()
     return render_template('user/Food-and-recipe_blogs.html',posts=posts)
@@ -207,13 +204,13 @@ def post_detail(post_id):  # Change parameter name to post_id
 
 
 #nature blogs
-@app.route('/categories/Nature Blogs/')
+@app.route('/categories/Nature/Blogs/')
 def nature_category():
     posts = Post.query.filter_by(posts_category='Nature').all()
     return render_template('user/nature_blogs.html', posts=posts)
 
 #humor blogs
-@app.route('/categories/Humor Blogs/')
+@app.route('/categories/Humor/Blogs/')
 def humor_category():
     posts = Post.query.filter_by(posts_category='Humor').all()
     return render_template('user/humor_blogs.html', posts=posts)
@@ -487,7 +484,7 @@ def profile():
         return redirect('/')
 
     if user.is_active is False:
-        flash("You've been disabled", category='error')
+        flash("Your account has been disabled", category='error')
         return redirect('/')
 
     if user_id is None:

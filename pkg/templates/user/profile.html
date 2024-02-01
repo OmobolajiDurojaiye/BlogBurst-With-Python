@@ -111,7 +111,7 @@
                 <div class="inbox">
                     {% if announcements %}
                         {% for announcement in announcements %}
-                            <p style="position: relative; top: 2vh; background-color: plum; padding: 10px; border-radius: 10px;">
+                            <p style="position: relative; top: 2vh; background-color: plum; padding: 10px; border-radius: 0 10px 20px 10px;">
                                 <span style="color: #141414 !important;">{{ announcement.message }}</span> <br><span style="color: rgb(170, 49, 49) !important;">sent-</span> <i>{{ announcement.announcement_date }}</i>
                             </p>
                         {% endfor %}
@@ -184,7 +184,7 @@
 
             <div class="col bb-blogger-panel">
 
-                <a href="/connect" title="Collaborate">
+                <a href="/connect" title="Connect">
                     <img src="{{url_for('static', filename='icons/bb-collaboration.png')}}" height="40" width="40" class="img-fluid">
                     <p style="color: white; font-size: 0.8em;">
                         Connect

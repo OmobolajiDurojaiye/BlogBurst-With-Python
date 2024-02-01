@@ -323,20 +323,25 @@ def enable_post(post_id):
 
 @app.route('/admin/announcements/', methods=['GET', 'POST'])
 def admin_announcements():
+    online = session.get('adminonline')
     form = AnnouncementForm()
 
-    if form.validate_on_submit():
-        new_announcement = Announcement(
-            admin_id=session.get('adminonline'),
-            message=form.message.data
-        )
-        db.session.add(new_announcement)
-        db.session.commit()
-        flash('Announcement created successfully', 'success')
-        return redirect(url_for('admin_announcements'))
+    if online:
 
-    announcements = Announcement.query.all()
-    return render_template('admin/announcement.html', form=form, announcements=announcements)
+        if form.validate_on_submit():
+            new_announcement = Announcement(
+                admin_id=session.get('adminonline'),
+                message=form.message.data
+            )
+            db.session.add(new_announcement)
+            db.session.commit()
+            flash('Announcement created successfully', 'success')
+            return redirect(url_for('admin_announcements'))
+
+        announcements = Announcement.query.all()
+        return render_template('admin/announcement.html', form=form, announcements=announcements)
+    else:
+        return redirect('/admin/login/')
 
 @app.route('/admin/announcements/delete/<int:id>', methods=['POST'])
 def delete_announcement(id):

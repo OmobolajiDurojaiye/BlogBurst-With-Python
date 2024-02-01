@@ -85,7 +85,7 @@
                 </a>
             </div>
             <!--feed icons to navigate feed ends-->
-
+            {% if session.get('useronline') %}
             <!--explore icons to navigate feed-->
             <div class="bb-sideicons">
                 <a href="/categories" data-bs-toggle="tooltip" data-bs-placement="right" title="Categories">
@@ -96,6 +96,7 @@
                 </a>
             </div>
             <!--explore icons to navigate feed ends-->
+            {% endif %}
 
             <!--topics icons to navigate feed-->
             <div class="bb-sideicons">
