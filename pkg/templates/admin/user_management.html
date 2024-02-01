@@ -49,7 +49,6 @@
                                                     </button>
                                                 </form>
 
-                                                <!-- Change the form action to use the new route -->
                                                 {% if post.posts_status == 'Approved' %}
                                                 <form method="post" class="d-inline" action="{{ url_for('admin_disable_post', post_id=post.posts_id) }}" id="disable_post_{{ post.posts_id }}">
                                                     <input type="hidden" name="csrf_token" value="{{csrf_token()}}">

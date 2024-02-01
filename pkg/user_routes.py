@@ -68,6 +68,8 @@ def index():
 def about():
     return render_template('user/about.html')
 
+
+#mistake mistake mistake, God whyyyyy??
 # @app.route('/feed/', methods=['GET', 'POST'])
 # def feed():
 #     user_id = session.get('useronline')
@@ -226,9 +228,7 @@ def humor_category():
 #     return render_template("user/connect.html", users=all_users)
 
 
-# Placeholder function for determining connection status
 def is_user_connected(user_one_id, user_two_id):
-    # Implement your logic to check if the users are connected
     connection = Connection.query.filter(
         ((Connection.user_one == user_one_id) & (Connection.user_two == user_two_id)) |
         ((Connection.user_one == user_two_id) & (Connection.user_two == user_one_id))
@@ -247,10 +247,8 @@ def connect_all_users():
 
     all_users = User.query.filter(User.users_id != current_user_id, User.is_active == True).all()
 
-    # Create a dictionary to store connection status for each user
     connection_status = {}
 
-    # Check connection status for each user
     for user in all_users:
         connection_status[user.users_id] = is_user_connected(current_user_id, user.users_id)
 
@@ -306,7 +304,7 @@ def connect(user_id):
     current_user = User.query.get(current_user_id)
     other_user = User.query.get(user_id)
 
-    # Check if users are already connected
+    # This checks if users are already connected
     existing_connection = Connection.query.filter(
         ((Connection.user_one == current_user.users_id) & (Connection.user_two == other_user.users_id)) |
         ((Connection.user_one == other_user.users_id) & (Connection.user_two == current_user.users_id))
@@ -331,7 +329,6 @@ def connect(user_id):
 
 @app.route('/connections')
 def connections():
-    # Get the user ID from the session
     user_id = session.get('useronline')
 
     # Check if the user is logged in
@@ -339,7 +336,6 @@ def connections():
         flash('Please log in first', category='error')
         return redirect('/login')
 
-    # Get the connections for the current logged-in user
     connections = Connection.query.filter(
         (Connection.user_one == user_id) | (Connection.user_two == user_id)
     ).all()
@@ -352,10 +348,6 @@ def connections():
             connected_users.append(User.query.get(connection.user_two))
 
     return render_template('user/connections.html', connected_users=connected_users)
-
-
-
-
 
 
 
@@ -430,7 +422,6 @@ def connections():
 
 #     return render_template('user/profile.html', form=form, user=user, user_posts=user_posts)  
 
-from flask import render_template, redirect, url_for
 
 @app.route('/changedp/', methods=['GET', 'POST'])
 def change_dp():
@@ -467,7 +458,7 @@ def change_dp():
                     pass
 
                 flash("Profile picture added", category='success')
-                return redirect(url_for('profile'))  # Redirect to the user's profile page
+                return redirect(url_for('profile')) 
             else:
                 flash("Invalid file type. Please upload a valid image.", category="error")
 
@@ -624,23 +615,19 @@ def create_post():
         if user_id is None:
             flash('Please log in first', category='error')
             return redirect('/login')
-
-        # Check if a file is provided
+        
         if 'post_image' in request.files:
             post_image = request.files['post_image']
             
-            # Validate file type
             if post_image and allowed_file(post_image.filename):
-                # Securely save the filename
                 filename = secure_filename(post_image.filename)
                 
-                # Save the file to the specified directory
                 final_name = os.path.join("pkg/static/postsimgs/", filename)
                 post_image.save(final_name)
 
                 new_post = Post(
                     posts_title=post_title,
-                    posts_pic=filename,  # Store only the filename in the database
+                    posts_pic=filename,  
                     posts_content=post_content,
                     posts_description=post_description,
                     post_writer=user_id,
@@ -693,11 +680,9 @@ def delete_post(post_id):
 def update_post(post_id):
     form = UpdateBlogPostForm()
 
-    # Fetch the post from the database
     post = Post.query.get_or_404(post_id)
 
     if request.method == 'POST' and form.validate_on_submit():
-        # Update the post data
         post.posts_title = form.updated_title.data
         post.posts_description = form.updated_description.data
         post.posts_content = form.updated_content.data
@@ -708,7 +693,6 @@ def update_post(post_id):
         flash('Your post has been updated successfully!', 'success')
         return redirect("/feed/")
 
-    # Pass the existing post data to the form
     form.updated_title.data = post.posts_title
     form.updated_description.data = post.posts_description
     form.updated_content.data = post.posts_content
@@ -731,7 +715,7 @@ def terms_conditions():
 
     return render_template('user/profile_page.html', user=user, posts=posts)
 
-# Modify the user_profile route in your Flask application
+
 @app.route('/user_profile/<int:user_id>')
 def user_profile(user_id):
     user = User.query.get(user_id)
@@ -742,12 +726,10 @@ def user_profile(user_id):
         return redirect('/profile')
     
 
-    # Get the connections of the user
     connections = Connection.query.filter(
         (Connection.user_one == user_id) | (Connection.user_two == user_id)
     ).all()
 
-    # Get the connected users
     connected_users = []
     for connection in connections:
         connected_user_id = connection.user_one if connection.user_one != user_id else connection.user_two
@@ -803,20 +785,16 @@ def like():
             post_id = request.form.get("postId")
             like_count = int(request.form.get("likeCount"))
 
-            # Check if the user has already liked the post
             existing_like = Like.query.filter_by(post_liked=post_id, user_id=user_id).first()
 
             if existing_like:
-                # User is unliking the post
                 db.session.delete(existing_like)
                 like_count -= 1
             else:
-                # User is liking the post
                 new_like = Like(post_liked=post_id, user_id=user_id)
                 db.session.add(new_like)
                 like_count += 1
 
-            # Update the post's like count
             post = Post.query.get(post_id)
             post.posts_likes = like_count
 
